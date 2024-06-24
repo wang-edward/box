@@ -64,6 +64,9 @@ int main() {
                       .createNewPlugin(te::FourOscPlugin::xmlTypeName, {})
                       .get();
     auto fourOscPlugin = static_cast<te::FourOscPlugin *>(plugin);
+    for (int i = 0; i < fourOscPlugin->oscParams.size(); i++) {
+        fourOscPlugin->oscParams[i]->waveShapeValue.setValue(te::Oscillator::Waves::noise, nullptr);
+    }
 
     // Insert the plugin to the track
     track->pluginList.insertPlugin(*fourOscPlugin, 0, nullptr);

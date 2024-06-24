@@ -17,7 +17,7 @@ juce_add_console_app(Box
 
 target_sources(Box
     PRIVATE
-        main.cc)
+        src/screen.cc)
 
 target_compile_definitions(Box
     PRIVATE
