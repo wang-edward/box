@@ -9,11 +9,19 @@ project(BOX VERSION 0.0.1)
 
 add_subdirectory(external/tracktion_engine/modules/juce)
 add_subdirectory(external/tracktion_engine/modules)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
+
+# Specify CMake prefix path for Homebrew
+set(CMAKE_PREFIX_PATH /usr/local/Cellar/glfw /usr/local/Cellar/glew)
+
+# Find OpenGL, GLFW and GLEW
+find_package(OpenGL REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+pkg_search_module(GLEW REQUIRED glew)
 
 # Include header files from include directory
 include_directories(include)
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 
 # Collect all .cc files from src directory
 file(GLOB SRC_FILES src/*.cc)
@@ -34,7 +42,9 @@ target_link_libraries(Box
     PRIVATE
         tracktion::tracktion_engine
         juce::juce_core
-        ${CURSES_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+        ${GLFW_LIBRARIES}
+        ${GLEW_LIBRARIES}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
