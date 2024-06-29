@@ -1,9 +1,11 @@
+#pragma once
 #include "screen.hh"
-enum class ScreenType {MAIN}
+#include <memory>
+#include <map>
 
 class ScreenManager {
-    std::map<ScreenType, std::unique_ptr<Screen>> screens_;
-    ScreenType activeScreen_;
+    std::map<ScreenType, std::unique_ptr<Screen>> screens;
+    ScreenType activeScreen;
 
 public:
     ScreenManager();

@@ -12,12 +12,18 @@ add_subdirectory(external/tracktion_engine/modules)
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 
+# Include header files from include directory
+include_directories(include)
+
+# Collect all .cc files from src directory
+file(GLOB SRC_FILES src/*.cc)
+
 juce_add_console_app(Box
     PRODUCT_NAME "Box test")
 
 target_sources(Box
     PRIVATE
-        src/screen.cc)
+        ${SRC_FILES})
 
 target_compile_definitions(Box
     PRIVATE
