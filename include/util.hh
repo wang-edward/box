@@ -20,6 +20,7 @@ enum class DeviceType {
 
 enum class EventType {
     KEYPRESS,
+    KEYRELEASE,
 };
 
 struct Event {

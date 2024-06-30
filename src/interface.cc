@@ -81,10 +81,11 @@ void Interface:: drawToScreen() const {
     glEnd();
 
     glfwSwapBuffers(window);
-    glfwPollEvents();
 }
 
 bool Interface::pollEvent(Event &event) {
+
+    glfwPollEvents();
     if constexpr (InputType == DeviceType::EMULATOR) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             event.type = EventType::KEYPRESS;
