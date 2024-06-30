@@ -83,20 +83,28 @@ void Interface:: drawToScreen() const {
     glfwSwapBuffers(window);
 }
 
-bool Interface::pollEvent(Event &event) {
-
+bool Interface:: pollEvent(Event& event) {
     glfwPollEvents();
-    if constexpr (InputType == DeviceType::EMULATOR) {
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-            event.type = EventType::KEYPRESS;
-            event.value = GLFW_KEY_ESCAPE;
-            return true;
+
+    for (int value = GLFW_KEY_SPACE; value <= GLFW_KEY_LAST; ++value) {
+        int state = glfwGetKey(window, value);
+        if (state == GLFW_PRESS) {
+            if (keyStates[value] == GLFW_RELEASE) {
+                event.type = EventType::KEYPRESS;
+                event.value = value;
+                keyStates[value] = state;
+                return true;
+            }
+        } else if (state == GLFW_RELEASE) {
+            if (keyStates[value] == GLFW_PRESS) {
+                event.type = EventType::KEYRELEASE;
+                event.value = value;
+                keyStates[value] = state;
+                return true;
+            }
         }
-        return false;
-    } else {
-        // mcu stuff
-        return false;
     }
+    return false;
 }
 
 bool Interface::shouldClose() const { return glfwWindowShouldClose(window); }

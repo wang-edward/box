@@ -6,6 +6,9 @@
 #include <random>
 #include <iostream>
 
+void print(std::string s) {
+    std::cout << s << std::endl;
+}
 
 int main() {
     Interface interface;

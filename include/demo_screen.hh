@@ -27,10 +27,11 @@ public:
     void handleEvent(const Event& event) override {
         std::cout << "Handled event: ";
         if (event.type == EventType::KEYPRESS) {
-            std::cout << "KeyPress, key: " << event.value << std::endl;
-        // } else if (event.type == EventType::MicrocontrollerEvent) {
-        //     std::cout << "MicrocontrollerEvent" << std::endl;
+            std::cout << "KEYRELEASE, key: " << event.value;
+        } else if (event.type == EventType::KEYRELEASE) {
+            std::cout << "KEYRELEASE, key: " << event.value;
         }
+        std::cout << std::endl;
     }
 
 private:

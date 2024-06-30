@@ -31,6 +31,8 @@ private:
     std::array<Color, WIDTH * HEIGHT> activeBuffer;
     std::array<Color, WIDTH * HEIGHT> inactiveBuffer;
 
+    std::array<int, GLFW_KEY_LAST + 1> keyStates{};
+
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
     }
