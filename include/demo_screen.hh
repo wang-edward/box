@@ -12,7 +12,7 @@ public:
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime).count();
 
-        if (elapsed > 100) {  // Update animation every 100 ms
+        if (elapsed > 10) {  // Update animation every 10 ms
             lastUpdateTime = now;
             updateAnimation();
         }
