@@ -1,16 +1,22 @@
 #pragma once
+#include "util.hh"
+#include "interface.hh"
 #include "screen.hh"
-#include <memory>
 #include <map>
+#include <memory>
+#include <string>
 
 class ScreenManager {
-    std::map<ScreenType, std::unique_ptr<Screen>> screens;
-    ScreenType activeScreen;
-
 public:
-    ScreenManager();
-    void addScreen(ScreenType type, std::unique_ptr<Screen> screen);
-    void setActiveScreen(ScreenType type);
-    void render();
-    void handleEvent(const Event &event);
+    void addScreen(const std::string& name, std::unique_ptr<Screen> screen);
+
+    void setActiveScreen(const std::string& name);
+
+    void handleEvent(const Event& event);
+
+    void render(Interface& Interface);
+
+private:
+    std::map<std::string, std::unique_ptr<Screen>> screens;
+    Screen* activeScreen;
 };
