@@ -27,6 +27,7 @@ public:
 
 private:
     GLFWwindow* window;
+    GLuint texture;
     std::array<Color, WIDTH * HEIGHT> activeBuffer;
     std::array<Color, WIDTH * HEIGHT> inactiveBuffer;
 

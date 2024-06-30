@@ -3,6 +3,9 @@
 #include "screen_manager.hh"
 
 #include <random>
+#include <iostream>
+
+
 
 int main() {
     Interface interface;
@@ -22,9 +25,10 @@ int main() {
     std::uniform_int_distribution<> dis_color(1, 255);
 
     while (!interface.shouldClose()) {
-        // // Poll and handle events
+        // Poll and handle events
         Event event;
         while (interface.pollEvent(event)) {
+            std::cout << (event.value) << std::endl;
             screenManager.handleEvent(event);
         }
 
@@ -36,7 +40,6 @@ int main() {
 
         Color random_color = Color{r, g, b};
         interface.drawPixel(x, y, random_color);
-
 
         // Render to the inactive buffer
         screenManager.render(interface);

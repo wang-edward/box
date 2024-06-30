@@ -1,3 +1,6 @@
+#pragma once
+#include "interface.hh"
+
 class Screen {
 public:
     virtual void render(Interface& interface) = 0;

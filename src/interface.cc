@@ -1,7 +1,7 @@
 #include "interface.hh"
 #include <iostream>
 
-Interface::Interface() {
+Interface:: Interface() {
     activeBuffer.fill(Color{0, 0, 0});
     inactiveBuffer.fill(Color{0, 0, 0});
 
@@ -9,30 +9,34 @@ Interface::Interface() {
         throw std::runtime_error("Failed to initialize GLFW");
     }
 
-    window = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr,
-                              nullptr);
+    window = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         throw std::runtime_error("Failed to create GLFW window");
     }
 
     glfwMakeContextCurrent(window);
+    glfwInit();
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, WIDTH, HEIGHT, 0.0, -1.0, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    // glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     if constexpr (InputType == DeviceType::HARDWARE) {
         // Initialize microcontroller input handling (e.g., serial interface)
     }
 }
 
-Interface::~Interface() {
-    glfwDestroyWindow(window);
-    glfwTerminate();
+Interface:: ~Interface() {
+    if (DisplayType == DeviceType::EMULATOR) {
+        glDeleteTextures(1, &texture);
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
 }
 
 void Interface::drawPixel(int x, int y, Color color) {
@@ -41,31 +45,46 @@ void Interface::drawPixel(int x, int y, Color color) {
     }
 }
 
-void Interface:: swapBuffers() {
-    std::swap(activeBuffer, inactiveBuffer);
-}
+void Interface::swapBuffers() { std::swap(activeBuffer, inactiveBuffer); }
 
 void Interface:: drawToScreen() const {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    for (int y = 0; y < HEIGHT; ++y) {
-        for (int x = 0; x < WIDTH; ++x) {
-            Color color = activeBuffer[y * WIDTH + x];
-            glColor3ub(color.r, color.g, color.b);
-            glBegin(GL_QUADS);
-            glVertex2i(x, y);
-            glVertex2i(x + 1, y);
-            glVertex2i(x + 1, y + 1);
-            glVertex2i(x, y + 1);
-            glEnd();
-        }
-    }
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, activeBuffer.data());
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    int windowWidth, windowHeight;
+    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+
+    float aspectRatio = float(windowWidth) / float(windowHeight);
+    float scale = std::min(float(windowWidth) / WIDTH, float(windowHeight) / HEIGHT);
+
+    float scaledWidth = WIDTH * scale;
+    float scaledHeight = HEIGHT * scale;
+
+    float xOffset = (windowWidth - scaledWidth) / 2;
+    float yOffset = (windowHeight - scaledHeight) / 2;
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, windowWidth, windowHeight, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(xOffset, yOffset);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(xOffset + scaledWidth, yOffset);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(xOffset + scaledWidth, yOffset + scaledHeight);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(xOffset, yOffset + scaledHeight);
+    glEnd();
 
     glfwSwapBuffers(window);
     glfwPollEvents();
 }
 
-bool Interface:: pollEvent(Event& event) {
+bool Interface::pollEvent(Event &event) {
     if constexpr (InputType == DeviceType::EMULATOR) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             event.type = EventType::KEYPRESS;
@@ -79,6 +98,4 @@ bool Interface:: pollEvent(Event& event) {
     }
 }
 
-bool Interface:: shouldClose() const {
-    return glfwWindowShouldClose(window);
-}
+bool Interface::shouldClose() const { return glfwWindowShouldClose(window); }
