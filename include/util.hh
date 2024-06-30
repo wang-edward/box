@@ -12,3 +12,17 @@ struct Color {
         return !(*this == other);
     }
 };
+
+enum class DeviceType {
+    EMULATOR,
+    HARDWARE
+};
+
+enum class EventType {
+    KEYPRESS,
+};
+
+struct Event {
+    EventType type;
+    int value;
+};

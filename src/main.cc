@@ -1,10 +1,14 @@
-#include "io_interface.hh"
-#include "color.hh"
+#include "util.hh"
+#include "interface.hh"
+#include "screen_manager.hh"
+
+#include <random>
+
 int main() {
-    IOInterface ioInterface;
+    Interface interface;
 
     // Initialize the screen manager
-    // ScreenManager screenManager;
+    ScreenManager screenManager;
     // 
     // screenManager.addScreen("trackEditor", std::make_unique<TrackEditorScreen>());
     // screenManager.addScreen("mixer", std::make_unique<MixerScreen>());
@@ -12,21 +16,36 @@ int main() {
     // 
     // screenManager.setActiveScreen("trackEditor");
 
-    while (!ioInterface.shouldClose()) {
+    std::random_device rd;  
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis_xy(1, 128);
+    std::uniform_int_distribution<> dis_color(1, 255);
+
+    while (!interface.shouldClose()) {
         // // Poll and handle events
-        // Event event;
-        // while (ioInterface.pollEvent(event)) {
-        //     screenManager.handleEvent(event);
-        // }
+        Event event;
+        while (interface.pollEvent(event)) {
+            screenManager.handleEvent(event);
+        }
 
-        // // Render to the inactive buffer
-        // screenManager.render(ioInterface);
+        int x = dis_xy(gen);
+        int y = dis_xy(gen);
+        uint8_t r = dis_color(gen);
+        uint8_t g = dis_color(gen);
+        uint8_t b = dis_color(gen);
 
-        // // Swap buffers
-        // ioInterface.swapBuffers();
+        Color random_color = Color{r, g, b};
+        interface.drawPixel(x, y, random_color);
 
-        // // Draw the active buffer to the screen
-        // ioInterface.drawToScreen();
+
+        // Render to the inactive buffer
+        screenManager.render(interface);
+
+        // Swap buffers
+        interface.swapBuffers();
+
+        // Draw the active buffer to the screen
+        interface.drawToScreen();
     }
 
     return 0;
