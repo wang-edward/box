@@ -2,6 +2,7 @@
 #include "interface.hh"
 #include "screen_manager.hh"
 #include "screen_demo_1stripe.hh"
+#include "screen_four_osc.hh"
 
 #include <random>
 #include <iostream>
