@@ -18,13 +18,18 @@ struct Color {
 };
 
 enum class DeviceType {
-    EMULATOR,
-    HARDWARE
+    Emulator,
+    Hardware
 };
 
 enum class EventType {
-    KEYPRESS,
-    KEYRELEASE,
+    KeyPress,
+    KeyRelease,
+};
+
+enum class ScreenType {
+    GraphicsDemo1Stripe,
+    GraphicsDemo2Bomb,
 };
 
 struct Event {

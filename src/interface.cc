@@ -26,13 +26,13 @@ Interface:: Interface() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    if constexpr (InputType == DeviceType::HARDWARE) {
+    if constexpr (InputType == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
     }
 }
 
 Interface:: ~Interface() {
-    if (DisplayType == DeviceType::EMULATOR) {
+    if (DisplayType == DeviceType::Emulator) {
         glDeleteTextures(1, &texture);
         glfwDestroyWindow(window);
         glfwTerminate();
@@ -90,14 +90,14 @@ bool Interface:: pollEvent(Event& event) {
         int state = glfwGetKey(window, value);
         if (state == GLFW_PRESS) {
             if (keyStates[value] == GLFW_RELEASE) {
-                event.type = EventType::KEYPRESS;
+                event.type = EventType::KeyPress;
                 event.value = value;
                 keyStates[value] = state;
                 return true;
             }
         } else if (state == GLFW_RELEASE) {
             if (keyStates[value] == GLFW_PRESS) {
-                event.type = EventType::KEYRELEASE;
+                event.type = EventType::KeyRelease;
                 event.value = value;
                 keyStates[value] = state;
                 return true;

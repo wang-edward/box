@@ -36,9 +36,9 @@ public:
 
     void handleEvent(te::Edit &edit, const Event& event) override {
         std::cout << "Handled event: ";
-        if (event.type == EventType::KEYPRESS) {
+        if (event.type == EventType::KeyPress) {
             std::cout << "KeyPress, value: " << event.value << std::endl;
-        } else if (event.type == EventType::KEYRELEASE) {
+        } else if (event.type == EventType::KeyRelease) {
             std::cout << "KeyRelease, value: " << event.value << std::endl;
         }
     }

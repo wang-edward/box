@@ -8,15 +8,15 @@
 
 class ScreenManager {
 public:
-    void addScreen(const std::string& name, std::unique_ptr<Screen> screen);
+    void addScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
 
-    void setActiveScreen(const std::string& name);
+    void setActiveScreen(ScreenType screenType);
 
     void handleEvent(te::Edit &edit, const Event& event);
 
     void render(Interface& Interface);
 
 private:
-    std::map<std::string, std::unique_ptr<Screen>> screens;
-    Screen* activeScreen;
+    std::map<ScreenType, std::unique_ptr<Screen>> screens;
+    ScreenType activeScreen;
 };

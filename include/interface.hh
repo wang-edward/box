@@ -9,8 +9,8 @@ public:
     static const int WIDTH = 128;
     static const int HEIGHT = 128;
 
-    constexpr static DeviceType DisplayType = DeviceType::EMULATOR;
-    constexpr static DeviceType InputType = DeviceType::EMULATOR;
+    constexpr static DeviceType DisplayType = DeviceType::Emulator;
+    constexpr static DeviceType InputType = DeviceType::Emulator;
 
     Interface();
     
