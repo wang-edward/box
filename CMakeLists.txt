@@ -11,7 +11,7 @@ add_subdirectory(external/tracktion_engine/modules/juce)
 add_subdirectory(external/tracktion_engine/modules)
 
 # Specify CMake prefix path for Homebrew
-set(CMAKE_PREFIX_PATH /usr/local/Cellar/glfw /usr/local/Cellar/glew)
+set(CMAKE_PREFIX_PATH /opt/homebrew/opt/glfw /opt/homebrew/opt/glew)
 
 # Find OpenGL, GLFW and GLEW
 find_package(OpenGL REQUIRED)

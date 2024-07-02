@@ -12,7 +12,7 @@ public:
 
     void setActiveScreen(const std::string& name);
 
-    void handleEvent(const Event& event);
+    void handleEvent(te::Edit &edit, const Event& event);
 
     void render(Interface& Interface);
 

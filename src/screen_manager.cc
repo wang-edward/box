@@ -8,9 +8,9 @@ void ScreenManager:: setActiveScreen(const std::string& name) {
     activeScreen = screens[name].get();
 }
 
-void ScreenManager:: handleEvent(const Event& event) {
+void ScreenManager:: handleEvent(te::Edit &edit, const Event& event) {
     if (activeScreen) {
-        activeScreen->handleEvent(event);
+        activeScreen->handleEvent(edit, event);
     }
 }
 

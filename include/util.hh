@@ -1,6 +1,10 @@
 #pragma once
 #include <cstdint>
 
+#include <tracktion_engine/tracktion_engine.h>
+
+namespace te = tracktion;
+
 struct Color {
     uint8_t r, g, b;
 

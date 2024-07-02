@@ -1,7 +1,7 @@
 #include "util.hh"
 #include "interface.hh"
 #include "screen_manager.hh"
-#include "demo_screen.hh"
+#include "screen_demo_1stripe.hh"
 
 #include <random>
 #include <iostream>
@@ -12,18 +12,19 @@ void print(std::string s) {
 
 int main() {
     Interface interface;
-
-    // Initialize the screen manager
     ScreenManager screenManager;
+
+    te::Engine engine{"Tracktion Hello World"};
+    te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
     
-    screenManager.addScreen("demo", std::make_unique<DemoScreen>());
+    screenManager.addScreen("demo", std::make_unique<GraphicsDemoScreen1>());
     screenManager.setActiveScreen("demo");
 
     while (!interface.shouldClose()) {
         // Poll and handle events
         Event event;
         while (interface.pollEvent(event)) {
-            screenManager.handleEvent(event);
+            screenManager.handleEvent(edit, event);
         }
 
         // Render to the inactive buffer

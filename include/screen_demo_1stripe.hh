@@ -3,9 +3,9 @@
 #include <iostream>
 #include <chrono>
 
-class DemoScreen : public Screen {
+class GraphicsDemoScreen1 : public Screen {
 public:
-    DemoScreen() : lastUpdateTime(std::chrono::steady_clock::now()), frameCount(0) {}
+    GraphicsDemoScreen1() : lastUpdateTime(std::chrono::steady_clock::now()), frameCount(0) {}
 
     void render(Interface& interface) override {
         auto now = std::chrono::steady_clock::now();
@@ -34,7 +34,7 @@ public:
         }
     }
 
-    void handleEvent(const Event& event) override {
+    void handleEvent(te::Edit &edit, const Event& event) override {
         std::cout << "Handled event: ";
         if (event.type == EventType::KEYPRESS) {
             std::cout << "KeyPress, value: " << event.value << std::endl;
