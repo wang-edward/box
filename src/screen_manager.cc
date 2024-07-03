@@ -8,6 +8,10 @@ void ScreenManager:: setActiveScreen(ScreenType screenType) {
     activeScreen = screenType;
 }
 
+ScreenType ScreenManager:: getActiveScreen() {
+    return activeScreen;
+}
+
 void ScreenManager:: handleEvent(te::Edit &edit, const Event& event) {
     screens[activeScreen]->handleEvent(edit, event);
 }

@@ -11,6 +11,7 @@ public:
     void addScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
 
     void setActiveScreen(ScreenType screenType);
+    ScreenType getActiveScreen();
 
     void handleEvent(te::Edit &edit, const Event& event);
 
