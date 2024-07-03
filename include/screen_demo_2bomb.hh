@@ -5,9 +5,9 @@
 #include <vector>
 #include <cmath>
 
-class GraphicsDemoScreen : public Screen {
+class GraphicsDemoScreen2 : public Screen {
 public:
-    GraphicsDemoScreen() : lastUpdateTime(std::chrono::steady_clock::now()) {}
+    GraphicsDemoScreen2() : lastUpdateTime(std::chrono::steady_clock::now()) {}
 
     void render(Interface& interface) override {
         auto now = std::chrono::steady_clock::now();
@@ -54,7 +54,7 @@ private:
         if (rand() % 10 == 0) {
             int x = rand() % Interface::WIDTH;
             int y = rand() % Interface::HEIGHT;
-            explosions.push_back({x, y, 1, {255, rand() % 256, 0}});
+            explosions.push_back({x, y, 1, {255, static_cast<uint8_t>(rand() % 256), 0}});
         }
 
         // Update and draw explosions
