@@ -5,9 +5,9 @@
 #include <vector>
 #include <cmath>
 
-class GraphicsDemoScreen2 : public Screen {
+class GraphicsDemo2Bomb : public Screen {
 public:
-    GraphicsDemoScreen2() : lastUpdateTime(std::chrono::steady_clock::now()) {}
+    GraphicsDemo2Bomb() : lastUpdateTime(std::chrono::steady_clock::now()) {}
 
     void render(Interface& interface) override {
         auto now = std::chrono::steady_clock::now();

@@ -19,15 +19,15 @@ int main() {
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
     
-    screenManager.addScreen(ScreenType::GraphicsDemo1Stripe, std::make_unique<GraphicsDemoScreen1>());
-    screenManager.addScreen(ScreenType::GraphicsDemo2Bomb, std::make_unique<GraphicsDemoScreen2>());
+    screenManager.addScreen(ScreenType::GraphicsDemo1Stripe, std::make_unique<GraphicsDemo1Stripe>());
+    screenManager.addScreen(ScreenType::GraphicsDemo2Bomb, std::make_unique<GraphicsDemo2Bomb>());
     screenManager.setActiveScreen(ScreenType::GraphicsDemo1Stripe);
 
     while (!interface.shouldClose()) {
         // Poll and handle events
         Event event;
         while (interface.pollEvent(event)) {
-            // screenManager.handleEvent(edit, event);
+            screenManager.handleEvent(edit, event);
             if (event.type == EventType::KeyPress && event.value == GLFW_KEY_SPACE) {
                 ScreenType curr = screenManager.getActiveScreen();
                 if (curr == ScreenType::GraphicsDemo1Stripe) {

@@ -2,10 +2,109 @@
 #include "screen.hh"
 #include <iostream>
 #include <chrono>
+#include <array>
 
-class GraphicsDemoScreen1 : public Screen {
+// class GraphicsDemo1Stripe : public Screen {
+// public:
+//     GraphicsDemo1Stripe() : lastUpdateTime(std::chrono::steady_clock::now()), useAlternateColors(false) {}
+
+//     void render(Interface& interface) override {
+//         auto now = std::chrono::steady_clock::now();
+//         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime).count();
+
+//         if (elapsed > 100) {  // Update animation every 100 ms
+//             lastUpdateTime = now;
+//             updateAnimation();
+//         }
+
+//         for (int y = 0; y < Interface::HEIGHT; ++y) {
+//             for (int x = 0; x < Interface::WIDTH; ++x) {
+//                 interface.drawPixel(x, y, buffer[y * Interface::WIDTH + x]);
+//             }
+//         }
+//     }
+
+//     void handleEvent(te::Edit& edit, const Event& event) override {
+//         if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ENTER) {
+//             useAlternateColors = !useAlternateColors;
+//         }
+//     }
+
+// private:
+//     std::array<Color, Interface::WIDTH * Interface::HEIGHT> buffer;
+//     std::chrono::steady_clock::time_point lastUpdateTime;
+//     bool useAlternateColors;
+
+//     void updateAnimation() {
+//         for (int y = 0; y < Interface::HEIGHT; ++y) {
+//             for (int x = 0; x < Interface::WIDTH; ++x) {
+//                 if ((x + y) % 2 == 0) {
+//                     buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{0, 255, 0} : Color{255, 0, 0};  // Green or Red
+//                 } else {
+//                     buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{255, 255, 0} : Color{0, 0, 255};  // Yellow or Blue
+//                 }
+//             }
+//         }
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+// class GraphicsDemo1Stripe : public Screen {
+// public:
+//     GraphicsDemo1Stripe() : lastUpdateTime(std::chrono::steady_clock::now()), useAlternateColors(false) {}
+
+//     void render(Interface& interface) override {
+//         auto now = std::chrono::steady_clock::now();
+//         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime).count();
+
+//         if (elapsed > 10) {  // Update animation every 100 ms
+//             lastUpdateTime = now;
+//             updateAnimation();
+//         }
+
+//         for (int y = 0; y < Interface::HEIGHT; ++y) {
+//             for (int x = 0; x < Interface::WIDTH; ++x) {
+//                 interface.drawPixel(x, y, buffer[y * Interface::WIDTH + x]);
+//             }
+//         }
+//     }
+
+//     void handleEvent(te::Edit& edit, const Event& event) override {
+//         if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ENTER) {
+//             useAlternateColors = !useAlternateColors;
+//         }
+//     }
+
+// private:
+//     std::array<Color, Interface::WIDTH * Interface::HEIGHT> buffer;
+//     std::chrono::steady_clock::time_point lastUpdateTime;
+//     bool useAlternateColors;
+
+//     void updateAnimation() {
+//         for (int y = 0; y < Interface::HEIGHT; ++y) {
+//             for (int x = 0; x < Interface::WIDTH; ++x) {
+//                 if ((x + y) / 16 % 2 == 0) {
+//                     buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{0, 255, 0} : Color{255, 0, 0};  // Green or Red
+//                 } else {
+//                     buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{255, 255, 0} : Color{0, 0, 255};  // Yellow or Blue
+//                 }
+//             }
+//         }
+//     }
+// };
+//
+
+class GraphicsDemo1Stripe : public Screen {
 public:
-    GraphicsDemoScreen1() : lastUpdateTime(std::chrono::steady_clock::now()), frameCount(0) {}
+    GraphicsDemo1Stripe() : lastUpdateTime(std::chrono::steady_clock::now()), useAlternateColors(false), shift(0) {}
 
     void render(Interface& interface) override {
         auto now = std::chrono::steady_clock::now();
@@ -21,44 +120,29 @@ public:
                 interface.drawPixel(x, y, buffer[y * Interface::WIDTH + x]);
             }
         }
-
-        // Framerate calculation
-        frameCount++;
-        auto currentTime = std::chrono::steady_clock::now();
-        auto timeSinceLastSecond = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime).count();
-        if (timeSinceLastSecond >= 1000) {
-            float fps = frameCount / (timeSinceLastSecond / 1000.0f);
-            std::cout << "\rFramerate: " << fps << " FPS" << std::flush;
-            frameCount = 0;
-            lastFrameTime = currentTime;
-        }
     }
 
-    void handleEvent(te::Edit &edit, const Event& event) override {
-        std::cout << "Handled event: ";
-        if (event.type == EventType::KeyPress) {
-            std::cout << "KeyPress, value: " << event.value << std::endl;
-        } else if (event.type == EventType::KeyRelease) {
-            std::cout << "KeyRelease, value: " << event.value << std::endl;
+    void handleEvent(te::Edit& edit, const Event& event) override {
+        if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ENTER) {
+            useAlternateColors = !useAlternateColors;
         }
     }
 
 private:
     std::array<Color, Interface::WIDTH * Interface::HEIGHT> buffer;
     std::chrono::steady_clock::time_point lastUpdateTime;
-    std::chrono::steady_clock::time_point lastFrameTime = std::chrono::steady_clock::now();
-    int frameCount = 0;
-    int frame = 0;
+    bool useAlternateColors;
+    int shift;
 
     void updateAnimation() {
-        frame = (frame + 1) % Interface::WIDTH;
+        shift = (shift + 1) % 32;  // Adjust this value for desired speed
 
         for (int y = 0; y < Interface::HEIGHT; ++y) {
             for (int x = 0; x < Interface::WIDTH; ++x) {
-                if ((x + frame) % Interface::WIDTH < Interface::WIDTH / 2) {
-                    buffer[y * Interface::WIDTH + x] = Color{255, 0, 0};  // Red
+                if (((x + y + shift) / 16) % 2 == 0) {
+                    buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{0, 255, 0} : Color{255, 0, 0};  // Green or Red
                 } else {
-                    buffer[y * Interface::WIDTH + x] = Color{0, 0, 255};  // Blue
+                    buffer[y * Interface::WIDTH + x] = useAlternateColors ? Color{255, 255, 0} : Color{0, 0, 255};  // Yellow or Blue
                 }
             }
         }
