@@ -1,6 +1,8 @@
 #pragma once
 #include "interface.hh"
 
+namespace box {
+
 class Screen {
 public:
     virtual void render(Interface& interface) = 0;
@@ -8,3 +10,4 @@ public:
     virtual ~Screen() {}
 };
 
+} // namespace box

@@ -5,6 +5,8 @@
 #include <vector>
 #include <cmath>
 
+namespace box {
+
 class GraphicsDemo2Bomb : public Screen {
 public:
     GraphicsDemo2Bomb() : lastUpdateTime(std::chrono::steady_clock::now()) {}
@@ -88,3 +90,5 @@ private:
         }
     }
 };
+
+} // namespace box

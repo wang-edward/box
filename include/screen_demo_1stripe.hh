@@ -4,6 +4,8 @@
 #include <chrono>
 #include <array>
 
+namespace box {
+
 // class GraphicsDemo1Stripe : public Screen {
 // public:
 //     GraphicsDemo1Stripe() : lastUpdateTime(std::chrono::steady_clock::now()), useAlternateColors(false) {}
@@ -148,3 +150,5 @@ private:
         }
     }
 };
+
+} // namespace box

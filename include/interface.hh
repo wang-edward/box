@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <queue>
 
+namespace box {
+
 class Interface {
 public:
     static const int WIDTH = 128;
@@ -37,3 +39,5 @@ private:
         glViewport(0, 0, width, height);
     }
 };
+
+} // namespace box

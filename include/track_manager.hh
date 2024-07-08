@@ -6,7 +6,9 @@
 #include <memory>
 #include <string>
 
-class ScreenManager {
+namespace box {
+
+class TrackManager {
 public:
     void addScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
 
@@ -21,3 +23,5 @@ private:
     std::map<ScreenType, std::unique_ptr<Screen>> screens;
     ScreenType activeScreen;
 };
+
+} // namespace box

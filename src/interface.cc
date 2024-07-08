@@ -1,6 +1,8 @@
 #include "interface.hh"
 #include <iostream>
 
+namespace box {
+
 Interface:: Interface() {
     activeBuffer.fill(Color{0, 0, 0});
     inactiveBuffer.fill(Color{0, 0, 0});
@@ -108,3 +110,5 @@ bool Interface:: pollEvent(Event& event) {
 }
 
 bool Interface::shouldClose() const { return glfwWindowShouldClose(window); }
+
+} // namespace box

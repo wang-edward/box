@@ -5,6 +5,10 @@
 
 namespace te = tracktion;
 
+namespace box {
+
+constexpr int NUM_TRACKS = 8;
+
 struct Color {
     uint8_t r, g, b;
 
@@ -36,3 +40,5 @@ struct Event {
     EventType type;
     int value;
 };
+
+} // namespace box
