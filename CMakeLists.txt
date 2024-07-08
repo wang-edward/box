@@ -5,6 +5,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 project(BOX VERSION 0.0.1)
 
 add_subdirectory(external/tracktion_engine/modules/juce)
