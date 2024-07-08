@@ -13,13 +13,17 @@ add_subdirectory(external/tracktion_engine/modules)
 # Specify CMake prefix path for Homebrew
 set(CMAKE_PREFIX_PATH /opt/homebrew/opt/glfw /opt/homebrew/opt/glew)
 
-# Find OpenGL, GLFW and GLEW
+# opengl
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 pkg_search_module(GLEW REQUIRED glew)
 
-# Include header files from include directory
+if (APPLE)
+    add_definitions(-DGL_SILENCE_DEPRECATION)
+endif()
+
+# includes
 include_directories(include)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 
