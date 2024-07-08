@@ -41,4 +41,6 @@ struct Event {
     int value;
 };
 
+std::string to_string(ScreenType screenType);
+
 } // namespace box
