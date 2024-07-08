@@ -1,6 +1,11 @@
 #include "track_manager.hh"
+#include "util.hh"
 
 namespace box {
+
+TrackManager:: TrackManager(te::AudioTrack &track): track{track} {
+
+}
 
 void TrackManager:: addScreen(ScreenType screenType, std::unique_ptr<Screen> screen) {
     screens[screenType] = std::move(screen);

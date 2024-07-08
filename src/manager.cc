@@ -2,7 +2,9 @@
 
 namespace box {
 
-void Manager:: addTrackManager(size_t index, TrackManager trackManager) {
+Manager:: Manager() {}
+
+void Manager:: addTrackManager(size_t index, std::unique_ptr<TrackManager> trackManager) {
     if (index >= 0 && index < NUM_TRACKS) {
         tracks[index] = std::move(trackManager);
     } else {
@@ -12,13 +14,13 @@ void Manager:: addTrackManager(size_t index, TrackManager trackManager) {
 
 void Manager:: render(Interface& interface) {
     if (currentTrack >= 0 && currentTrack < NUM_TRACKS) {
-        tracks[currentTrack].render(interface);
+        tracks[currentTrack]->render(interface);
     }
 }
 
 void Manager:: handleEvent(te::Edit& edit, const Event& event) {
     if (currentTrack >= 0 && currentTrack < NUM_TRACKS) {
-        tracks[currentTrack].handleEvent(edit, event);
+        tracks[currentTrack]->handleEvent(edit, event);
     }
 }
 

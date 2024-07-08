@@ -6,7 +6,8 @@ namespace box {
 
 class Manager {
 public:
-    void addTrackManager(size_t index, TrackManager trackManager);
+    Manager();
+    void addTrackManager(size_t index, std::unique_ptr<TrackManager> trackManager);
     void setCurrentTrack(int trackIndex) {
         if (trackIndex >= 0 && trackIndex < NUM_TRACKS) {
             currentTrack = trackIndex;
@@ -16,7 +17,8 @@ public:
     void render(Interface& interface);
     void handleEvent(te::Edit& edit, const Event& event);
 
-    std::array<TrackManager, NUM_TRACKS> tracks;
+    // TODO use array instead
+    std::vector<std::unique_ptr<TrackManager>> tracks;
     size_t currentTrack;
 };
 

@@ -1,6 +1,7 @@
 #include "util.hh"
 #include "interface.hh"
 #include "track_manager.hh"
+#include "manager.hh"
 #include "screen_demo_1stripe.hh"
 #include "screen_demo_2bomb.hh"
 #include "screen_four_osc.hh"
@@ -13,33 +14,41 @@ void print(std::string s) {
 }
 
 int main() {
-    Interface interface;
-    TrackManager TrackManager;
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
+
+    edit.ensureNumberOfAudioTracks(1);
+    auto first_track = te::getAudioTracks(edit)[0];
+
+    box::Interface interface;
+    std::unique_ptr<box::TrackManager> trackManager = std::make_unique<box::TrackManager>(*first_track);
     
-    TrackManager.addScreen(ScreenType::GraphicsDemo1Stripe, std::make_unique<GraphicsDemo1Stripe>());
-    TrackManager.addScreen(ScreenType::GraphicsDemo2Bomb, std::make_unique<GraphicsDemo2Bomb>());
-    TrackManager.setActiveScreen(ScreenType::GraphicsDemo1Stripe);
+    trackManager->addScreen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
+    trackManager->addScreen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
+    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
+
+    box::Manager manager;
+    manager.addTrackManager(0, std::move(trackManager));
 
     while (!interface.shouldClose()) {
         // Poll and handle events
-        Event event;
+        box::Event event;
         while (interface.pollEvent(event)) {
-            TrackManager.handleEvent(edit, event);
-            if (event.type == EventType::KeyPress && event.value == GLFW_KEY_SPACE) {
-                ScreenType curr = TrackManager.getActiveScreen();
-                if (curr == ScreenType::GraphicsDemo1Stripe) {
-                    TrackManager.setActiveScreen(ScreenType::GraphicsDemo2Bomb);
-                } else if (curr == ScreenType::GraphicsDemo2Bomb) {
-                    TrackManager.setActiveScreen(ScreenType::GraphicsDemo1Stripe);
+            manager.handleEvent(edit, event);
+            trackManager->handleEvent(edit, event);
+            if (event.type == box::EventType::KeyPress && event.value == GLFW_KEY_SPACE) {
+                box::ScreenType curr = trackManager->getActiveScreen();
+                if (curr == box::ScreenType::GraphicsDemo1Stripe) {
+                    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo2Bomb);
+                } else if (curr == box::ScreenType::GraphicsDemo2Bomb) {
+                    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
                 }
             }
         }
 
         // Render to the inactive buffer
-        TrackManager.render(interface);
+        trackManager->render(interface);
 
         // Swap buffers
         interface.swapBuffers();

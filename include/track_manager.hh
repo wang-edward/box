@@ -10,18 +10,19 @@ namespace box {
 
 class TrackManager {
 public:
-    void addScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
+    TrackManager(te::AudioTrack &track);
 
+    void addScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
     void setActiveScreen(ScreenType screenType);
     ScreenType getActiveScreen();
 
     void handleEvent(te::Edit &edit, const Event& event);
-
     void render(Interface& Interface);
 
 private:
     std::map<ScreenType, std::unique_ptr<Screen>> screens;
     ScreenType activeScreen;
+    te::AudioTrack &track;
 };
 
 } // namespace box
