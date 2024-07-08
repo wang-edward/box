@@ -15,7 +15,7 @@ public:
     }
 
     void render(Interface& interface);
-    void handleEvent(te::Edit& edit, const Event& event);
+    void handleEvent(const Event& event);
 
     // TODO use array instead
     std::vector<std::unique_ptr<TrackManager>> tracks;

@@ -124,7 +124,7 @@ public:
         }
     }
 
-    void handleEvent(te::Edit& edit, const Event& event) override {
+    void handleEvent(const Event& event) override {
         if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ENTER) {
             useAlternateColors = !useAlternateColors;
         }

@@ -19,8 +19,8 @@ ScreenType TrackManager:: getActiveScreen() {
     return activeScreen;
 }
 
-void TrackManager:: handleEvent(te::Edit &edit, const Event& event) {
     screens[activeScreen]->handleEvent(edit, event);
+void TrackManager:: handleEvent(const Event& event) {
 }
 
 void TrackManager:: render(Interface& interface) {

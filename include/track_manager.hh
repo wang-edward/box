@@ -16,7 +16,7 @@ public:
     void setActiveScreen(ScreenType screenType);
     ScreenType getActiveScreen();
 
-    void handleEvent(te::Edit &edit, const Event& event);
+    void handleEvent(const Event& event);
     void render(Interface& Interface);
 
 private:
