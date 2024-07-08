@@ -1,3 +1,4 @@
+#pragma once
 #include "screen.hh"
 #include "interface.hh"
 #include <iostream>

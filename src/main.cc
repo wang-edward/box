@@ -23,7 +23,7 @@ int main() {
 
     box::Interface interface;
     std::unique_ptr<box::TrackManager> trackManager = std::make_unique<box::TrackManager>(*first_track);
-    
+
     trackManager->addScreen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
     trackManager->addScreen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
     trackManager->setActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
@@ -31,31 +31,22 @@ int main() {
     box::Manager manager;
     manager.addTrackManager(0, std::move(trackManager));
 
-    while (!interface.shouldClose()) {
-        // Poll and handle events
-        box::Event event;
-        while (interface.pollEvent(event)) {
-            manager.handleEvent(edit, event);
-            trackManager->handleEvent(edit, event);
-            if (event.type == box::EventType::KeyPress && event.value == GLFW_KEY_SPACE) {
-                box::ScreenType curr = trackManager->getActiveScreen();
-                if (curr == box::ScreenType::GraphicsDemo1Stripe) {
-                    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo2Bomb);
-                } else if (curr == box::ScreenType::GraphicsDemo2Bomb) {
-                    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
-                }
+    try {
+        while (!interface.shouldClose()) {
+            // poll and handle events
+            box::Event event;
+            while (interface.pollEvent(event)) {
+                manager.handleEvent(event);
             }
+
+            // render
+            manager.render(interface);
+
+            interface.swapBuffers();
+            interface.drawToScreen();
         }
-
-        // Render to the inactive buffer
-        trackManager->render(interface);
-
-        // Swap buffers
-        interface.swapBuffers();
-
-        // Draw the active buffer to the screen
-        interface.drawToScreen();
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
     }
-
     return 0;
 }
