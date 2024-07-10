@@ -22,28 +22,28 @@ int main() {
     auto first_track = te::getAudioTracks(edit)[0];
 
     box::Interface interface;
-    std::unique_ptr<box::TrackManager> trackManager = std::make_unique<box::TrackManager>(*first_track);
+    std::unique_ptr<box::TrackManager> track_manager = std::make_unique<box::TrackManager>(*first_track);
 
-    trackManager->addScreen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
-    trackManager->addScreen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
-    trackManager->setActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
+    track_manager->add_screen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
+    track_manager->add_screen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
+    track_manager->set_active_screen(box::ScreenType::GraphicsDemo1Stripe);
 
     box::Manager manager;
-    manager.addTrackManager(0, std::move(trackManager));
+    manager.add_track_manager(0, std::move(track_manager));
 
     try {
-        while (!interface.shouldClose()) {
+        while (!interface.should_close()) {
             // poll and handle events
             box::Event event;
-            while (interface.pollEvent(event)) {
-                manager.handleEvent(event);
+            while (interface.poll_event(event)) {
+                manager.handle_event(event);
             }
 
             // render
             manager.render(interface);
 
-            interface.swapBuffers();
-            interface.drawToScreen();
+            interface.swap_buffers();
+            interface.draw_to_screen();
         }
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

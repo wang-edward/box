@@ -4,104 +4,104 @@
 namespace box {
 
 Interface:: Interface() {
-    activeBuffer.fill(Color{0, 0, 0});
-    inactiveBuffer.fill(Color{0, 0, 0});
+    active_buffer_.fill(Color{0, 0, 0});
+    inactive_buffer_.fill(Color{0, 0, 0});
 
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
     }
 
-    window = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
-    if (!window) {
+    window_ = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
+    if (!window_) {
         glfwTerminate();
         throw std::runtime_error("Failed to create GLFW window");
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window_);
     glfwInit();
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
     // glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
 
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &texture_);
+    glBindTexture(GL_TEXTURE_2D, texture_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    if constexpr (InputType == DeviceType::Hardware) {
+    if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
     }
 }
 
 Interface:: ~Interface() {
-    if (DisplayType == DeviceType::Emulator) {
-        glDeleteTextures(1, &texture);
-        glfwDestroyWindow(window);
+    if (DISPLAY_TYPE == DeviceType::Emulator) {
+        glDeleteTextures(1, &texture_);
+        glfwDestroyWindow(window_);
         glfwTerminate();
     }
 }
 
-void Interface::drawPixel(int x, int y, Color color) {
+void Interface::draw_pixel(int x, int y, Color color) {
     if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
-        inactiveBuffer[y * WIDTH + x] = color;
+        inactive_buffer_[y * WIDTH + x] = color;
     }
 }
 
-void Interface::swapBuffers() { std::swap(activeBuffer, inactiveBuffer); }
+void Interface::swap_buffers() { std::swap(active_buffer_, inactive_buffer_); }
 
-void Interface:: drawToScreen() const {
+void Interface:: draw_to_screen() const {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, activeBuffer.data());
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, active_buffer_.data());
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture_);
 
-    int windowWidth, windowHeight;
-    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+    int window_width, window_height;
+    glfwGetFramebufferSize(window_, &window_width, &window_height);
 
-    float aspectRatio = float(windowWidth) / float(windowHeight);
-    float scale = std::min(float(windowWidth) / WIDTH, float(windowHeight) / HEIGHT);
+    float aspect_ratio = float(window_width) / float(window_height);
+    float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
 
-    float scaledWidth = WIDTH * scale;
-    float scaledHeight = HEIGHT * scale;
+    float scaled_width = WIDTH * scale;
+    float scaled_height = HEIGHT * scale;
 
-    float xOffset = (windowWidth - scaledWidth) / 2;
-    float yOffset = (windowHeight - scaledHeight) / 2;
+    float x_offset = (window_width - scaled_width) / 2;
+    float y_offset = (window_height - scaled_height) / 2;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, windowWidth, windowHeight, 0, -1, 1);
+    glOrtho(0, window_width, window_height, 0, -1, 1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(xOffset, yOffset);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(xOffset + scaledWidth, yOffset);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(xOffset + scaledWidth, yOffset + scaledHeight);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(xOffset, yOffset + scaledHeight);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
     glEnd();
 
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(window_);
 }
 
-bool Interface:: pollEvent(Event& event) {
+bool Interface:: poll_event(Event& event) {
     glfwPollEvents();
 
     for (int value = GLFW_KEY_SPACE; value <= GLFW_KEY_LAST; ++value) {
-        int state = glfwGetKey(window, value);
+        int state = glfwGetKey(window_, value);
         if (state == GLFW_PRESS) {
-            if (keyStates[value] == GLFW_RELEASE) {
-                event.type = EventType::KeyPress;
-                event.value = value;
-                keyStates[value] = state;
+            if (key_states_[value] == GLFW_RELEASE) {
+                event.type_ = EventType::KeyPress;
+                event.value_ = value;
+                key_states_[value] = state;
                 return true;
             }
         } else if (state == GLFW_RELEASE) {
-            if (keyStates[value] == GLFW_PRESS) {
-                event.type = EventType::KeyRelease;
-                event.value = value;
-                keyStates[value] = state;
+            if (key_states_[value] == GLFW_PRESS) {
+                event.type_ = EventType::KeyRelease;
+                event.value_ = value;
+                key_states_[value] = state;
                 return true;
             }
         }
@@ -109,6 +109,6 @@ bool Interface:: pollEvent(Event& event) {
     return false;
 }
 
-bool Interface::shouldClose() const { return glfwWindowShouldClose(window); }
+bool Interface::should_close() const { return glfwWindowShouldClose(window_); }
 
 } // namespace box

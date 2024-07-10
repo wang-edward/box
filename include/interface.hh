@@ -11,29 +11,29 @@ public:
     static const int WIDTH = 128;
     static const int HEIGHT = 128;
 
-    constexpr static DeviceType DisplayType = DeviceType::Emulator;
-    constexpr static DeviceType InputType = DeviceType::Emulator;
+    constexpr static DeviceType DISPLAY_TYPE = DeviceType::Emulator;
+    constexpr static DeviceType INPUT_TYPE = DeviceType::Emulator;
 
     Interface();
     
     ~Interface();
 
-    void drawPixel(int x, int y, Color color);
+    void draw_pixel(int x, int y, Color color);
 
-    void swapBuffers();
+    void swap_buffers();
 
-    void drawToScreen() const;
+    void draw_to_screen() const;
 
-    bool pollEvent(Event& event);
-    bool shouldClose() const;
+    bool poll_event(Event& event);
+    bool should_close() const;
 
 private:
-    GLFWwindow* window;
-    GLuint texture;
-    std::array<Color, WIDTH * HEIGHT> activeBuffer;
-    std::array<Color, WIDTH * HEIGHT> inactiveBuffer;
+    GLFWwindow* window_;
+    GLuint texture_;
+    std::array<Color, WIDTH * HEIGHT> active_buffer_;
+    std::array<Color, WIDTH * HEIGHT> inactive_buffer_;
 
-    std::array<int, GLFW_KEY_LAST + 1> keyStates{};
+    std::array<int, GLFW_KEY_LAST + 1> key_states_{};
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
