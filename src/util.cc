@@ -3,7 +3,7 @@
 namespace box {
 
 LogLevel string_to_loglevel(const std::string& s) {
-    if (s == "Off") return LogLevel::Off;
+    if (s == "OFF") return LogLevel::Off;
     if (s == "DEBUG") return LogLevel::Debug;
     if (s == "WARN") return LogLevel::Warn;
     if (s == "ERR") return LogLevel::Err;
@@ -20,7 +20,7 @@ std::string loglevel_to_string(LogLevel l) {
 
 // get loglevel from env
 LogLevel get_loglevel() {
-    const char* env = std::getenv("BOX_LOGLEVEL");
+    const char* env = std::getenv("BOX_LOG");
     if (env) {
         return string_to_loglevel(env);
     }
