@@ -34,7 +34,7 @@ void TrackManager:: HandleEvent(const Event& event) {
         track_.injectLiveMidiMessage(message, 0);
     } else if (event.type == EventType::KeyRelease &&
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
-        auto message = juce::MidiMessage::noteOff(0, event.value);
+        auto message = juce::MidiMessage::noteOff(0, KEY_TO_MIDI.at(event.value));
         track_.injectLiveMidiMessage(message, 0);
     }
     plugins_[active_plugin_]->HandleEvent(event);
