@@ -8,9 +8,9 @@
 
 namespace box {
 
-class TrackManager {
+class Track {
 public:
-    TrackManager(te::AudioTrack &track);
+    Track(te::AudioTrack &track);
 
     void add_screen(ScreenType screenType, std::unique_ptr<Screen> screen);
     void set_active_screen(ScreenType screenType);

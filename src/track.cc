@@ -1,32 +1,32 @@
-#include "track_manager.hh"
+#include "track.hh"
 
 #include "util.hh"
 
 namespace box {
 
-void assert_screens(const std::map<ScreenType, std::unique_ptr<Screen>> &screens, ScreenType screen_type, std::string name) {
+static void assert_screens(const std::map<ScreenType, std::unique_ptr<Screen>> &screens, ScreenType screen_type, std::string name) {
     if (screens.find(screen_type) == screens.end()) {
-        throw std::runtime_error{"TrackManager::" + name + "(): enum not found [" + to_string(screen_type) + "]"};
+        throw std::runtime_error{"Track::" + name + "(): enum not found [" + to_string(screen_type) + "]"};
     }
 }
 
-TrackManager:: TrackManager(te::AudioTrack &track): track_{track} {
+Track:: Track(te::AudioTrack &track): track_{track} {
 
 }
 
-void TrackManager:: add_screen(ScreenType screenType, std::unique_ptr<Screen> screen) {
+void Track:: add_screen(ScreenType screenType, std::unique_ptr<Screen> screen) {
     screens_[screenType] = std::move(screen);
 }
 
-void TrackManager:: set_active_screen(ScreenType screenType) {
+void Track:: set_active_screen(ScreenType screenType) {
     active_screen_ = screenType;
 }
 
-ScreenType TrackManager:: get_active_screen() {
+ScreenType Track:: get_active_screen() {
     return active_screen_;
 }
 
-void TrackManager:: handle_event(const Event& event) {
+void Track:: handle_event(const Event& event) {
     assert_screens(screens_, active_screen_, "handleEvent");
 
     if (event.type_ == box::EventType::KeyPress && event.value_ == GLFW_KEY_SPACE) {
@@ -42,7 +42,7 @@ void TrackManager:: handle_event(const Event& event) {
     screens_[active_screen_]->handle_event(event);
 }
 
-void TrackManager:: render(Interface& interface) {
+void Track:: render(Interface& interface) {
     assert_screens(screens_, active_screen_, "render");
     screens_[active_screen_]->render(interface);
 }
