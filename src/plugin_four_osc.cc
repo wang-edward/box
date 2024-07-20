@@ -17,7 +17,7 @@ void FourOscManager:: Render(Interface &interface) {
 }
 
 void FourOscManager:: HandleEvent(const Event &event) {
-
+    log_msg(LogLevel::Debug, "hello");
 }
 
 } // namespace box

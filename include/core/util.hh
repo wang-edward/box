@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
+#include <cstdlib>
+#include <string>
 
 #include <tracktion_engine/tracktion_engine.h>
 #include <GLFW/glfw3.h>
@@ -12,22 +15,27 @@ namespace box {
 
 constexpr int NUM_TRACKS = 8;
 
-// Template logging function
-template<typename T>
-void log_var(const std::string& varName, const T& varValue) {
-    std::cout << varName << ": " << varValue << std::endl;
-}
+enum class LogLevel {Off, Debug, Warn, Err};
 
-// Macro to simplify logging
+LogLevel string_to_loglevel(const std::string& s);
+std::string loglevel_to_string(LogLevel l);
+LogLevel get_loglevel();
+
+const LogLevel LOGLEVEL = get_loglevel();
+
+void log_msg(LogLevel l, const std::string& msg);
+
+template<typename T>
+void log_var(const std::string &var_name, const T &var_value) {
+    log_msg(LogLevel::Debug, var_name + ": " + var_value);
+}
 #define LOG_VAR(var) log_var(#var, var)
 
 struct Color {
-    uint8_t r_, g_, b_;
-
+    uint8_t r, g, b;
     bool operator==(const Color& other) const {
-        return r_ == other.r_ && g_ == other.g_ && b_ == other.b_;
+        return r == other.r && g == other.g && b == other.b;
     }
-
     bool operator!=(const Color& other) const {
         return !(*this == other);
     }
