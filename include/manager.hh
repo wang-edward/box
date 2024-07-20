@@ -7,11 +7,11 @@ namespace box {
 class Manager {
 public:
     Manager();
-    void add_track_manager(size_t index, std::unique_ptr<Track> Track);
-    void set_current_track(size_t trackIndex);
+    void AddTrackManager(size_t index, std::unique_ptr<Track> Track);
+    void SetCurrentTrack(size_t trackIndex);
 
-    void render(Interface& interface);
-    void handle_event(const Event& event);
+    void Render(Interface& interface);
+    void HandleEvent(const Event& event);
 
     // TODO use array instead
     std::vector<std::unique_ptr<Track>> tracks_;

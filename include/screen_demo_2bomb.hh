@@ -12,23 +12,23 @@ class GraphicsDemo2Bomb : public Screen {
 public:
     GraphicsDemo2Bomb() : last_update_time_(std::chrono::steady_clock::now()) {}
 
-    void render(Interface& interface) override {
+    void Render(Interface& interface) {
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_update_time_).count();
 
         if (elapsed > 50) {  // Update animation every 50 ms
             last_update_time_ = now;
-            update_animation();
+            UpdateAnimation();
         }
 
         for (int y = 0; y < Interface::HEIGHT; ++y) {
             for (int x = 0; x < Interface::WIDTH; ++x) {
-                interface.draw_pixel(x, y, buffer_[y * Interface::WIDTH + x]);
+                interface.DrawPixel(x, y, buffer_[y * Interface::WIDTH + x]);
             }
         }
     }
 
-    void handle_event(const Event& event) {
+    void HandleEvent(const Event& event) {
         std::cout << "Handled event: ";
         if (event.type_ == EventType::KeyPress) {
             std::cout << "KeyPress, value: " << event.value_ << std::endl;
@@ -49,7 +49,7 @@ private:
 
     std::vector<Explosion> explosions_;
 
-    void update_animation() {
+    void UpdateAnimation() {
         // Clear buffer
         buffer_.fill(Color{0, 0, 0});
 
@@ -62,7 +62,7 @@ private:
 
         // Update and draw explosions
         for (auto& explosion : explosions_) {
-            draw_explosion(explosion);
+            DrawExplosion(explosion);
             explosion.radius_++;
         }
 
@@ -72,7 +72,7 @@ private:
         }), explosions_.end());
     }
 
-    void draw_explosion(const Explosion& explosion) {
+    void DrawExplosion(const Explosion& explosion) {
         int x0 = explosion.x_;
         int y0 = explosion.y_;
         int radius = explosion.radius_;

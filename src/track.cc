@@ -14,37 +14,37 @@ Track:: Track(te::AudioTrack &track): track_{track} {
 
 }
 
-void Track:: add_screen(ScreenType screenType, std::unique_ptr<Screen> screen) {
+void Track:: AddScreen(ScreenType screenType, std::unique_ptr<Screen> screen) {
     screens_[screenType] = std::move(screen);
 }
 
-void Track:: set_active_screen(ScreenType screenType) {
+void Track:: SetActiveScreen(ScreenType screenType) {
     active_screen_ = screenType;
 }
 
-ScreenType Track:: get_active_screen() {
+ScreenType Track:: GetActiveScreen() {
     return active_screen_;
 }
 
-void Track:: handle_event(const Event& event) {
+void Track:: HandleEvent(const Event& event) {
     assert_screens(screens_, active_screen_, "handleEvent");
 
     if (event.type_ == box::EventType::KeyPress && event.value_ == GLFW_KEY_SPACE) {
         if (active_screen_ == ScreenType::GraphicsDemo1Stripe) {
-            set_active_screen(ScreenType::GraphicsDemo2Bomb);
+            SetActiveScreen(ScreenType::GraphicsDemo2Bomb);
         } else if (active_screen_ == ScreenType::GraphicsDemo2Bomb) {
-            set_active_screen(ScreenType::GraphicsDemo1Stripe);
+            SetActiveScreen(ScreenType::GraphicsDemo1Stripe);
         }
 
         return;
     }
 
-    screens_[active_screen_]->handle_event(event);
+    screens_[active_screen_]->HandleEvent(event);
 }
 
-void Track:: render(Interface& interface) {
+void Track:: Render(Interface& interface) {
     assert_screens(screens_, active_screen_, "render");
-    screens_[active_screen_]->render(interface);
+    screens_[active_screen_]->Render(interface);
 }
 
 } // namespace box

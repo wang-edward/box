@@ -24,26 +24,26 @@ int main() {
     box::Interface interface;
     std::unique_ptr<box::Track> track_manager = std::make_unique<box::Track>(*first_track);
 
-    track_manager->add_screen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
-    track_manager->add_screen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
-    track_manager->set_active_screen(box::ScreenType::GraphicsDemo1Stripe);
+    track_manager->AddScreen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
+    track_manager->AddScreen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
+    track_manager->SetActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
 
     box::Manager manager;
-    manager.add_track_manager(0, std::move(track_manager));
+    manager.AddTrackManager(0, std::move(track_manager));
 
     try {
-        while (!interface.should_close()) {
+        while (!interface.ShouldClose()) {
             // poll and handle events
             box::Event event;
-            while (interface.poll_event(event)) {
-                manager.handle_event(event);
+            while (interface.PollEvent(event)) {
+                manager.HandleEvent(event);
             }
 
             // render
-            manager.render(interface);
+            manager.Render(interface);
 
-            interface.swap_buffers();
-            interface.draw_to_screen();
+            interface.SwapBuffers();
+            interface.DrawToScreen();
         }
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

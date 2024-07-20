@@ -12,12 +12,12 @@ class Track {
 public:
     Track(te::AudioTrack &track);
 
-    void add_screen(ScreenType screenType, std::unique_ptr<Screen> screen);
-    void set_active_screen(ScreenType screenType);
-    ScreenType get_active_screen();
+    void AddScreen(ScreenType screenType, std::unique_ptr<Screen> screen);
+    void SetActiveScreen(ScreenType screenType);
+    ScreenType GetActiveScreen();
 
-    void handle_event(const Event& event);
-    void render(Interface& Interface);
+    void HandleEvent(const Event& event);
+    void Render(Interface& Interface);
 
 private:
     std::map<ScreenType, std::unique_ptr<Screen>> screens_;

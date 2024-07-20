@@ -18,14 +18,14 @@ public:
     
     ~Interface();
 
-    void draw_pixel(int x, int y, Color color);
+    void DrawPixel(int x, int y, Color color);
 
-    void swap_buffers();
+    void SwapBuffers();
 
-    void draw_to_screen() const;
+    void DrawToScreen() const;
 
-    bool poll_event(Event& event);
-    bool should_close() const;
+    bool PollEvent(Event& event);
+    bool ShouldClose() const;
 
 private:
     GLFWwindow* window_;
@@ -35,7 +35,7 @@ private:
 
     std::array<int, GLFW_KEY_LAST + 1> key_states_{};
 
-    static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    static void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
     }
 };

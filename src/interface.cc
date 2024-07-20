@@ -19,7 +19,7 @@ Interface:: Interface() {
 
     glfwMakeContextCurrent(window_);
     glfwInit();
-    glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
     // glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
 
     glGenTextures(1, &texture_);
@@ -41,15 +41,15 @@ Interface:: ~Interface() {
     }
 }
 
-void Interface::draw_pixel(int x, int y, Color color) {
+void Interface::DrawPixel(int x, int y, Color color) {
     if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
         inactive_buffer_[y * WIDTH + x] = color;
     }
 }
 
-void Interface::swap_buffers() { std::swap(active_buffer_, inactive_buffer_); }
+void Interface::SwapBuffers() { std::swap(active_buffer_, inactive_buffer_); }
 
-void Interface:: draw_to_screen() const {
+void Interface:: DrawToScreen() const {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, active_buffer_.data());
@@ -85,7 +85,7 @@ void Interface:: draw_to_screen() const {
     glfwSwapBuffers(window_);
 }
 
-bool Interface:: poll_event(Event& event) {
+bool Interface:: PollEvent(Event& event) {
     glfwPollEvents();
 
     for (int value = GLFW_KEY_SPACE; value <= GLFW_KEY_LAST; ++value) {
@@ -109,6 +109,6 @@ bool Interface:: poll_event(Event& event) {
     return false;
 }
 
-bool Interface::should_close() const { return glfwWindowShouldClose(window_); }
+bool Interface::ShouldClose() const { return glfwWindowShouldClose(window_); }
 
 } // namespace box
