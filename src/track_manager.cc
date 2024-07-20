@@ -32,10 +32,12 @@ void TrackManager:: HandleEvent(const Event& event) {
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
         auto message = juce::MidiMessage::noteOn (0, KEY_TO_MIDI.at(event.value), (float) 100);
         track_.injectLiveMidiMessage(message, 0);
+        return;
     } else if (event.type == EventType::KeyRelease &&
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
         auto message = juce::MidiMessage::noteOff(0, event.value);
         track_.injectLiveMidiMessage(message, 0);
+        return;
     }
     plugins_[active_plugin_]->HandleEvent(event);
 }
