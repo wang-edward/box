@@ -4,6 +4,7 @@ CheckOptions:
   - { key: readability-identifier-naming.ClassCase,           value: CamelCase  }
   - { key: readability-identifier-naming.MemberCase,          value: lower_case }
   - { key: readability-identifier-naming.MemberSuffix,        value: '_'        }
+  - { key: readability-identifier-naming.MethodCase,          value: CamelCase  }
   - { key: readability-identifier-naming.StructCase,          value: CamelCase  }
   - { key: readability-identifier-naming.StructMemberSuffix,  value: ''         }
   - { key: readability-identifier-naming.FunctionCase,        value: lower_case }
