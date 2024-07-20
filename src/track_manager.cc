@@ -13,8 +13,8 @@ static void assert_plugins(const std::vector<std::unique_ptr<PluginManager>> &pl
 TrackManager:: TrackManager(te::AudioTrack &track): track_{track} {}
 
 void TrackManager:: AddPlugin(std::unique_ptr<PluginManager> plugin) {
-    plugins_.push_back(std::move(plugin));
     track_.pluginList.insertPlugin(plugin->GetPlugin(), 0, nullptr);
+    plugins_.push_back(std::move(plugin));
 }
 
 void TrackManager:: SetActivePlugin(size_t index) {
