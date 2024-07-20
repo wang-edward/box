@@ -92,15 +92,15 @@ bool Interface:: PollEvent(Event& event) {
         int state = glfwGetKey(window_, value);
         if (state == GLFW_PRESS) {
             if (key_states_[value] == GLFW_RELEASE) {
-                event.type_ = EventType::KeyPress;
-                event.value_ = value;
+                event.type = EventType::KeyPress;
+                event.value = value;
                 key_states_[value] = state;
                 return true;
             }
         } else if (state == GLFW_RELEASE) {
             if (key_states_[value] == GLFW_PRESS) {
-                event.type_ = EventType::KeyRelease;
-                event.value_ = value;
+                event.type = EventType::KeyRelease;
+                event.value = value;
                 key_states_[value] = state;
                 return true;
             }

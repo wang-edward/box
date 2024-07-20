@@ -1,7 +1,8 @@
 #pragma once
-#include <cstdint>
-
 #include <tracktion_engine/tracktion_engine.h>
+#include <GLFW/glfw3.h>
+
+#include <cstdint>
 
 namespace te = tracktion;
 
@@ -31,14 +32,21 @@ enum class EventType {
     KeyRelease,
 };
 
-enum class PluginType {
-    GraphicsDemo1Stripe,
-    GraphicsDemo2Bomb,
+struct Event {
+    EventType type;
+    int value;
 };
 
-struct Event {
-    EventType type_;
-    int value_;
+const std::unordered_map<int, int> KEY_TO_MIDI = {
+    {GLFW_KEY_A, 60},  // C4
+    {GLFW_KEY_S, 62},  // D4
+    {GLFW_KEY_D, 64},  // E4
+    {GLFW_KEY_F, 65},  // F4
+    {GLFW_KEY_G, 67},  // G4
+    {GLFW_KEY_H, 69},  // A4
+    {GLFW_KEY_J, 71},  // B4
+    {GLFW_KEY_K, 72},  // C5
+    {GLFW_KEY_L, 74}   // D5
 };
 
 } // namespace box

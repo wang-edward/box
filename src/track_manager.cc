@@ -14,6 +14,7 @@ TrackManager:: TrackManager(te::AudioTrack &track): track_{track} {}
 
 void TrackManager:: AddPlugin(std::unique_ptr<PluginManager> plugin) {
     plugins_.push_back(std::move(plugin));
+    track_.pluginList.insertPlugin(plugin->GetPlugin(), 0, nullptr);
 }
 
 void TrackManager:: SetActivePlugin(size_t index) {
@@ -27,6 +28,15 @@ size_t TrackManager:: GetActivePlugin() {
 void TrackManager:: HandleEvent(const Event& event) {
     assert_plugins(plugins_, active_plugin_, "handleEvent");
 
+    if (event.type == EventType::KeyPress && 
+        KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
+        auto message = juce::MidiMessage::noteOn (0, KEY_TO_MIDI.at(event.value), (float) 100);
+        track_.injectLiveMidiMessage(message, 0);
+    } else if (event.type == EventType::KeyRelease &&
+        KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
+        auto message = juce::MidiMessage::noteOff(0, event.value);
+        track_.injectLiveMidiMessage(message, 0);
+    }
     plugins_[active_plugin_]->HandleEvent(event);
 }
 

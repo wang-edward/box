@@ -22,7 +22,7 @@ public:
 private:
     std::vector<std::unique_ptr<PluginManager>> plugins_;
     size_t active_plugin_;
-    const te::AudioTrack &track_;
+    te::AudioTrack &track_;
 };
 
 } // namespace box

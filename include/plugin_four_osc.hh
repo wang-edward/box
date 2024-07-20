@@ -11,7 +11,6 @@ public:
     void HandleEvent(const Event& event) override;
 
 private:
-    int x_;
 };
 
 } // namespace box
