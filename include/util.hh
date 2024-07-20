@@ -31,7 +31,7 @@ enum class EventType {
     KeyRelease,
 };
 
-enum class ScreenType {
+enum class PluginType {
     GraphicsDemo1Stripe,
     GraphicsDemo2Bomb,
 };
@@ -40,7 +40,5 @@ struct Event {
     EventType type_;
     int value_;
 };
-
-std::string to_string(ScreenType screenType);
 
 } // namespace box

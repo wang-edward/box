@@ -2,7 +2,7 @@
 
 namespace box {
 
-static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, size_t index, const std::string &name) {
+static void assert_tracks(const std::vector<std::unique_ptr<TrackManager>> &tracks, size_t index, const std::string &name) {
     if (!(index >= 0 && index < NUM_TRACKS)) {
         throw std::runtime_error{"Manager::" + name + "(): index [" + std::to_string(index) + 
             "] out of range: [0, " + std::to_string(NUM_TRACKS) + "]"};
@@ -13,14 +13,14 @@ Manager:: Manager() : current_track_{0} {
     tracks_.resize(NUM_TRACKS);
 }
 
-void Manager:: AddTrackManager(size_t index, std::unique_ptr<Track> Track) {
+void Manager:: AddTrackManager(size_t index, std::unique_ptr<TrackManager> track_manager) {
     assert_tracks(tracks_, index, "addTrack");
-    tracks_[index] = std::move(Track);
+    tracks_[index] = std::move(track_manager);
 }
 
-void Manager:: SetCurrentTrack(size_t trackIndex) {
-    if (trackIndex >= 0 && trackIndex < NUM_TRACKS) {
-        current_track_ = trackIndex;
+void Manager:: SetCurrentTrack(size_t track_index) {
+    if (track_index >= 0 && track_index < NUM_TRACKS) {
+        current_track_ = track_index;
     }
 }
 

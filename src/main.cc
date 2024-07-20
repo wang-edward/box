@@ -1,20 +1,13 @@
 #include "util.hh"
 #include "interface.hh"
-#include "track.hh"
+#include "track_manager.hh"
 #include "manager.hh"
-#include "screen_demo_1stripe.hh"
-#include "screen_demo_2bomb.hh"
-#include "screen_four_osc.hh"
+#include "plugin_four_osc.hh"
 
 #include <random>
 #include <iostream>
 
-static void print(std::string s) {
-    std::cout << s << std::endl;
-}
-
 int main() {
-
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
 
@@ -22,11 +15,11 @@ int main() {
     auto first_track = te::getAudioTracks(edit)[0];
 
     box::Interface interface;
-    std::unique_ptr<box::Track> track_manager = std::make_unique<box::Track>(*first_track);
+    std::unique_ptr<box::TrackManager> track_manager = std::make_unique<box::TrackManager>(*first_track);
 
-    track_manager->AddScreen(box::ScreenType::GraphicsDemo1Stripe, std::make_unique<box::GraphicsDemo1Stripe>());
-    track_manager->AddScreen(box::ScreenType::GraphicsDemo2Bomb, std::make_unique<box::GraphicsDemo2Bomb>());
-    track_manager->SetActiveScreen(box::ScreenType::GraphicsDemo1Stripe);
+    te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
+    track_manager->AddPlugin(std::make_unique<box::FourOscManager>(four_osc));
+    track_manager->SetActivePlugin(0);
 
     box::Manager manager;
     manager.AddTrackManager(0, std::move(track_manager));
