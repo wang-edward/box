@@ -1,8 +1,6 @@
 #pragma once
-#include "util.hh"
 #include <array>
-#include <GLFW/glfw3.h>
-#include <queue>
+#include "core/util.hh"
 
 namespace box {
 

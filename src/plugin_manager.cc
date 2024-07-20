@@ -1,4 +1,4 @@
-#include "plugin_manager.hh"
+#include "core/plugin_manager.hh"
 
 namespace box {
 

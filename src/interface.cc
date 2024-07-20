@@ -1,4 +1,4 @@
-#include "interface.hh"
+#include "core/interface.hh"
 #include <iostream>
 
 namespace box {

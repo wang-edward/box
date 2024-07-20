@@ -1,6 +1,5 @@
-#include "track_manager.hh"
-
-#include "util.hh"
+#include "core/track_manager.hh"
+#include "core/util.hh"
 
 namespace box {
 

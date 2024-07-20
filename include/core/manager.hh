@@ -1,6 +1,6 @@
 #pragma once
-#include "util.hh"
-#include "track_manager.hh"
+#include "core/util.hh"
+#include "core/track_manager.hh"
 
 namespace box {
 

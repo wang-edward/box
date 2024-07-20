@@ -1,11 +1,11 @@
-#include "util.hh"
-#include "interface.hh"
-#include "track_manager.hh"
-#include "manager.hh"
-#include "plugin_four_osc.hh"
-
 #include <random>
 #include <iostream>
+
+#include "core/util.hh"
+#include "core/interface.hh"
+#include "core/track_manager.hh"
+#include "core/manager.hh"
+#include "plugin/four_osc.hh"
 
 int main() {
     te::Engine engine{"Tracktion Hello World"};

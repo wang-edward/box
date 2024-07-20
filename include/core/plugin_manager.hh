@@ -1,6 +1,6 @@
 #pragma once
-#include "util.hh"
-#include "interface.hh"
+#include "core/util.hh"
+#include "core/interface.hh"
 
 namespace box {
 

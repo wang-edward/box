@@ -1,4 +1,4 @@
-#include "plugin_four_osc.hh"
+#include "plugin/four_osc.hh"
 
 namespace box {
 

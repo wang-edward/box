@@ -1,8 +1,9 @@
 #pragma once
-#include <tracktion_engine/tracktion_engine.h>
-#include <GLFW/glfw3.h>
 
 #include <cstdint>
+
+#include <tracktion_engine/tracktion_engine.h>
+#include <GLFW/glfw3.h>
 
 namespace te = tracktion;
 
