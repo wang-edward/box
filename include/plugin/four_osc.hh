@@ -1,6 +1,7 @@
 #pragma once
 #include "core/interface.hh"
 #include "core/plugin_manager.hh"
+#include "component/knob.hh"
 
 namespace box {
 
@@ -11,6 +12,7 @@ public:
     void HandleEvent(const Event& event) override;
 
 private:
+    Knob<float> knob;
 };
 
 } // namespace box

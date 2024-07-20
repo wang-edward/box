@@ -1,4 +1,6 @@
 #pragma once
+
+#include <limits>
 #include "core/util.hh"
 #include "core/interface.hh"
 
@@ -7,10 +9,11 @@ namespace box {
 template <typename T>
 class Component {
 public:
-    Component(juce::CachedValue<T> &value, T min, T max, std::string name):
+    Component(juce::CachedValue<T> &value, T min = std::numeric_limits<T>::min(), 
+              T max = std::numeric_limits<T>::max(), std::string name = ""):
         value_{value}, min_{min}, max_{max}, name_{name} {
         // TODO check if this is good
-        value_.setDefault(min_); 
+        value_.setDefault(0); 
     }
     void SetValue(T new_value) {
         if (min_ <= new_value && new_value <= max_) {

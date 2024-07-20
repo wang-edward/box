@@ -9,7 +9,17 @@ namespace te = tracktion;
 
 namespace box {
 
+
 constexpr int NUM_TRACKS = 8;
+
+// Template logging function
+template<typename T>
+void log_var(const std::string& varName, const T& varValue) {
+    std::cout << varName << ": " << varValue << std::endl;
+}
+
+// Macro to simplify logging
+#define LOG_VAR(var) log_var(#var, var)
 
 struct Color {
     uint8_t r_, g_, b_;
@@ -49,5 +59,6 @@ const std::unordered_map<int, int> KEY_TO_MIDI = {
     {GLFW_KEY_K, 72},  // C5
     {GLFW_KEY_L, 74}   // D5
 };
+
 
 } // namespace box
