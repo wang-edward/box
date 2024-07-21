@@ -4,7 +4,7 @@
 namespace box {
 
 template <typename T>
-class Knob : Component<T> {
+class Knob : public Component<T> {
 public:
 
     // TODO add min, max, name

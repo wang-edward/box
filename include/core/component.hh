@@ -9,18 +9,24 @@ namespace box {
 template <typename T>
 class Component {
 public:
-    Component(juce::CachedValue<T> &value, T min = std::numeric_limits<T>::min(), 
-              T max = std::numeric_limits<T>::max(), std::string name = ""):
-        value_{value}, min_{min}, max_{max}, name_{name} {
-        // TODO check if this is good
-        value_.setDefault(0); 
-    }
+    Component(juce::CachedValue<T> &value, te::AutomatableParameter::Ptr ap, std::string name = ""):
+        value_{value}, ap_{ap}, name_{name} {}
     void SetValue(T new_value) {
-        if (min_ <= new_value && new_value <= max_) {
-            value_ = new_value;
-        } else {
-            throw std::runtime_error {"Component::SetValue(" + std::to_string(new_value) + ") out of range: [" + min_ + ", " + max_ + "]"};
+        value_ = new_value; // TODO some check for range clip
+        if (ap_) {
+            ap_->setParameter(new_value, juce::sendNotification);
         }
+    }
+    void SetNorm(float new_value) {
+        if (!std::is_same_v<T, float>) {
+            throw std::runtime_error{"Component::SetNorm() called on non-float"};
+        }
+        if (ap_) {
+            ap_->setParameter(new_value, juce::sendNotification);
+        } else {
+            throw std::runtime_error{"Component::SetNorm() called on [" + name_ + "] without AutomatableParameter"};
+        }
+        
     }
     T GetValue() const {
         return value_;
@@ -29,8 +35,7 @@ public:
     virtual void HandleEvent(const Event& event) = 0;
 private:
     juce::CachedValue<T>& value_;
-    T min_;
-    T max_;
+    te::AutomatableParameter::Ptr ap_;
     std::string name_;
 };
 
