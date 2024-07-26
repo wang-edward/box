@@ -1,3 +1,4 @@
+#include "GLFW/glfw3.h"
 #include "plugin/four_osc.hh"
 
 namespace box {
@@ -21,10 +22,14 @@ void FourOscManager:: HandleEvent(const Event &event) {
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
+                case GLFW_KEY_DOWN:
+                    LOG_VAR(knob_.param_.GetNorm());
+                    knob_.param_.SetNorm(knob_.param_.GetNorm() - 0.125);
+                    break;
                 case GLFW_KEY_UP:
-                    log_msg(LogLevel::Off, std::to_string(knob_.param_.GetNorm()));
-                    knob_.param_.SetNorm(knob_.param_.GetNorm() * 0.5);
-                break;
+                    LOG_VAR(knob_.param_.GetNorm());
+                    knob_.param_.SetNorm(knob_.param_.GetNorm() + 0.125);
+                    break;
             }
             break;
         case EventType::KeyRelease:

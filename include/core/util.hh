@@ -28,7 +28,7 @@ void log_msg(LogLevel l, const std::string& msg);
 
 template<typename T>
 void log_var(const std::string &var_name, const T &var_value) {
-    log_msg(LogLevel::Debug, var_name + ": " + var_value);
+    log_msg(LogLevel::Debug, var_name + ": " + std::to_string(var_value));
 }
 #define LOG_VAR(var) log_var(#var, var)
 
