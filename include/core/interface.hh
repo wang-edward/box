@@ -8,19 +8,17 @@ class Interface {
 public:
     static const int WIDTH = 128;
     static const int HEIGHT = 128;
-
     constexpr static DeviceType DISPLAY_TYPE = DeviceType::Emulator;
     constexpr static DeviceType INPUT_TYPE = DeviceType::Emulator;
 
     Interface();
-    
     ~Interface();
-
-    void DrawPixel(int x, int y, Color color);
 
     void SwapBuffers();
 
     void DrawToScreen() const;
+    void DrawPixel(int x, int y, Color color);
+    void Clear();
 
     bool PollEvent(Event& event);
     bool ShouldClose() const;

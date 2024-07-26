@@ -34,7 +34,7 @@ int main() {
             while (interface.PollEvent(event)) {
                 manager.HandleEvent(event);
             }
-
+            interface.Clear();
             // render
             manager.Render(interface);
 

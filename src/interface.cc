@@ -41,12 +41,6 @@ Interface:: ~Interface() {
     }
 }
 
-void Interface::DrawPixel(int x, int y, Color color) {
-    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
-        inactive_buffer_[y * WIDTH + x] = color;
-    }
-}
-
 void Interface::SwapBuffers() { std::swap(active_buffer_, inactive_buffer_); }
 
 void Interface:: DrawToScreen() const {
@@ -83,6 +77,16 @@ void Interface:: DrawToScreen() const {
     glEnd();
 
     glfwSwapBuffers(window_);
+}
+
+void Interface::DrawPixel(int x, int y, Color color) {
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+        inactive_buffer_[y * WIDTH + x] = color;
+    }
+}
+
+void Interface::Clear() {
+    inactive_buffer_.fill(Color{0, 0, 0});
 }
 
 bool Interface:: PollEvent(Event& event) {
