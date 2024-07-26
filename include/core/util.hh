@@ -24,6 +24,7 @@ LogLevel get_loglevel();
 const LogLevel LOGLEVEL = get_loglevel();
 
 void log_msg(LogLevel l, const std::string& msg);
+#define LOG_MSG(l, msg) log_msg(l, msg)
 
 template<typename T>
 void log_var(const std::string &var_name, const T &var_value) {
