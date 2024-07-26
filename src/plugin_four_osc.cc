@@ -3,8 +3,9 @@
 namespace box {
 
 FourOscManager:: FourOscManager(te::Plugin *p): 
-    PluginManager(p), knob{64, 64, static_cast<te::FourOscPlugin *>(p)->masterLevelValue} {
-}
+    PluginManager(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
+    knob_{64, 64, base_plugin_->masterLevelValue, base_plugin_->masterLevel} {
+    }
 
 void FourOscManager:: Render(Interface &interface) {
     for (int y = 0; y < Interface::HEIGHT; ++y) {
@@ -12,7 +13,7 @@ void FourOscManager:: Render(Interface &interface) {
             // interface.DrawPixel(x, y, {255, 0, 0});
         }
     }
-    knob.Render(interface);
+    knob_.Render(interface);
 }
 
 void FourOscManager:: HandleEvent(const Event &event) {
@@ -21,8 +22,8 @@ void FourOscManager:: HandleEvent(const Event &event) {
         case EventType::KeyPress:
             switch(event.value) {
                 case GLFW_KEY_UP:
-                    log_msg(LogLevel::Off, std::to_string(knob.GetValue()));
-                    knob.SetValue(knob.GetValue() * 0.5);
+                    log_msg(LogLevel::Off, std::to_string(knob_.param_.GetNorm()));
+                    knob_.param_.SetNorm(knob_.param_.GetNorm() * 0.5);
                 break;
             }
             break;

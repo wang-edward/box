@@ -12,7 +12,9 @@ public:
     void HandleEvent(const Event& event) override;
 
 private:
-    Knob<float> knob;
+    te::FourOscPlugin *base_plugin_;
+    Knob<float> knob_;
 };
+
 
 } // namespace box
