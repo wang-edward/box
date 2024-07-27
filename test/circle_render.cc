@@ -1,108 +1,273 @@
-// circle_render.cc
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <OpenGL/gl.h>
 #include <cmath>
+#include <iostream>
 
-// Define the size of the array
-const int WIDTH = 128;
-const int HEIGHT = 128;
+// Function to check for shader compilation errors
+void checkCompileErrors(GLuint shader, std::string type) {
+    GLint success;
+    GLchar infoLog[1024];
+    if (type != "PROGRAM") {
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success) {
+            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "| ERROR::SHADER-COMPILATION-ERROR of type: " << type << "\n"
+                      << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+        }
+    } else {
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        if (!success) {
+            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "| ERROR::PROGRAM-LINKING-ERROR of type: " << type << "\n"
+                      << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+        }
+    }
+}
 
-GLFWwindow* initOpenGL() {
+// Vertex Shader source code
+const char* vertexShaderSource = R"(
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+
+out vec2 TexCoord;
+
+void main() {
+    gl_Position = vec4(position, 1.0);
+    TexCoord = texCoord;
+}
+)";
+
+// Fragment Shader source code
+const char* fragmentShaderSource = R"(
+#version 330 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+uniform sampler2D screenTexture;
+
+void main() {
+    FragColor = texture(screenTexture, TexCoord);
+}
+)";
+
+// Fragment Shader for rendering a red circle
+const char* circleFragmentShaderSource = R"(
+#version 330 core
+out vec4 FragColor;
+
+void main() {
+    FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
+}
+)";
+
+GLFWwindow *initializeOpenGL() {
+    // Initialize GLFW
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW\n";
-        return nullptr;
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Create an invisible window
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Offscreen", nullptr, nullptr);
+    // Request an OpenGL 3.3 context
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Create a windowed mode window and its OpenGL context
+    GLFWwindow* window = glfwCreateWindow(800, 800, "OpenGL Window", NULL, NULL);
     if (!window) {
-        std::cerr << "Failed to create GLFW window\n";
+        std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return nullptr;
+        exit(EXIT_FAILURE);
     }
 
+    // Make the window's context current
     glfwMakeContextCurrent(window);
+
+    // Initialize GLEW
+    glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW\n";
-        return nullptr;
+        std::cerr << "Failed to initialize GLEW" << std::endl;
+        exit(EXIT_FAILURE);
     }
 
+    // Set up viewport
+    glViewport(0, 0, 800, 800);
+
+    // Disable antialiasing
+    glDisable(GL_MULTISAMPLE);
     return window;
 }
 
-GLuint createFramebuffer(GLuint texture) {
-    GLuint framebuffer;
-    glGenFramebuffers(1, &framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "Framebuffer is not complete!\n";
-        return 0;
-    }
-
-    return framebuffer;
-}
-
-void renderCircle(int width, int height) {
-    glViewport(0, 0, width, height);
+void renderScene(GLuint circleVAO, GLuint circleShaderProgram, float percentage) {
+    // Render your scene here
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, width, 0, height);
+    // Render red circle
+    glUseProgram(circleShaderProgram);
+    glBindVertexArray(circleVAO);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    // Calculate end angle based on percentage
+    float endAngle = 2.0f * M_PI * percentage;
+    const int numSegments = 360;
+    const float radius = 0.5f;
+    float circleVertices[(numSegments + 2) * 3]; // +2 for center and closing point
 
-    glBegin(GL_TRIANGLE_FAN);
-    glColor3f(1.0f, 0.0f, 0.0f); // Red color
-    glVertex2f(width / 2, height / 2); // Center of circle
-    for (int angle = 0; angle <= 360; angle += 1) {
-        float rad = angle * 3.14159f / 180.0f;
-        glVertex2f(width / 2 + cos(rad) * width / 4, height / 2 + sin(rad) * height / 4);
+    // Center vertex
+    circleVertices[0] = 0.0f;
+    circleVertices[1] = 0.0f;
+    circleVertices[2] = 0.0f;
+
+    // Generate vertices based on percentage
+    int vertexCount = 1;
+    for (int i = 0; i <= numSegments; ++i) {
+        float angle = 2.0f * M_PI * (float)i / (float)numSegments;
+        if (angle > endAngle) {
+            break;
+        }
+        circleVertices[vertexCount * 3] = radius * cosf(angle);
+        circleVertices[vertexCount * 3 + 1] = radius * sinf(angle);
+        circleVertices[vertexCount * 3 + 2] = 0.0f;
+        vertexCount++;
     }
-    glEnd();
-}
+    // Add the last point to close the filled part
+    circleVertices[vertexCount * 3] = 0.0f;
+    circleVertices[vertexCount * 3 + 1] = 0.0f;
+    circleVertices[vertexCount * 3 + 2] = 0.0f;
+    vertexCount++;
 
-void readPixelsToArray(int width, int height, unsigned char* buffer) {
-    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+    GLuint VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(circleVertices), circleVertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount); // Draw filled circle segment
+    glDeleteBuffers(1, &VBO);
+
+    glBindVertexArray(0);
 }
 
 int main() {
-    GLFWwindow* window = initOpenGL();
-    if (!window) return -1;
+    auto window = initializeOpenGL();
 
-    // Create a texture to render to
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Shader compilation
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    checkCompileErrors(vertexShader, "VERTEX");
 
-    GLuint framebuffer = createFramebuffer(texture);
-    if (!framebuffer) return -1;
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    checkCompileErrors(fragmentShader, "FRAGMENT");
 
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    checkCompileErrors(shaderProgram, "PROGRAM");
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Circle shader compilation
+    GLuint circleFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(circleFragmentShader, 1, &circleFragmentShaderSource, NULL);
+    glCompileShader(circleFragmentShader);
+    checkCompileErrors(circleFragmentShader, "FRAGMENT");
+
+    GLuint circleShaderProgram = glCreateProgram();
+    glAttachShader(circleShaderProgram, vertexShader); // Reuse vertex shader
+    glAttachShader(circleShaderProgram, circleFragmentShader);
+    glLinkProgram(circleShaderProgram);
+    checkCompileErrors(circleShaderProgram, "PROGRAM");
+
+    glDeleteShader(circleFragmentShader);
+
+    // Setup FBO
+    GLuint framebuffer;
+    glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    renderCircle(WIDTH, HEIGHT);
+    // Create a texture to render to
+    GLuint textureColorbuffer;
+    glGenTextures(1, &textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 128, 128, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
 
-    unsigned char buffer[WIDTH * HEIGHT * 3]; // Array to store the pixel data
-    readPixelsToArray(WIDTH, HEIGHT, buffer);
+    // Check if framebuffer is complete
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // The buffer now contains the pixel data in RGB format
-    // Print the RGB values of the center pixel as a test
-    int centerIndex = (WIDTH / 2 + HEIGHT / 2 * WIDTH) * 3;
-    std::cout << "Center pixel RGB: ("
-              << static_cast<int>(buffer[centerIndex]) << ", "
-              << static_cast<int>(buffer[centerIndex + 1]) << ", "
-              << static_cast<int>(buffer[centerIndex + 2]) << ")\n";
+    // Quad vertices
+    float quadVertices[] = {
+        // positions        // texture Coords
+        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
 
+        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+         1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+         1.0f,   1.0f, 0.0f,  1.0f, 1.0f
+    };
+
+    // Setup quad VAO
+    GLuint quadVAO, quadVBO;
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    // Setup circle VAO
+    GLuint circleVAO;
+    glGenVertexArrays(1, &circleVAO);
+    glBindVertexArray(circleVAO);
+    glBindVertexArray(0);
+
+    // Main loop
+    while (!glfwWindowShouldClose(window)) {
+        // Render to framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        glViewport(0, 0, 128, 128); // Render to the size of the texture
+        renderScene(circleVAO, circleShaderProgram, 0.75f); // Example percentage
+
+        // Render to screen
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, 800, 800);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Draw the quad with the texture
+        glUseProgram(shaderProgram);
+        glBindVertexArray(quadVAO);
+        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // Swap buffers
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // Cleanup
+    glDeleteVertexArrays(1, &quadVAO);
+    glDeleteBuffers(1, &quadVBO);
+    glDeleteVertexArrays(1, &circleVAO);
     glDeleteFramebuffers(1, &framebuffer);
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &textureColorbuffer);
+
     glfwDestroyWindow(window);
     glfwTerminate();
 
