@@ -243,6 +243,14 @@ int main() {
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
         glViewport(0, 0, 128, 128); // Render to the size of the texture
         renderScene(circleVAO, circleShaderProgram, 0.75f); // Example percentage
+        {
+            // Allocate memory to store the pixel data
+            GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
+
+            // Read the pixels from the framebuffer
+            glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+            std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+        }
 
         // Render to screen
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

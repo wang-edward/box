@@ -6,7 +6,10 @@
 #include <string>
 
 #include <tracktion_engine/tracktion_engine.h>
+
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <OpenGL/gl.h>
 
 namespace te = tracktion;
 

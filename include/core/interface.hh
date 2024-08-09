@@ -14,10 +14,6 @@ public:
     Interface();
     ~Interface();
 
-    void SwapBuffers();
-
-    void DrawToScreen() const;
-    void DrawPixel(int x, int y, Color color);
     void Clear();
 
     bool PollEvent(Event& event);
@@ -26,8 +22,7 @@ public:
 private:
     GLFWwindow* window_;
     GLuint texture_;
-    std::array<Color, WIDTH * HEIGHT> active_buffer_;
-    std::array<Color, WIDTH * HEIGHT> inactive_buffer_;
+    GLuint framebuffer_;
 
     std::array<size_t, GLFW_KEY_LAST + 1> key_states_{};
 

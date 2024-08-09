@@ -4,9 +4,6 @@
 namespace box {
 
 Interface:: Interface() {
-    active_buffer_.fill(Color{0, 0, 0});
-    inactive_buffer_.fill(Color{0, 0, 0});
-
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
     }
@@ -22,11 +19,22 @@ Interface:: Interface() {
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
     // glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
 
+
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    glViewport(0, 0, 128, 128); // Render to the size of the texture
+
     glGenTextures(1, &texture_);
     glBindTexture(GL_TEXTURE_2D, texture_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
+
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
@@ -41,7 +49,20 @@ Interface:: ~Interface() {
     }
 }
 
-void Interface::SwapBuffers() { std::swap(active_buffer_, inactive_buffer_); }
+void Interface::Render() {
+    // Render to framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glViewport(0, 0, 128, 128); // Render to the size of the texture
+    renderScene(circleVAO, circleShaderProgram, 0.75f); // Example percentage
+    {
+        // Allocate memory to store the pixel data
+        GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
+
+        // Read the pixels from the framebuffer
+        glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+        std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+    }
+}
 
 void Interface:: DrawToScreen() const {
     glClear(GL_COLOR_BUFFER_BIT);

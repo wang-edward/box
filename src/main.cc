@@ -25,7 +25,6 @@ int main() {
     manager.AddTrackManager(0, std::move(track_manager));
 
     try {
-
         auto &transport = edit.getTransport();
         transport.play(false);
         while (!interface.ShouldClose()) {
