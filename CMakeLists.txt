@@ -29,7 +29,7 @@ include_directories(include)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 
 # Collect all .cc files from src directory
-file(GLOB SRC_FILES src/*.cc)
+file(GLOB_RECURSE SRC_FILES src/*.cc)
 
 juce_add_console_app(Box
     PRODUCT_NAME "Box test")
