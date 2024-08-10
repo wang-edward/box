@@ -37,7 +37,7 @@ public:
 
         // Generate vertices based on percentage
         int vertex_count = 1;
-        for (int i = 0; i <= num_segments; ++i) {
+        for (int i = 0; i < num_segments; ++i) {
             float angle = 2.0f * M_PI * (float)i / (float)num_segments;
             if (angle > end_angle) {
                 break;
@@ -53,16 +53,13 @@ public:
         circle_vertices[vertex_count * 3 + 2] = 0.0f;
         vertex_count++;
 
-        VertexArray vao;
         VertexBuffer vbo{circle_vertices, sizeof(circle_vertices)};
         VertexBufferLayout layout;
-        vao.Bind();
         layout.Push<float>(3);
-        vao.AddBuffer(vbo, layout);
+        circle_vao_.AddBuffer(vbo, layout);
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count); // Draw filled circle segment
 
-        vao.Unbind();
         glBindVertexArray(0);
     }
     virtual void HandleEvent(const Event& event) {

@@ -27,7 +27,9 @@ private:
     GLFWwindow* window_;
     GLuint texture_;
     GLuint framebuffer_;
-    Shader texture_shader_;
+
+    // need optional for this because glfw has to be initted first
+    std::optional<Shader> texture_shader_; 
 
     std::array<size_t, GLFW_KEY_LAST + 1> key_states_{};
 };

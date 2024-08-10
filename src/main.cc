@@ -9,24 +9,6 @@
 
 int main() {
 
-    // need this
-    if (!glfwInit()) {
-        throw std::runtime_error("Failed to initialize GLFW");
-    }
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", nullptr, nullptr);
-    if (!window) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to create GLFW window");
-    }
-
-    glfwMakeContextCurrent(window);
-
-    if (glewInit() != GLEW_OK) {
-        throw std::runtime_error("Failed to initialize GLEW");
-    }
-
-    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-
     // ---------------------
 
     te::Engine engine{"Tracktion Hello World"};

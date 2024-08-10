@@ -3,9 +3,17 @@
 
 namespace box {
 
-Interface:: Interface(): 
-    texture_shader_{"shader/texture.vert", "shader/texture.frag"}
-{
+Interface:: Interface() {
+    if (!glfwInit()) {
+        throw std::runtime_error("Failed to initialize GLFW");
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // ------------------------
+
     window_ = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
     if (!window_) {
         glfwTerminate();
@@ -14,6 +22,10 @@ Interface:: Interface():
 
     glfwMakeContextCurrent(window_);
 
+    if (glewInit() != GLEW_OK) {
+        throw std::runtime_error("Failed to initialize GLEW");
+    }
+
     // texture
     glGenTextures(1, &texture_);
     glBindTexture(GL_TEXTURE_2D, texture_);
@@ -21,6 +33,8 @@ Interface:: Interface():
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
+
+    texture_shader_ = {"shader/texture.vert", "shader/texture.frag"};
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
@@ -51,11 +65,9 @@ void Interface:: Display() const {
 
         // reset stuff
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
         // setup texture
-        texture_shader_.Bind();
+        texture_shader_->Bind();
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texture_);
 
