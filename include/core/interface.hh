@@ -14,7 +14,7 @@ public:
     constexpr static DeviceType DISPLAY_TYPE = DeviceType::Emulator;
     constexpr static DeviceType INPUT_TYPE = DeviceType::Emulator;
 
-    Interface();
+    Interface(GLFWwindow *window);
     ~Interface();
 
     void PrepRender();
@@ -29,7 +29,7 @@ private:
     GLuint framebuffer_;
 
     // need optional for this because glfw has to be initted first
-    std::optional<Shader> texture_shader_; 
+    Shader texture_shader_; 
     VertexArray vao_;
     VertexBuffer vbo_;
     VertexBufferLayout layout_;

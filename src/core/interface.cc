@@ -3,30 +3,10 @@
 
 namespace box {
 
-Interface:: Interface():
-    
+Interface:: Interface(GLFWwindow *window):
+    window_{window},
+    texture_shader_{"shader/texture.vert", "shader/texture.frag"}
 {
-    if (!glfwInit()) {
-        throw std::runtime_error("Failed to initialize GLFW");
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // ------------------------
-
-    window_ = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
-    if (!window_) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to create GLFW window");
-    }
-
-    glfwMakeContextCurrent(window_);
-
-    if (glewInit() != GLEW_OK) {
-        throw std::runtime_error("Failed to initialize GLEW");
-    }
 
     // texture
     glGenTextures(1, &texture_);
@@ -36,7 +16,6 @@ Interface:: Interface():
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
 
-    texture_shader_ = {"shader/texture.vert", "shader/texture.frag"};
     
     // Setup VAO, VBO, and layout
     vao_.Bind();
@@ -68,8 +47,8 @@ void Interface:: PrepRender() {
         std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     }
     glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
     
     // do the rest of the rendering
 }
@@ -77,59 +56,24 @@ void Interface:: PrepRender() {
 void Interface:: Display() const {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
 
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
         // adjust for emu window
         int window_width, window_height;
         glfwGetFramebufferSize(window_, &window_width, &window_height);
         glViewport(0, 0, window_width, window_height);
 
         // reset stuff
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // setup texture
-        texture_shader_->Bind();
+        texture_shader_.Bind();
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texture_);
 
-        float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
-        float scaled_width = WIDTH * scale;
-        float scaled_height = HEIGHT * scale;
-        float x_offset = (window_width - scaled_width) / 2;
-        float y_offset = (window_height - scaled_height) / 2;
-
-        LOG_VAR(scale);
-        LOG_VAR(scaled_width);
-        LOG_VAR(scaled_height);
-        LOG_VAR(x_offset);
-        LOG_VAR(y_offset);
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window_width, 0, window_height, -1, 1); // Invert Y-axis direction
-        // glOrtho(0, window_width, window_height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, 0.0f);
-        glTexCoord2f(1.0f, 0.0f); glVertex2f(128.0f, 0.0f);
-        glTexCoord2f(1.0f, 1.0f); glVertex2f(128.0f, 128.0f);
-        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 128.0f);
-        glEnd();
-
-        // original
-        // glBegin(GL_QUADS);
-        // glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
-        // glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
-        // glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
-        // glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
-        // glEnd();
-
-        // glBegin(GL_QUADS);
-        // glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset + scaled_height); // top-left
-        // glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height); // top-right
-        // glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset); // bottom-right
-        // glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset); // bottom-left
-        // glEnd();
+        // Draw quad
+        vao_.Bind();
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        vao_.Unbind();
 
         glfwSwapBuffers(window_);
     // hardware rendering

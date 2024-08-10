@@ -9,6 +9,27 @@
 
 int main() {
 
+    if (!glfwInit()) {
+        throw std::runtime_error("Failed to initialize GLFW");
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // ------------------------
+
+    GLFWwindow *window = glfwCreateWindow(box::Interface::WIDTH * 4, box::Interface::HEIGHT * 4, "128x128 Display", nullptr, nullptr);
+    if (!window) {
+        glfwTerminate();
+        throw std::runtime_error("Failed to create GLFW window");
+    }
+
+    glfwMakeContextCurrent(window);
+
+    if (glewInit() != GLEW_OK) {
+        throw std::runtime_error("Failed to initialize GLEW");
+    }
     // ---------------------
 
     te::Engine engine{"Tracktion Hello World"};
@@ -17,7 +38,7 @@ int main() {
     edit.ensureNumberOfAudioTracks(1);
     auto first_track = te::getAudioTracks(edit)[0];
 
-    box::Interface interface;
+    box::Interface interface{window};
     std::unique_ptr<box::TrackManager> track_manager = std::make_unique<box::TrackManager>(*first_track);
 
     te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
