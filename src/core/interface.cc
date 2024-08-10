@@ -3,7 +3,9 @@
 
 namespace box {
 
-Interface:: Interface() {
+Interface:: Interface():
+    
+{
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
     }
@@ -35,6 +37,15 @@ Interface:: Interface() {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
 
     texture_shader_ = {"shader/texture.vert", "shader/texture.frag"};
+    
+    // Setup VAO, VBO, and layout
+    vao_.Bind();
+    vbo_.Bind();
+    vbo_.SetData(QUAD_VERTICES, sizeof(QUAD_VERTICES));
+
+    layout_.Push<float>(3); // position
+    layout_.Push<float>(2); // texture coordinates
+    vao_.AddBuffer(vbo_, layout_);
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
@@ -44,6 +55,7 @@ Interface:: Interface() {
 Interface:: ~Interface() {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
         glDeleteTextures(1, &texture_);
+        glDeleteFramebuffers(1, &framebuffer_);
         glfwDestroyWindow(window_);
         glfwTerminate();
     }
@@ -55,13 +67,20 @@ void Interface:: PrepRender() {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     }
-    glViewport(0, 0, 128, 128); // Render to the size of the texture
+    glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     
     // do the rest of the rendering
 }
 
 void Interface:: Display() const {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
+
+        // adjust for emu window
+        int window_width, window_height;
+        glfwGetFramebufferSize(window_, &window_width, &window_height);
+        glViewport(0, 0, window_width, window_height);
 
         // reset stuff
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -71,29 +90,46 @@ void Interface:: Display() const {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texture_);
 
-        // adjust for emu window
-        int window_width, window_height;
-        glfwGetFramebufferSize(window_, &window_width, &window_height);
-        glViewport(0, 0, window_width, window_height);
-
         float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
         float scaled_width = WIDTH * scale;
         float scaled_height = HEIGHT * scale;
         float x_offset = (window_width - scaled_width) / 2;
         float y_offset = (window_height - scaled_height) / 2;
 
+        LOG_VAR(scale);
+        LOG_VAR(scaled_width);
+        LOG_VAR(scaled_height);
+        LOG_VAR(x_offset);
+        LOG_VAR(y_offset);
+
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, window_width, window_height, 0, -1, 1);
+        glOrtho(0, window_width, 0, window_height, -1, 1); // Invert Y-axis direction
+        // glOrtho(0, window_width, window_height, 0, -1, 1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
         glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
-        glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
-        glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
-        glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, 0.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex2f(128.0f, 0.0f);
+        glTexCoord2f(1.0f, 1.0f); glVertex2f(128.0f, 128.0f);
+        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 128.0f);
         glEnd();
+
+        // original
+        // glBegin(GL_QUADS);
+        // glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
+        // glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
+        // glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
+        // glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
+        // glEnd();
+
+        // glBegin(GL_QUADS);
+        // glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset + scaled_height); // top-left
+        // glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height); // top-right
+        // glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset); // bottom-right
+        // glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset); // bottom-left
+        // glEnd();
 
         glfwSwapBuffers(window_);
     // hardware rendering

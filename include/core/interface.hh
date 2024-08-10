@@ -30,8 +30,22 @@ private:
 
     // need optional for this because glfw has to be initted first
     std::optional<Shader> texture_shader_; 
+    VertexArray vao_;
+    VertexBuffer vbo_;
+    VertexBufferLayout layout_;
 
     std::array<size_t, GLFW_KEY_LAST + 1> key_states_{};
+
+    static constexpr float QUAD_VERTICES[6 * 5] = {
+        // positions        // texture Coords
+        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+         1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+         1.0f,   1.0f, 0.0f,  1.0f, 1.0f
+    };
 };
 
 } // namespace box

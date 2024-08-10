@@ -15,10 +15,8 @@ public:
         shader_{"shader/texture.vert", "shader/red.frag"} {}
 
     virtual void Render(Interface &interface) {
-        float percentage = param_.GetNorm();
-        // Render your scene here
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // float percentage = param_.GetNorm();
+        float percentage = 0.75;
 
         // Render red circle
         shader_.Bind();
@@ -59,8 +57,6 @@ public:
         circle_vao_.AddBuffer(vbo, layout);
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count); // Draw filled circle segment
-
-        glBindVertexArray(0);
     }
     virtual void HandleEvent(const Event& event) {
 
