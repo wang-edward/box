@@ -1,4 +1,6 @@
+#pragma once
 #include "core/util.hh"
+#include "vertex_buffer.hh"
 
 class VertexArray {
 public:
@@ -7,17 +9,17 @@ public:
         glBindVertexArray(arrayID);
     }
 
-    void bind() const {
+    void Bind() const {
         glBindVertexArray(arrayID);
     }
 
-    void unbind() const {
+    void Unbind() const {
         glBindVertexArray(0);
     }
 
-    void addBuffer(const VertexBuffer& vb, unsigned int index) {
-        bind();
-        vb.bind();
+    void AddBuffer(const VertexBuffer& vb, unsigned int index) {
+        Bind();
+        vb.Bind();
         glEnableVertexAttribArray(index);
         glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     }

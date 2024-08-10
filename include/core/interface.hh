@@ -1,6 +1,9 @@
 #pragma once
 #include <array>
 #include "core/util.hh"
+#include "graphics/shader.hh"
+#include "graphics/vertex_array.hh"
+#include "graphics/vertex_buffer.hh"
 
 namespace box {
 
@@ -14,7 +17,8 @@ public:
     Interface();
     ~Interface();
 
-    void Clear();
+    void Render();
+    void DrawToScreen() const;
 
     bool PollEvent(Event& event);
     bool ShouldClose() const;
@@ -23,12 +27,9 @@ private:
     GLFWwindow* window_;
     GLuint texture_;
     GLuint framebuffer_;
+    Shader texture_shader_;
 
     std::array<size_t, GLFW_KEY_LAST + 1> key_states_{};
-
-    static void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
-        glViewport(0, 0, width, height);
-    }
 };
 
 } // namespace box

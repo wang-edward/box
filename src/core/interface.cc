@@ -3,7 +3,9 @@
 
 namespace box {
 
-Interface:: Interface() {
+Interface:: Interface(): 
+    texture_shader_{"shader/texture.vert", "shader/texture.frag"}
+{
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
     }
@@ -15,26 +17,14 @@ Interface:: Interface() {
     }
 
     glfwMakeContextCurrent(window_);
-    glfwInit();
-    glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
-    // glViewport(0, 0, WIDTH * 4, HEIGHT * 4);
 
-
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
-    glViewport(0, 0, 128, 128); // Render to the size of the texture
-
+    // texture
     glGenTextures(1, &texture_);
     glBindTexture(GL_TEXTURE_2D, texture_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
-
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
@@ -51,63 +41,54 @@ Interface:: ~Interface() {
 
 void Interface::Render() {
     // Render to framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glViewport(0, 0, 128, 128); // Render to the size of the texture
-    renderScene(circleVAO, circleShaderProgram, 0.75f); // Example percentage
-    {
-        // Allocate memory to store the pixel data
-        GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
-
-        // Read the pixels from the framebuffer
-        glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-        std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     }
+    glViewport(0, 0, 128, 128); // Render to the size of the texture
 }
 
 void Interface:: DrawToScreen() const {
-    glClear(GL_COLOR_BUFFER_BIT);
+    if (DISPLAY_TYPE == DeviceType::Emulator) {
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, active_buffer_.data());
+        // reset stuff
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture_);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture_);
 
-    int window_width, window_height;
-    glfwGetFramebufferSize(window_, &window_width, &window_height);
+        int window_width, window_height;
+        glfwGetFramebufferSize(window_, &window_width, &window_height);
 
-    float aspect_ratio = float(window_width) / float(window_height);
-    float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
+        float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
+        float scaled_width = WIDTH * scale;
+        float scaled_height = HEIGHT * scale;
+        float x_offset = (window_width - scaled_width) / 2;
+        float y_offset = (window_height - scaled_height) / 2;
 
-    float scaled_width = WIDTH * scale;
-    float scaled_height = HEIGHT * scale;
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, window_width, window_height, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-    float x_offset = (window_width - scaled_width) / 2;
-    float y_offset = (window_height - scaled_height) / 2;
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
+        glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
+        glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
+        glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
+        glEnd();
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, window_width, window_height, 0, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+        glfwSwapBuffers(window_);
+    // hardware rendering
+    } else if (DISPLAY_TYPE == DeviceType::Hardware) {
+        GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
+        glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(x_offset, y_offset);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(x_offset + scaled_width, y_offset);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(x_offset + scaled_width, y_offset + scaled_height);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(x_offset, y_offset + scaled_height);
-    glEnd();
-
-    glfwSwapBuffers(window_);
-}
-
-void Interface::DrawPixel(int x, int y, Color color) {
-    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
-        inactive_buffer_[y * WIDTH + x] = color;
+        std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
     }
-}
-
-void Interface::Clear() {
-    inactive_buffer_.fill(Color{0, 0, 0});
 }
 
 bool Interface:: PollEvent(Event& event) {
