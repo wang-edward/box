@@ -39,16 +39,18 @@ Interface:: ~Interface() {
     }
 }
 
-void Interface::Render() {
+void Interface:: PrepRender() {
     // Render to framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     }
     glViewport(0, 0, 128, 128); // Render to the size of the texture
+    
+    // do the rest of the rendering
 }
 
-void Interface:: DrawToScreen() const {
+void Interface:: Display() const {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
 
         // reset stuff
@@ -56,11 +58,15 @@ void Interface:: DrawToScreen() const {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // setup texture
+        texture_shader_.Bind();
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texture_);
 
+        // adjust for emu window
         int window_width, window_height;
         glfwGetFramebufferSize(window_, &window_width, &window_height);
+        glViewport(0, 0, window_width, window_height);
 
         float scale = std::min(float(window_width) / WIDTH, float(window_height) / HEIGHT);
         float scaled_width = WIDTH * scale;

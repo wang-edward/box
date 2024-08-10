@@ -33,12 +33,14 @@ int main() {
             while (interface.PollEvent(event)) {
                 manager.HandleEvent(event);
             }
-            interface.Clear();
-            // render
-            manager.Render(interface);
+            interface.PrepRender();
 
-            interface.SwapBuffers();
-            interface.DrawToScreen();
+            // do rendering
+            {
+                manager.Render(interface);
+            }
+
+            interface.Display();
         }
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

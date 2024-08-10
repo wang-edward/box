@@ -17,8 +17,8 @@ public:
     Interface();
     ~Interface();
 
-    void Render();
-    void DrawToScreen() const;
+    void PrepRender();
+    void Display() const;
 
     bool PollEvent(Event& event);
     bool ShouldClose() const;
