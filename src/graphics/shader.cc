@@ -1,5 +1,6 @@
 #include "graphics/shader.hh"
 #include <string>
+#include <fstream>
 std::string Shader:: LoadShaderSource(const std::string& filepath) {
     std::ifstream file(filepath);
     std::stringstream buffer;

@@ -1,9 +1,6 @@
 #pragma once
+#include "core/util.hh"
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <GL/glew.h>
 
 class Shader {
 public:

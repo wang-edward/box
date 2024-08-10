@@ -1,4 +1,3 @@
-#include "GLFW/glfw3.h"
 #include "plugin/four_osc.hh"
 
 namespace box {

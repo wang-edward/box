@@ -1,5 +1,7 @@
 #pragma once
 #include "core/parameter.hh"
+#include "graphics/shader.hh"
+#include "graphics/vertex_buffer_layout.hh"
 
 namespace box {
 
@@ -9,41 +11,59 @@ public:
 
     // TODO add min, max, name
     Knob(int x, int y, juce::CachedValue<T> &value, te::AutomatableParameter *ap = nullptr, std::string name = ""):
-        x_{x}, y_{y}, param_{value, ap}, name_{name} {}
+        x_{x}, y_{y}, param_{value, ap}, name_{name}, 
+        shader_{"shader/texture.vert", "shader/red.frag"} {}
 
     virtual void Render(Interface &interface) {
         float percentage = param_.GetNorm();
-        int radius = 18;
+        // Render your scene here
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        int centerX = x_;
-        int centerY = y_;
+        // Render red circle
+        shader_.Bind();
+        circle_vao_.Bind();
 
-        // Angle to fill up to (in radians), starting from the 6 o'clock position and going counterclockwise
-        float fillAngle = percentage * 2.0f * M_PI;
+        // Calculate end angle based on percentage
+        float end_angle = 2.0f * M_PI * percentage;
+        const int num_segments = 360;
+        const float radius = 0.5f;
+        float circle_vertices[(num_segments + 2) * 3]; // +2 for center and closing point
 
-        for (int y = -radius; y <= radius; ++y) {
-            for (int x = -radius; x <= radius; ++x) {
-                // Check if point is inside the circle
-                if (x * x + y * y <= radius * radius) {
-                    // Calculate angle from center to this point
-                    float angle = atan2(-y, x); // Inverting y to start from 6 o'clock
-                    if (angle < 0) {
-                        angle += 2.0f * M_PI;
-                    }
-                    // Draw pixel if within the fill angle
-                    if (angle <= fillAngle) {
-                        interface.DrawPixel(centerX + x, centerY + y, {255, 0, 0});
-                    }
-                }
+        // Center vertex
+        circle_vertices[0] = 0.0f;
+        circle_vertices[1] = 0.0f;
+        circle_vertices[2] = 0.0f;
+
+        // Generate vertices based on percentage
+        int vertex_count = 1;
+        for (int i = 0; i <= num_segments; ++i) {
+            float angle = 2.0f * M_PI * (float)i / (float)num_segments;
+            if (angle > end_angle) {
+                break;
             }
-    }
+            circle_vertices[vertex_count * 3] = radius * cosf(angle);
+            circle_vertices[vertex_count * 3 + 1] = radius * sinf(angle);
+            circle_vertices[vertex_count * 3 + 2] = 0.0f;
+            vertex_count++;
+        }
+        // Add the last point to close the filled part
+        circle_vertices[vertex_count * 3] = 0.0f;
+        circle_vertices[vertex_count * 3 + 1] = 0.0f;
+        circle_vertices[vertex_count * 3 + 2] = 0.0f;
+        vertex_count++;
 
+        VertexArray vao;
+        VertexBuffer vbo{circle_vertices, sizeof(circle_vertices)};
+        VertexBufferLayout layout;
+        vao.Bind();
+        layout.Push<float>(3);
+        vao.AddBuffer(vbo, layout);
 
-        // for (int i = 0; i < 16; i++) {
-        //     for (int j = 0; j < 16; j++) {
-        //         interface.DrawPixel(x_ + i, y_ + j, {0, 255, 0});
-        //     }
-        // }
+        glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count); // Draw filled circle segment
+
+        vao.Unbind();
+        glBindVertexArray(0);
     }
     virtual void HandleEvent(const Event& event) {
 
@@ -53,6 +73,8 @@ public:
 private:
     int x_, y_;
     std::string name_;
+    Shader shader_;
+    VertexArray circle_vao_;
 };
 
 } // namespace box

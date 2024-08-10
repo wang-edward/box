@@ -6,10 +6,6 @@ namespace box {
 Interface:: Interface(): 
     texture_shader_{"shader/texture.vert", "shader/texture.frag"}
 {
-    if (!glfwInit()) {
-        throw std::runtime_error("Failed to initialize GLFW");
-    }
-
     window_ = glfwCreateWindow(WIDTH * 4, HEIGHT * 4, "128x128 Display", nullptr, nullptr);
     if (!window_) {
         glfwTerminate();
