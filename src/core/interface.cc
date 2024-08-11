@@ -46,9 +46,9 @@ void Interface:: PrepRender() {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cerr << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     }
-    glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
+    glViewport(0, 0, 128, 128); // Render to the size of the texture TODO WIDTH
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     
     // do the rest of the rendering
 }
@@ -77,11 +77,17 @@ void Interface:: Display() const {
 
         glfwSwapBuffers(window_);
     // hardware rendering
-    } else if (DISPLAY_TYPE == DeviceType::Hardware) {
+    // } else if (DISPLAY_TYPE == DeviceType::Hardware) {
         GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
-        glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+        glReadPixels(0, 0, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+        for (int i = 0; i < 128*128*3; i++) {
+            if (pixels[i] > 0) {
+                std::cout << pixels[i] << " ";
+            }
+        }
+        std::cout << std::endl;
 
-        std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+        // std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
     }
 }
 
