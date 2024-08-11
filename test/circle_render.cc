@@ -100,6 +100,21 @@ GLFWwindow *initializeOpenGL() {
     return window;
 }
 
+void updateQuadVertices(float* quadVertices, float scale, float xOffset, float yOffset) {
+    // Top-left
+    quadVertices[0] = -scale + xOffset; quadVertices[1] = scale + yOffset;
+    // Bottom-left
+    quadVertices[5] = -scale + xOffset; quadVertices[6] = -scale + yOffset;
+    // Bottom-right
+    quadVertices[10] = scale + xOffset; quadVertices[11] = -scale + yOffset;
+    // Top-left
+    quadVertices[15] = -scale + xOffset; quadVertices[16] = scale + yOffset;
+    // Bottom-right
+    quadVertices[20] = scale + xOffset; quadVertices[21] = -scale + yOffset;
+    // Top-right
+    quadVertices[25] = scale + xOffset; quadVertices[26] = scale + yOffset;
+}
+
 void renderScene(GLuint circleVAO, GLuint circleShaderProgram, float percentage) {
     // Render your scene here
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -257,6 +272,23 @@ int main() {
 
         int window_width, window_height;
         glfwGetFramebufferSize(window, &window_width, &window_height);
+
+        {
+            float scale = std::min(window_width, window_height) / static_cast<float>(std::max(window_width, window_height));
+            float xOffset = 0.0f, yOffset = 0.0f;
+
+            if (window_width > window_height) {
+                xOffset = (1.0f - scale) / 2.0f;
+            } else {
+                yOffset = (1.0f - scale) / 2.0f;
+            }
+
+            updateQuadVertices(quadVertices, scale, xOffset, yOffset);
+
+                glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadVertices), quadVertices);
+        }
+
 
         glViewport(0, 0, window_width, window_height);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
