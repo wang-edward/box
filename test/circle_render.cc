@@ -216,7 +216,7 @@ int main() {
 
         -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
          1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
-         1.0f,   1.0f, 0.0f,  1.0f, 1.0f
+         1.0f,  1.0f, 0.0f,  1.0f, 1.0f
     };
 
     // Setup quad VAO
@@ -249,12 +249,16 @@ int main() {
 
             // Read the pixels from the framebuffer
             glReadPixels(64, 64, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-            std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+            // std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
         }
 
         // Render to screen
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, 800, 800);
+
+        int window_width, window_height;
+        glfwGetFramebufferSize(window, &window_width, &window_height);
+
+        glViewport(0, 0, window_width, window_height);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
