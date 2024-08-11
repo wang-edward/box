@@ -5,6 +5,7 @@
 #include "graphics/vertex_array.hh"
 #include "graphics/vertex_buffer.hh"
 #include "graphics/framebuffer.hh"
+#include "graphics/texture.hh"
 
 namespace box {
 
@@ -26,7 +27,7 @@ public:
 
 private:
     GLFWwindow* window_;
-    GLuint texture_;
+    Texture texture_;
     Framebuffer framebuffer_;
 
     // need optional for this because glfw has to be initted first

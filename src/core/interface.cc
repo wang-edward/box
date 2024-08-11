@@ -7,19 +7,14 @@ Interface:: Interface(GLFWwindow *window):
     window_{window},
     texture_shader_{"shader/texture.vert", "shader/texture.frag"}
 {
+    framebuffer_.Bind();
 
-    glGenFramebuffers(1, &framebuffer_);
-    glBindFramebuffer(framebuffer_, 0);
+    texture_.SetData(128, 128, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    texture_.SetFiltering(GL_NEAREST, GL_NEAREST);
 
-    // texture
-    glGenTextures(1, &texture_);
-    glBindTexture(GL_TEXTURE_2D, texture_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
-    // connect them
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0);
+    // connect
+    framebuffer_.AttachTexture(texture_);
+    framebuffer_.AssertComplete();
     
     // Setup VAO, VBO, and layout
     vao_.Bind();
@@ -37,8 +32,6 @@ Interface:: Interface(GLFWwindow *window):
 
 Interface:: ~Interface() {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
-        glDeleteTextures(1, &texture_);
-        glDeleteFramebuffers(1, &framebuffer_);
         glfwDestroyWindow(window_);
         glfwTerminate();
     }
@@ -46,11 +39,8 @@ Interface:: ~Interface() {
 
 void Interface:: PrepRender() {
     // Render to framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        throw std::runtime_error{"ERROR::FRAMEBUFFER:: Framebuffer is not complete!"};
-    }
-    glViewport(0, 0, 128, 128); // Render to the size of the texture TODO WIDTH
+    framebuffer_.Bind();
+    glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture TODO WIDTH
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -71,8 +61,7 @@ void Interface:: Display() const {
 
         // setup texture
         texture_shader_.Bind();
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, texture_);
+        texture_.Bind();
 
         // Draw quad
         vao_.Bind();
@@ -81,7 +70,7 @@ void Interface:: Display() const {
 
         glfwSwapBuffers(window_);
     // hardware rendering
-    // } else if (DISPLAY_TYPE == DeviceType::Hardware) {
+    } else if (DISPLAY_TYPE == DeviceType::Hardware) {
         GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
         glReadPixels(0, 0, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
         for (int i = 0; i < 128*128*3; i++) {

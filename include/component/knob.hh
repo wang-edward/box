@@ -15,8 +15,7 @@ public:
         shader_{"shader/texture.vert", "shader/red.frag"} {}
 
     virtual void Render(Interface &interface) {
-        // float percentage = param_.GetNorm();
-        float percentage = 0.75;
+        float percentage = param_.GetNorm();
 
         // Render red circle
         shader_.Bind();
