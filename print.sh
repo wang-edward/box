@@ -8,7 +8,7 @@ find "$DIRECTORY" -type f \( -name "*.cc" -o -name "*.hh" \) |
 while IFS= read -r file; do
     # Print the filename
     echo "$(basename "$file")"
-    echo '```'
+    echo '```cpp'
     # Print the contents of the file
     cat "$file"
     echo '```'
