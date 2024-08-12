@@ -28,8 +28,8 @@ public:
         float circle_vertices[(num_segments + 2) * 3]; // +2 for center and closing point
 
         // Center vertex
-        circle_vertices[0] = 0.0f;
-        circle_vertices[1] = 0.0f;
+        circle_vertices[0] = x_;
+        circle_vertices[1] = y_;
         circle_vertices[2] = 0.0f;
 
         // Generate vertices based on percentage
@@ -39,14 +39,14 @@ public:
             if (angle > end_angle) {
                 break;
             }
-            circle_vertices[vertex_count * 3] = radius * cosf(angle);
-            circle_vertices[vertex_count * 3 + 1] = radius * sinf(angle);
+            circle_vertices[vertex_count * 3] = x_ + radius * cosf(angle);
+            circle_vertices[vertex_count * 3 + 1] = y_ + radius * sinf(angle);
             circle_vertices[vertex_count * 3 + 2] = 0.0f;
             vertex_count++;
         }
         // Add the last point to close the filled part
-        circle_vertices[vertex_count * 3] = 0.0f;
-        circle_vertices[vertex_count * 3 + 1] = 0.0f;
+        circle_vertices[vertex_count * 3] = x_;
+        circle_vertices[vertex_count * 3 + 1] = y_;
         circle_vertices[vertex_count * 3 + 2] = 0.0f;
         vertex_count++;
 
