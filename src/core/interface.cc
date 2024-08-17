@@ -5,26 +5,30 @@ namespace box {
 
 Interface:: Interface(GLFWwindow *window):
     window_{window},
-    texture_shader_{"shader/texture.vert", "shader/texture.frag"}
+    pixel_shader_{"shader/texture.vert", "shader/texture.frag"},
+    pixel_quad_{
+        {
+            // Positions      // Texture Coords
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,   // Top-left
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom-left
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom-right
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f    // Top-right
+        }, 
+        {
+            0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
+            2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
+        }
+    }
 {
-    framebuffer_.Bind();
+    pixel_buffer_.Bind();
 
-    texture_.SetData(128, 128, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    texture_.SetFiltering(GL_NEAREST, GL_NEAREST);
+    pixel_tex_.SetData(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    pixel_tex_.SetFiltering(GL_NEAREST, GL_NEAREST);
 
     // connect
-    framebuffer_.AttachTexture(texture_);
-    framebuffer_.AssertComplete();
+    pixel_buffer_.AttachTexture(pixel_tex_);
+    pixel_buffer_.AssertComplete();
     
-    // Setup VAO, VBO, and layout
-    vao_.Bind();
-    vbo_.Bind();
-    vbo_.SetData(QUAD_VERTICES, sizeof(QUAD_VERTICES));
-
-    layout_.Push<float>(3); // position
-    layout_.Push<float>(2); // texture coordinates
-    vao_.AddBuffer(vbo_, layout_);
-
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
     }
@@ -39,7 +43,7 @@ Interface:: ~Interface() {
 
 void Interface:: PrepRender() {
     // Render to framebuffer
-    framebuffer_.Bind();
+    pixel_buffer_.Bind();
     glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture TODO WIDTH
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -57,16 +61,12 @@ void Interface:: Display() const {
         glfwGetFramebufferSize(window_, &window_width, &window_height);
         glViewport(0, 0, window_width, window_height);
 
-        // reset stuff
-
         // setup texture
-        texture_shader_.Bind();
-        texture_.Bind();
+        pixel_shader_.Bind();
+        pixel_tex_.Bind();
 
         // Draw quad
-        vao_.Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        vao_.Unbind();
+        pixel_quad_.Render(pixel_shader_, Mesh::RenderMode::Texture, {1,1,1}, &pixel_tex_);
 
         glfwSwapBuffers(window_);
     // hardware rendering

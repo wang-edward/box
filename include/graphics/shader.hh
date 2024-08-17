@@ -2,6 +2,9 @@
 #include "core/util.hh"
 #include <string>
 
+namespace box {
+
+
 class Shader {
 public:
     Shader(const std::string& vertex_path, const std::string& fragment_path) {
@@ -27,6 +30,10 @@ public:
         glDeleteShader(fragment_shader);
     }
 
+    ~Shader() {
+        glDeleteProgram(shader_program_);
+    }
+
     void Bind() const {
         glUseProgram(shader_program_);
     }
@@ -35,8 +42,28 @@ public:
         glUseProgram(0);
     }
 
-    ~Shader() {
-        glDeleteProgram(shader_program_);
+    void SetUniform1i(const std::string& name, int value) const {
+        glUniform1i(glGetUniformLocation(shader_program_, name.c_str()), value);
+    }
+
+    void SetUniform1f(const std::string& name, float value) const {
+        glUniform1f(glGetUniformLocation(shader_program_, name.c_str()), value);
+    }
+
+    void SetUniform3f(const std::string& name, float v0, float v1, float v2) const {
+        glUniform3f(glGetUniformLocation(shader_program_, name.c_str()), v0, v1, v2);
+    }
+
+    void SetUniform3f(const std::string& name, const glm::vec3& vec) const {
+        glUniform3f(glGetUniformLocation(shader_program_, name.c_str()), vec.x, vec.y, vec.z);
+    }
+
+    void SetUniform4f(const std::string& name, const glm::vec4& vec) const {
+        glUniform4f(glGetUniformLocation(shader_program_, name.c_str()), vec.x, vec.y, vec.z, vec.w);
+    }
+
+    void SetUniformMat4f(const std::string& name, const glm::mat4& mat) const {
+        glUniformMatrix4fv(glGetUniformLocation(shader_program_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }
 
 private:
@@ -47,3 +74,6 @@ private:
     void CheckCompilationErrors(unsigned int shader, unsigned int type);
     void CheckLinkingErrors(unsigned int program);
 };
+
+
+} // namespace box

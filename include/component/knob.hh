@@ -1,7 +1,8 @@
 #pragma once
+#include "core/util.hh"
 #include "core/parameter.hh"
 #include "graphics/shader.hh"
-#include "graphics/vertex_buffer_layout.hh"
+#include "graphics/mesh.hh"
 
 namespace box {
 
@@ -16,11 +17,6 @@ public:
 
     virtual void Render(Interface &interface) {
         float percentage = param_.GetNorm();
-
-        // Render red circle
-        shader_.Bind();
-        circle_vao_.Bind();
-
         // Calculate end angle based on percentage
         float end_angle = 2.0f * M_PI * percentage;
         const int num_segments = 360;
@@ -50,12 +46,8 @@ public:
         circle_vertices[vertex_count * 3 + 2] = 0.0f;
         vertex_count++;
 
-        VertexBuffer vbo{circle_vertices, sizeof(circle_vertices)};
-        VertexBufferLayout layout;
-        layout.Push<float>(3);
-        circle_vao_.AddBuffer(vbo, layout);
-
-        glDrawArrays(GL_TRIANGLE_FAN, 0, vertex_count); // Draw filled circle segment
+        // Render red circle
+        shader_.Bind();
     }
     virtual void HandleEvent(const Event& event) {
 
@@ -66,7 +58,7 @@ private:
     int x_, y_;
     std::string name_;
     Shader shader_;
-    VertexArray circle_vao_;
+    // Mesh circle_; // TODO
 };
 
 } // namespace box

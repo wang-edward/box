@@ -1,5 +1,8 @@
 #include "graphics/framebuffer.hh"
 
+namespace box {
+
+
 Framebuffer::Framebuffer() {
     glGenFramebuffers(1, &framebufferID_);
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferID_);
@@ -31,3 +34,6 @@ void Framebuffer::AssertComplete() const {
     }
     Unbind();
 }
+
+
+} // namespace box

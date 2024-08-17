@@ -17,8 +17,6 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // ------------------------
-
     GLFWwindow *window = glfwCreateWindow(box::Interface::WIDTH * 4, box::Interface::HEIGHT * 4, "128x128 Display", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
@@ -30,7 +28,6 @@ int main() {
     if (glewInit() != GLEW_OK) {
         throw std::runtime_error("Failed to initialize GLEW");
     }
-    // ---------------------
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
@@ -48,6 +45,22 @@ int main() {
     box::Manager manager;
     manager.AddTrackManager(0, std::move(track_manager));
 
+    box::Mesh m{
+        {
+            // Positions      // Texture Coords
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,   // Top-left
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom-left
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom-right
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f    // Top-right
+        },
+        {
+            0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
+            2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
+        }
+    };
+
+    box::Shader pixel_shader{"shader/texture.vert", "shader/texture.frag"};
+
     try {
         auto &transport = edit.getTransport();
         transport.play(false);
@@ -57,11 +70,13 @@ int main() {
             while (interface.PollEvent(event)) {
                 manager.HandleEvent(event);
             }
+
             interface.PrepRender();
 
             // do rendering
             {
-                manager.Render(interface);
+                // manager.Render(interface);
+                m.Render(pixel_shader, box::Mesh::RenderMode::SolidColor);
             }
 
             interface.Display();

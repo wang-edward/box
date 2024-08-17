@@ -1,6 +1,10 @@
 #include "graphics/shader.hh"
 #include <string>
 #include <fstream>
+
+namespace box {
+
+
 std::string Shader:: LoadShaderSource(const std::string& filepath) {
     std::ifstream file(filepath);
     std::stringstream buffer;
@@ -47,3 +51,6 @@ void Shader:: CheckLinkingErrors(unsigned int program) {
         throw std::runtime_error{"ERROR::PROGRAM::LINKING_FAILED\n" + std::string(info_log)};
     }
 }
+
+
+} // namespace box

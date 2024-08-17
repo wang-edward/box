@@ -3,6 +3,9 @@
 #include "core/util.hh"
 #include "graphics/texture.hh"
 
+namespace box {
+
+
 class Framebuffer {
 public:
     Framebuffer();
@@ -17,3 +20,6 @@ public:
 private:
     GLuint framebufferID_;
 };
+
+
+} // namespace box
