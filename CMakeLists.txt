@@ -28,6 +28,7 @@ endif()
 include_directories(include)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/external) # for stb_image
+include_directories(/usr/include/GL)
 
 # Collect all .cc files from src directory
 file(GLOB_RECURSE SRC_FILES src/*.cc)
