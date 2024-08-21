@@ -6,6 +6,7 @@
 #include "core/track_manager.hh"
 #include "core/manager.hh"
 #include "plugin/four_osc.hh"
+#include "plugin/delay.hh"
 
 int main() {
 
@@ -41,6 +42,8 @@ int main() {
     te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
     track_manager->AddPlugin(std::make_unique<box::FourOscManager>(four_osc));
     track_manager->SetActivePlugin(0);
+    te::Plugin * delay = edit.getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get();
+    track_manager->AddPlugin(std::make_unique<box::Delay>(delay));
 
     box::Manager manager;
     manager.AddTrackManager(0, std::move(track_manager));
