@@ -1,6 +1,8 @@
 #include <random>
 #include <iostream>
 
+#include <juce_events/juce_events.h>
+
 #include "core/util.hh"
 #include "core/interface.hh"
 #include "core/track_manager.hh"
@@ -9,6 +11,7 @@
 #include "plugin/delay.hh"
 
 int main() {
+    const juce::ScopedJuceInitialiser_GUI initialiser;
 
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
