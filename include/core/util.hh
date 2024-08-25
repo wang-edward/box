@@ -9,7 +9,11 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <GL/gl.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
 #include <glm/glm.hpp>
 
 namespace te = tracktion;
