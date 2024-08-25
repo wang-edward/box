@@ -20,13 +20,15 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 pkg_search_module(GLEW REQUIRED glew)
 
+find_package(glm REQUIRED)
+
 if (APPLE)
     add_definitions(-DGL_SILENCE_DEPRECATION)
 endif()
 
 # includes
 include_directories(include)
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/external) # for stb_image
 include_directories(/usr/include/GL)
 
@@ -55,6 +57,8 @@ target_link_libraries(Box
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
+
+file(COPY ${CMAKE_SOURCE_DIR}/shader DESTINATION ${CMAKE_BINARY_DIR}/Box_artefacts/Debug)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   target_link_libraries(Box PRIVATE "-latomic")
