@@ -30,12 +30,12 @@ void TrackManager:: HandleEvent(const Event& event) {
 
     if (event.type == EventType::KeyPress && 
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
-        auto message = juce::MidiMessage::noteOn (0, KEY_TO_MIDI.at(event.value), (float) 100);
+        auto message = juce::MidiMessage::noteOn (1, KEY_TO_MIDI.at(event.value), (float) 1.0);
         track_.injectLiveMidiMessage(message, 0);
         return;
     } else if (event.type == EventType::KeyRelease &&
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
-        auto message = juce::MidiMessage::noteOff(0, KEY_TO_MIDI.at(event.value));
+        auto message = juce::MidiMessage::noteOff(1, KEY_TO_MIDI.at(event.value));
         track_.injectLiveMidiMessage(message, 0);
         return;
     }
