@@ -8,8 +8,19 @@
 namespace box {
 
 class Mesh {
+
 public:
-    Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+    enum class Primitive {
+        Triangles = GL_TRIANGLES,
+        TriangleFan = GL_TRIANGLE_FAN,
+        TriangleStrip = GL_TRIANGLE_STRIP,
+        Lines = GL_LINES,
+        LineStrip = GL_LINE_STRIP,
+        LineLoop = GL_LINE_LOOP,
+        Points = GL_POINTS
+    };
+
+    Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, Primitive primitive);
     ~Mesh();
     Mesh(const Mesh& other);
     Mesh(Mesh&& other) noexcept;
@@ -24,6 +35,7 @@ private:
     GLuint vao_, vbo_, ebo_;
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
+    Primitive primitive_;
 
     void Init();
     void Deinit();

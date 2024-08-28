@@ -6,8 +6,9 @@ namespace box {
 
 // Mesh::Mesh() : vao_{0}, vbo_{0}, ebo_{0} {}
 
-Mesh::Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
-    : vao_{0}, vbo_{0}, ebo_{0}, vertices_{vertices}, indices_{indices} {
+Mesh::Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, Primitive primitive = Primitive::Triangles)
+    : vao_{0}, vbo_{0}, ebo_{0}, vertices_{vertices}, indices_{indices},
+    primitive_{primitive} {
     Init();
 }
 
@@ -64,9 +65,9 @@ void Mesh::Render(const Shader& shader, const Texture* texture) const {
 
     // Draw the mesh using indices
     if (!indices_.empty()) {
-        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
+        glDrawElements(static_cast<GLenum>(primitive_), static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
     } else {
-        glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices_.size() / 5)); // Adjust based on your vertex structure
+        glDrawArrays(static_cast<GLenum>(primitive_), 0, static_cast<GLsizei>(vertices_.size() / 5)); // Adjust based on your vertex structure
     }
 
     // Unbind the VAO
