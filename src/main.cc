@@ -73,29 +73,31 @@ int main() {
     te::Plugin * reverb = edit.getPluginCache().createNewPlugin(te::ReverbPlugin::xmlTypeName, {}).get();
     track_manager->AddPlugin(std::make_unique<box::Reverb>(reverb));
 
-    te::Plugin * tone_generator = edit.getPluginCache().createNewPlugin(te::ToneGeneratorPlugin::xmlTypeName, {}).get();
-    track_manager->AddPlugin(std::make_unique<box::ToneGenerator>(tone_generator));
+    // te::Plugin * tone_generator = edit.getPluginCache().createNewPlugin(te::ToneGeneratorPlugin::xmlTypeName, {}).get();
+    // track_manager->AddPlugin(std::make_unique<box::ToneGenerator>(tone_generator));
 
     track_manager->SetActivePlugin(0);
 
     box::Manager manager;
     manager.AddTrackManager(0, std::move(track_manager));
 
-    box::Mesh m{
-        {
-            // Positions      // Texture Coords
-            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,   // Top-left
-            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom-left
-             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom-right
-             0.5f,  0.5f, 0.0f,  1.0f, 1.0f    // Top-right
-        },
-        {
-            0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
-            2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
-        }
-    };
+    // box::Mesh m{
+    //     {
+    //         // Positions      // Texture Coords
+    //         -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,   // Top-left
+    //         -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom-left
+    //          0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom-right
+    //          0.5f,  0.5f, 0.0f,  1.0f, 1.0f    // Top-right
+    //     },
+    //     {
+    //         0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
+    //         2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
+    //     }
+    // };
 
     box::Shader pixel_shader{"shader/texture.vert", "shader/texture.frag"};
+    box::Texture red_tex;
+    red_tex.LoadFromFile("assets/red_texture.png");
 
     try {
         auto &transport = edit.getTransport();
@@ -111,8 +113,8 @@ int main() {
 
             // do rendering
             {
-                // manager.Render(interface);
-                m.Render(pixel_shader, box::Mesh::RenderMode::SolidColor);
+                // m.Render(pixel_shader, &red_tex);
+                manager.Render(interface);
             }
 
             interface.Display();

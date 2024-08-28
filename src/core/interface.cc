@@ -17,7 +17,8 @@ Interface:: Interface(GLFWwindow *window):
         {
             0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
             2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
-        }
+        },
+        Mesh::Primitive::Triangles
     }
 {
     pixel_buffer_.Bind();
