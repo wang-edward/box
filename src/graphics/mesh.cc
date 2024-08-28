@@ -8,16 +8,16 @@ namespace box {
 
 Mesh::Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
     : vao_{0}, vbo_{0}, ebo_{0}, vertices_{vertices}, indices_{indices} {
-    Initialize();
+    Init();
 }
 
 Mesh::~Mesh() {
-    Cleanup();
+    Deinit();
 }
 
 Mesh::Mesh(const Mesh& other)
     : vao_{0}, vbo_{0}, ebo_{0}, vertices_(other.vertices_), indices_(other.indices_) {
-    Initialize();
+    Init();
     LOG_MSG(LogLevel::Debug, "Mesh copy");
 }
 
@@ -52,22 +52,15 @@ void swap(Mesh& first, Mesh& second) noexcept {
     swap(first.indices_, second.indices_);
 }
 
-void Mesh::Render(const Shader& shader, RenderMode mode, const glm::vec3& color, const Texture* texture) const {
+void Mesh::Render(const Shader& shader, const Texture* texture) const {
     // Bind the VAO
     glBindVertexArray(vao_);
 
     // Set the render mode uniform in the shader
     shader.Bind();
-    shader.SetUniform1i("renderMode", static_cast<int>(mode));
 
     // Set the appropriate shader uniforms based on the render mode
-    if (mode == RenderMode::SolidColor) {
-        shader.SetUniform3f("inputColor", color.x, color.y, color.z);
-    } else if (mode == RenderMode::Texture && texture) {
-        texture->Bind();
-    } else if (mode == RenderMode::Gradient) {
-        shader.SetUniform3f("inputColor", color.x, color.y, color.z);
-    }
+    texture->Bind();
 
     // Draw the mesh using indices
     if (!indices_.empty()) {
@@ -80,7 +73,7 @@ void Mesh::Render(const Shader& shader, RenderMode mode, const glm::vec3& color,
     glBindVertexArray(0);
 }
 
-void Mesh::Initialize() {
+void Mesh::Init() {
     // Generate and bind the VAO
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -109,7 +102,7 @@ void Mesh::Initialize() {
     glBindVertexArray(0);
 }
 
-void Mesh::Cleanup() {
+void Mesh::Deinit() {
     if (vao_ != 0) {
         glDeleteVertexArrays(1, &vao_);
     }

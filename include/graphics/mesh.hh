@@ -9,12 +9,6 @@ namespace box {
 
 class Mesh {
 public:
-    enum class RenderMode {
-        SolidColor,
-        Texture,
-        Gradient
-    };
-
     Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
     ~Mesh();
     Mesh(const Mesh& other);
@@ -24,15 +18,15 @@ public:
 
     friend void swap(Mesh& first, Mesh& second) noexcept;
 
-    void Render(const Shader& shader, RenderMode mode, const glm::vec3& color = glm::vec3(1.0f), const Texture* texture = nullptr) const;
+    void Render(const Shader& shader, const Texture* texture = nullptr) const;
 
 private:
     GLuint vao_, vbo_, ebo_;
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
 
-    void Initialize();
-    void Cleanup();
+    void Init();
+    void Deinit();
 };
 
 } // namespace box

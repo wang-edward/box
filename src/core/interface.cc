@@ -66,7 +66,7 @@ void Interface:: Display() const {
         pixel_tex_.Bind();
 
         // Draw quad
-        pixel_quad_.Render(pixel_shader_, Mesh::RenderMode::Texture, {1,1,1}, &pixel_tex_);
+        pixel_quad_.Render(pixel_shader_, &pixel_tex_);
 
         glfwSwapBuffers(window_);
     // hardware rendering
