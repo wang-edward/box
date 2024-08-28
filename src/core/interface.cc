@@ -45,7 +45,7 @@ void Interface:: PrepRender() {
     // Render to framebuffer
     pixel_buffer_.Bind();
     glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture TODO WIDTH
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     // do the rest of the rendering
