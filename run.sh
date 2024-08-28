@@ -13,5 +13,17 @@ else
 fi
 
 cmake -B build
-make -C build -j6
-$BIN_PATH
+
+if [[ $? == 0 ]]; then
+    make -C build -j6
+else
+    echo "cmake failed"
+    exit 1
+fi
+
+if [[ $? == 0 ]]; then
+    $BIN_PATH
+else
+    echo "make failed"
+    exit 1
+fi
