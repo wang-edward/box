@@ -58,7 +58,7 @@ target_link_libraries(Box
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
-file(COPY ${CMAKE_SOURCE_DIR}/shader DESTINATION ${CMAKE_BINARY_DIR}/Box_artefacts/Debug)
+file(COPY ${CMAKE_SOURCE_DIR}/shader DESTINATION ${CMAKE_BINARY_DIR}/Box_artefacts)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   target_link_libraries(Box PRIVATE "-latomic")
