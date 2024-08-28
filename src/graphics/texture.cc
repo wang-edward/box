@@ -10,7 +10,7 @@ Texture::Texture(GLenum target) : target_(target) {
     glGenTextures(1, &textureID_);
     glBindTexture(target_, textureID_);
     // Set default filtering and wrapping options
-    SetFiltering(GL_LINEAR, GL_LINEAR);
+    SetFiltering(GL_NEAREST, GL_NEAREST);
     SetWrapping(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
     glBindTexture(target_, 0);
 }
