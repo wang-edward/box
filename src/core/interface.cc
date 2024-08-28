@@ -9,10 +9,10 @@ Interface:: Interface(GLFWwindow *window):
     pixel_quad_{
         {
             // Positions      // Texture Coords
-            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,   // Top-left
-            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom-left
-             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom-right
-             0.5f,  0.5f, 0.0f,  1.0f, 1.0f    // Top-right
+            -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,   // Top-left
+            -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,   // Bottom-left
+             1.0f, -1.0f, 0.0f,  1.0f, 0.0f,   // Bottom-right
+             1.0f,  1.0f, 0.0f,  1.0f, 1.0f    // Top-right
         }, 
         {
             0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
