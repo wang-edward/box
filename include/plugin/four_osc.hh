@@ -5,6 +5,7 @@
 
 namespace box {
 
+
 class FourOsc : public PluginManager {
 public:
     FourOsc(te::Plugin *p);

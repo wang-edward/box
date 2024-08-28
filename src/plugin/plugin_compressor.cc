@@ -7,21 +7,16 @@ Compressor::Compressor(te::Plugin *p):
     }
 
 void Compressor::Render(Interface &interface) {
-    
+    (void) interface;
 }
 
 void Compressor::HandleEvent(const Event &event) {
-    log_msg(LogLevel::Debug, "hello");
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
                 case GLFW_KEY_DOWN:
-                    // LOG_VAR(knob_.param_.GetNorm());
-                    // knob_.param_.SetNorm(knob_.param_.GetNorm() - 0.125);
                     break;
                 case GLFW_KEY_UP:
-                    // LOG_VAR(knob_.param_.GetNorm());
-                    // knob_.param_.SetNorm(knob_.param_.GetNorm() + 0.125);
                     break;
             }
             break;
