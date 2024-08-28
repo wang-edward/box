@@ -5,9 +5,9 @@
 
 namespace box {
 
-class FourOscManager : public PluginManager {
+class FourOsc : public PluginManager {
 public:
-    FourOscManager(te::Plugin *p);
+    FourOsc(te::Plugin *p);
     void Render(Interface &interface) override;
     void HandleEvent(const Event& event) override;
 

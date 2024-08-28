@@ -50,7 +50,7 @@ int main() {
     std::unique_ptr<box::TrackManager> track_manager = std::make_unique<box::TrackManager>(*first_track);
 
     te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
-    track_manager->AddPlugin(std::make_unique<box::FourOscManager>(four_osc));
+    track_manager->AddPlugin(std::make_unique<box::FourOsc>(four_osc));
 
     te::Plugin * delay = edit.getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get();
     track_manager->AddPlugin(std::make_unique<box::Delay>(delay));

@@ -2,12 +2,12 @@
 
 namespace box {
 
-FourOscManager:: FourOscManager(te::Plugin *p): 
+FourOsc:: FourOsc(te::Plugin *p): 
     PluginManager(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
     knob_{0, 1, base_plugin_->masterLevelValue, base_plugin_->masterLevel} {
     }
 
-void FourOscManager:: Render(Interface &interface) {
+void FourOsc:: Render(Interface &interface) {
     for (int y = 0; y < Interface::HEIGHT; ++y) {
         for (int x = 0; x < Interface::WIDTH; ++x) {
             // interface.DrawPixel(x, y, {255, 0, 0});
@@ -16,7 +16,7 @@ void FourOscManager:: Render(Interface &interface) {
     knob_.Render(interface);
 }
 
-void FourOscManager:: HandleEvent(const Event &event) {
+void FourOsc:: HandleEvent(const Event &event) {
     log_msg(LogLevel::Debug, "hello");
     switch (event.type) {
         case EventType::KeyPress:
