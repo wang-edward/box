@@ -59,10 +59,6 @@ void Interface:: Display() {
         pixel_shader_.Bind();
         pixel_tex_.Bind();
 
-        for (int i = 0; i < HEIGHT * WIDTH; i++) {
-            Color c{255, 255, 255};
-            pixel_array_[i] = c;
-        }
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixel_array_.data());
 
         // Draw quad
@@ -85,7 +81,7 @@ void Interface:: Display() {
 }
 
 void Interface:: DrawPixel(uint8_t x, uint8_t y, Color color) {
-    pixel_array_[x * y] = color;
+    pixel_array_[y * WIDTH + x] = color;
 }
 
 bool Interface:: PollEvent(Event& event) {
