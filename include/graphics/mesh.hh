@@ -28,7 +28,7 @@ public:
 
 private:
     GLuint vao_, vbo_, ebo_;
-    std::vector<glm::vec3> vertices_;
+    std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
     Primitive primitive_;
 };

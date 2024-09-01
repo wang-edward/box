@@ -21,15 +21,9 @@ Interface:: Interface(GLFWwindow *window):
         Mesh::Primitive::Triangles
     }
 {
-    pixel_buffer_.Bind();
-
     pixel_tex_.SetData(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     pixel_tex_.SetFiltering(GL_NEAREST, GL_NEAREST);
 
-    // connect
-    pixel_buffer_.AttachTexture(pixel_tex_);
-    pixel_buffer_.AssertComplete();
-    
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
     }
@@ -44,15 +38,14 @@ Interface:: ~Interface() {
 
 void Interface:: PrepRender() {
     // Render to framebuffer
-    pixel_buffer_.Bind();
-    glViewport(0, 0, WIDTH, HEIGHT); // Render to the size of the texture TODO WIDTH
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    pixel_array_.fill({0, 0, 0});
     
     // do the rest of the rendering
 }
 
-void Interface:: Display() const {
+void Interface:: Display() {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -65,6 +58,12 @@ void Interface:: Display() const {
         // setup texture
         pixel_shader_.Bind();
         pixel_tex_.Bind();
+
+        for (int i = 0; i < HEIGHT * WIDTH; i++) {
+            Color c{255, 255, 255};
+            pixel_array_[i] = c;
+        }
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixel_array_.data());
 
         // Draw quad
         pixel_quad_.Render(pixel_shader_, &pixel_tex_);
@@ -83,6 +82,10 @@ void Interface:: Display() const {
 
         // std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
     }
+}
+
+void Interface:: DrawPixel(uint8_t x, uint8_t y, Color color) {
+         
 }
 
 bool Interface:: PollEvent(Event& event) {

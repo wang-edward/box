@@ -7,6 +7,8 @@
 
 #include <tracktion_engine/tracktion_engine.h>
 
+// gl stuff
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #ifdef __APPLE__

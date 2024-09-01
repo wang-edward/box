@@ -19,17 +19,19 @@ public:
     ~Interface();
 
     void PrepRender();
-    void Display() const;
+    void Display();
+    void DrawPixel(uint8_t x, uint8_t y, Color color);
 
     bool PollEvent(Event& event);
     bool ShouldClose() const;
 
 private:
+    std::array<Color, WIDTH * HEIGHT> pixel_array_;
     GLFWwindow* window_;
     Texture pixel_tex_;
-    Framebuffer pixel_buffer_;
     Shader pixel_shader_; 
     Mesh pixel_quad_;
+    // Framebuffer pixel_buffer_; // TODO
     
     std::array<size_t, GLFW_KEY_LAST + 1> key_states_{};
 
