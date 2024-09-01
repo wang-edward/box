@@ -85,7 +85,7 @@ void Interface:: Display() {
 }
 
 void Interface:: DrawPixel(uint8_t x, uint8_t y, Color color) {
-         
+    pixel_array_[x * y] = color;
 }
 
 bool Interface:: PollEvent(Event& event) {
