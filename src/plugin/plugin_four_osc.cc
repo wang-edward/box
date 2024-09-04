@@ -4,13 +4,15 @@ namespace box {
 
 FourOsc:: FourOsc(te::Plugin *p): 
     PluginManager(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
-    knob_{0, 0, base_plugin_->masterLevelValue, base_plugin_->masterLevel} {
+    knob_{64, 64, 5, {0,255,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel} {
     }
 
 void FourOsc:: Render(Interface &interface) {
     for (int y = 0; y < Interface::HEIGHT; ++y) {
         for (int x = 0; x < Interface::WIDTH; ++x) {
-            // interface.DrawPixel(x, y, {255, 0, 0});
+            if (x % 2 == 0 && y % 2 == 0) {
+                interface.DrawPixel(x, y, {255, 0, 0});
+            }
         }
     }
     knob_.Render(interface);
