@@ -38,7 +38,7 @@ public:
                     }
                     // Draw pixel if within the fill angle
                     if (angle <= fillAngle) {
-                        interface.DrawPixel(centerX + x, centerY + y, {255, 0, 0});
+                        interface.DrawPixel(centerX + x, centerY + y, color_);
                     }
                 }
             }
