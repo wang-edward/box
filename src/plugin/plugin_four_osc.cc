@@ -4,8 +4,9 @@ namespace box {
 
 FourOsc:: FourOsc(te::Plugin *p): 
     PluginManager(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
-    knob_{64, 64, 5, {0,255,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel} {
-    }
+    knob_master_level_{32, 64, 5, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
+{
+}
 
 void FourOsc:: Render(Interface &interface) {
     for (int y = 0; y < Interface::HEIGHT; ++y) {
@@ -15,7 +16,7 @@ void FourOsc:: Render(Interface &interface) {
             }
         }
     }
-    knob_.Render(interface);
+    knob_master_level_.Render(interface);
 }
 
 void FourOsc:: HandleEvent(const Event &event) {
@@ -24,12 +25,12 @@ void FourOsc:: HandleEvent(const Event &event) {
         case EventType::KeyPress:
             switch(event.value) {
                 case GLFW_KEY_DOWN:
-                    LOG_VAR(knob_.param_.GetNorm());
-                    knob_.param_.SetNorm(knob_.param_.GetNorm() - 0.125);
+                    LOG_VAR(knob_master_level_.param_.GetNorm());
+                    knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() - 0.125);
                     break;
                 case GLFW_KEY_UP:
-                    LOG_VAR(knob_.param_.GetNorm());
-                    knob_.param_.SetNorm(knob_.param_.GetNorm() + 0.125);
+                    LOG_VAR(knob_master_level_.param_.GetNorm());
+                    knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() + 0.125);
                     break;
             }
             break;

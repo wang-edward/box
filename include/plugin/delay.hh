@@ -1,6 +1,7 @@
 #pragma once
 #include "core/interface.hh"
 #include "core/plugin_manager.hh"
+#include "component/knob.hh"
 
 namespace box {
 
@@ -13,6 +14,7 @@ public:
 
 private:
     te::DelayPlugin *base_plugin_;
+    Knob<float> knob_feedback_;
 };
 
 

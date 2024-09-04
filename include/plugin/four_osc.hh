@@ -14,7 +14,7 @@ public:
 
 private:
     te::FourOscPlugin *base_plugin_;
-    Knob<float> knob_;
+    Knob<float> knob_master_level_;
 };
 
 
