@@ -17,7 +17,8 @@ public:
 
     virtual void Render(Interface &interface) {
 
-
+        // TODO get percentage for thing without AutomatableParameter
+        // or should i just be adding an AutomatableParameter to it???
         float percentage = param_.GetNorm();
         int radius = 18;
 
