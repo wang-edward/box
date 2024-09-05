@@ -5,7 +5,7 @@
 
 #include "core/util.hh"
 #include "core/interface.hh"
-#include "core/track_manager.hh"
+#include "core/track.hh"
 #include "core/manager.hh"
 #include "plugin/four_osc.hh"
 #include "plugin/delay.hh"
