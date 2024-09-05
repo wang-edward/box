@@ -5,6 +5,10 @@
 namespace box {
 
 class Manager {
+    enum class ScreenState {
+        Timeline,
+        Track,
+    };
 public:
     Manager();
     void AddTrack(size_t index, std::unique_ptr<Track> track_manager);
@@ -16,6 +20,7 @@ public:
     // TODO use array instead
     std::vector<std::unique_ptr<Track>> tracks_;
     size_t current_track_;
+    ScreenState screen_state_;
 };
 
 } // namespace box
