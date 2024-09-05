@@ -8,9 +8,9 @@
 
 namespace box {
 
-class TrackManager {
+class Track {
 public:
-    TrackManager(te::AudioTrack &track);
+    Track(te::AudioTrack &track);
 
     void AddPlugin(std::unique_ptr<Plugin> plugin);
     void SetActivePlugin(size_t index);
