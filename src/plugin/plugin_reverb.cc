@@ -3,7 +3,7 @@
 namespace box {
 
 Reverb::Reverb(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::ReverbPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::ReverbPlugin *>(p)}{
     }
 
 void Reverb::Render(Interface &interface) {

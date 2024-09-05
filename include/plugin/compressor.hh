@@ -5,7 +5,7 @@
 namespace box {
 
 
-class Compressor : public PluginManager {
+class Compressor : public Plugin {
 public:
     Compressor(te::Plugin *p);
     void Render(Interface &interface) override;

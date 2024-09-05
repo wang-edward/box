@@ -5,7 +5,7 @@
 namespace box {
 
 
-class Latency : public PluginManager {
+class Latency : public Plugin {
 public:
     Latency(te::Plugin *p);
     void Render(Interface &interface) override;

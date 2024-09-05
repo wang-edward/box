@@ -3,7 +3,7 @@
 
 namespace box {
 
-static void assert_plugins(const std::vector<std::unique_ptr<PluginManager>> &plugins, size_t index, std::string function_name) {
+static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, size_t index, std::string function_name) {
     if (index >= plugins.size()) {
         throw std::runtime_error{"TrackManager::" + function_name + " => index ["+ std::to_string(index) + "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
     }
@@ -11,7 +11,7 @@ static void assert_plugins(const std::vector<std::unique_ptr<PluginManager>> &pl
 
 TrackManager:: TrackManager(te::AudioTrack &track): track_{track} {}
 
-void TrackManager:: AddPlugin(std::unique_ptr<PluginManager> plugin) {
+void TrackManager:: AddPlugin(std::unique_ptr<Plugin> plugin) {
     size_t index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_.push_back(std::move(plugin));

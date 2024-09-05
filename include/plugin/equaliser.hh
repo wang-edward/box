@@ -5,7 +5,7 @@
 namespace box {
 
 
-class Equaliser : public PluginManager {
+class Equaliser : public Plugin {
 public:
     Equaliser(te::Plugin *p);
     void Render(Interface &interface) override;

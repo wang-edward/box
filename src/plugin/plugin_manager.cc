@@ -2,9 +2,9 @@
 
 namespace box {
 
-PluginManager:: PluginManager(te::Plugin *p): plugin_{p} {}
+Plugin:: Plugin(te::Plugin *p): plugin_{p} {}
 
-te::Plugin *const PluginManager:: GetPlugin() const {
+te::Plugin *const Plugin:: GetPlugin() const {
     return plugin_;
 }
 

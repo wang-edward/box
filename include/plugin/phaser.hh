@@ -5,7 +5,7 @@
 namespace box {
 
 
-class Phaser : public PluginManager {
+class Phaser : public Plugin {
 public:
     Phaser(te::Plugin *p);
     void Render(Interface &interface) override;

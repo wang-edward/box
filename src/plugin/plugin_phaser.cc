@@ -3,7 +3,7 @@
 namespace box {
 
 Phaser::Phaser(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::PhaserPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::PhaserPlugin *>(p)}{
     }
 
 void Phaser::Render(Interface &interface) {

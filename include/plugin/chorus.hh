@@ -6,7 +6,7 @@
 namespace box {
 
 
-class Chorus : public PluginManager {
+class Chorus : public Plugin {
 public:
     Chorus(te::Plugin *p);
     void Render(Interface &interface) override;

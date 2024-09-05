@@ -5,7 +5,7 @@
 namespace box {
 
 
-class ToneGenerator : public PluginManager {
+class ToneGenerator : public Plugin {
 public:
     ToneGenerator(te::Plugin *p);
     void Render(Interface &interface) override;

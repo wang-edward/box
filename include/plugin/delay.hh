@@ -6,7 +6,7 @@
 namespace box {
 
 
-class Delay : public PluginManager {
+class Delay : public Plugin {
 public:
     Delay(te::Plugin *p);
     void Render(Interface &interface) override;

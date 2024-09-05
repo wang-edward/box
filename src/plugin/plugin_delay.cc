@@ -3,7 +3,7 @@
 namespace box {
 
 Delay:: Delay(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::DelayPlugin *>(p)},
+    Plugin(p), base_plugin_{static_cast<te::DelayPlugin *>(p)},
     knob_feedback_{64, 64, 5, {0, 255, 0}, base_plugin_->feedbackValue, base_plugin_->feedbackDb}
 {
 }

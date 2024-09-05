@@ -3,7 +3,7 @@
 namespace box {
 
 Equaliser::Equaliser(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::EqualiserPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::EqualiserPlugin *>(p)}{
     }
 
 void Equaliser::Render(Interface &interface) {

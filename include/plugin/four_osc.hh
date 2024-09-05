@@ -6,7 +6,7 @@
 namespace box {
 
 
-class FourOsc : public PluginManager {
+class FourOsc : public Plugin {
 public:
     FourOsc(te::Plugin *p);
     void Render(Interface &interface) override;

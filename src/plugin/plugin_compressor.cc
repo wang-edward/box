@@ -3,7 +3,7 @@
 namespace box {
 
 Compressor::Compressor(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::CompressorPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::CompressorPlugin *>(p)}{
     }
 
 void Compressor::Render(Interface &interface) {

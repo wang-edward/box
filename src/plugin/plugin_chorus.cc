@@ -3,7 +3,7 @@
 namespace box {
 
 Chorus::Chorus(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::ChorusPlugin *>(p)},
+    Plugin(p), base_plugin_{static_cast<te::ChorusPlugin *>(p)},
     knob_depth_{32, 64, 5, {0, 255, 0}, base_plugin_->depthMs, nullptr}
 {
 }

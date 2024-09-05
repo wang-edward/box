@@ -3,7 +3,7 @@
 namespace box {
 
 FourOsc:: FourOsc(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
+    Plugin(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
     knob_master_level_{32, 64, 5, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
 {
 }

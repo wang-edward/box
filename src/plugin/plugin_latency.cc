@@ -3,7 +3,7 @@
 namespace box {
 
 Latency::Latency(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::LatencyPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::LatencyPlugin *>(p)}{
     }
 
 void Latency::Render(Interface &interface) {

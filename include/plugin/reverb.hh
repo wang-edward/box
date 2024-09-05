@@ -5,7 +5,7 @@
 namespace box {
 
 
-class Reverb : public PluginManager {
+class Reverb : public Plugin {
 public:
     Reverb(te::Plugin *p);
     void Render(Interface &interface) override;

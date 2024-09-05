@@ -3,7 +3,7 @@
 namespace box {
 
 ToneGenerator::ToneGenerator(te::Plugin *p): 
-    PluginManager(p), base_plugin_{static_cast<te::ToneGeneratorPlugin *>(p)}{
+    Plugin(p), base_plugin_{static_cast<te::ToneGeneratorPlugin *>(p)}{
     }
 
 void ToneGenerator::Render(Interface &interface) {

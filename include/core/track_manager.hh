@@ -12,7 +12,7 @@ class TrackManager {
 public:
     TrackManager(te::AudioTrack &track);
 
-    void AddPlugin(std::unique_ptr<PluginManager> plugin);
+    void AddPlugin(std::unique_ptr<Plugin> plugin);
     void SetActivePlugin(size_t index);
     size_t GetActivePlugin();
 
@@ -20,7 +20,7 @@ public:
     void Render(Interface& Interface);
 
 private:
-    std::vector<std::unique_ptr<PluginManager>> plugins_;
+    std::vector<std::unique_ptr<Plugin>> plugins_;
     size_t active_plugin_;
     te::AudioTrack &track_;
 };

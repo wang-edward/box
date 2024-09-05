@@ -4,15 +4,15 @@
 
 namespace box {
 
-class PluginManager {
+class Plugin {
 public:
-    PluginManager(te::Plugin *p);
+    Plugin(te::Plugin *p);
 
     virtual void Render(Interface &interface) = 0;
     virtual void HandleEvent(const Event& event) = 0;
     te::Plugin *const GetPlugin() const; 
 
-    virtual ~PluginManager() {}
+    virtual ~Plugin() {}
 private:
     te::Plugin *const plugin_;
 };
