@@ -47,7 +47,7 @@ int main() {
     auto first_track = te::getAudioTracks(edit)[0];
 
     box::Interface interface{window};
-    std::unique_ptr<box::TrackManager> track_manager = std::make_unique<box::TrackManager>(*first_track);
+    std::unique_ptr<box::Track> track_manager = std::make_unique<box::Track>(*first_track);
 
     te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
     track_manager->AddPlugin(std::make_unique<box::FourOsc>(four_osc));
@@ -79,7 +79,7 @@ int main() {
     track_manager->SetActivePlugin(1);
 
     box::Manager manager;
-    manager.AddTrackManager(0, std::move(track_manager));
+    manager.AddTrack(0, std::move(track_manager));
 
     // box::Mesh m{
     //     {

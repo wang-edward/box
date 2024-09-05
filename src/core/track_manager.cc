@@ -5,27 +5,27 @@ namespace box {
 
 static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, size_t index, std::string function_name) {
     if (index >= plugins.size()) {
-        throw std::runtime_error{"TrackManager::" + function_name + " => index ["+ std::to_string(index) + "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
+        throw std::runtime_error{"Track::" + function_name + " => index ["+ std::to_string(index) + "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
     }
 }
 
-TrackManager:: TrackManager(te::AudioTrack &track): track_{track} {}
+Track:: Track(te::AudioTrack &track): track_{track} {}
 
-void TrackManager:: AddPlugin(std::unique_ptr<Plugin> plugin) {
+void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) {
     size_t index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_.push_back(std::move(plugin));
 }
 
-void TrackManager:: SetActivePlugin(size_t index) {
+void Track:: SetActivePlugin(size_t index) {
     active_plugin_ = index;
 }
 
-size_t TrackManager:: GetActivePlugin() {
+size_t Track:: GetActivePlugin() {
     return active_plugin_;
 }
 
-void TrackManager:: HandleEvent(const Event& event) {
+void Track:: HandleEvent(const Event& event) {
     assert_plugins(plugins_, active_plugin_, "handleEvent");
 
     if (event.type == EventType::KeyPress && 
@@ -42,7 +42,7 @@ void TrackManager:: HandleEvent(const Event& event) {
     plugins_[active_plugin_]->HandleEvent(event);
 }
 
-void TrackManager:: Render(Interface& interface) {
+void Track:: Render(Interface& interface) {
     assert_plugins(plugins_, active_plugin_, "render");
     plugins_[active_plugin_]->Render(interface);
 }
