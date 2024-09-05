@@ -1,5 +1,5 @@
 # doing?
-- cpu backend
+- ui
 # todo
 - use te::Track inheritance instead of te::AudioTrack
 - use glm::vec3 instead of Color
