@@ -9,6 +9,10 @@
 namespace box {
 
 class Track {
+    enum class ScreenState {
+        Overview,
+        Plugin,
+    };
 public:
     Track(te::AudioTrack &track);
 
