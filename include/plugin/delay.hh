@@ -15,6 +15,8 @@ public:
 private:
     te::DelayPlugin *base_plugin_;
     Knob<float> knob_feedback_;
+    Knob<float> knob_mix_;
+    // knob_length_
 };
 
 

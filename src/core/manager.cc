@@ -1,4 +1,5 @@
 #include "core/manager.hh"
+#include <algorithm>
 
 namespace box {
 
@@ -9,13 +10,16 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
-Manager:: Manager() : current_track_{0} {
-    tracks_.resize(NUM_TRACKS);
+size_t clamp_decrement(size_t x) {
+    if (x == 0) return 0;
+    else return x - 1;
 }
 
-void Manager:: AddTrack(size_t index, std::unique_ptr<Track> track_manager) {
-    assert_tracks(tracks_, index, "addTrack");
-    tracks_[index] = std::move(track_manager);
+Manager:: Manager() : current_track_{0} {
+}
+
+void Manager:: AddTrack(std::unique_ptr<Track> track) {
+    tracks_.push_back(std::move(track));
 }
 
 void Manager:: SetCurrentTrack(size_t track_index) {
@@ -26,19 +30,46 @@ void Manager:: SetCurrentTrack(size_t track_index) {
 
 void Manager:: Render(Interface& interface) {
     assert_tracks(tracks_, current_track_, "render");
-    tracks_[current_track_]->Render(interface);
+    switch (screen_state_) {
+        case ScreenState::Timeline:
+            // render timeline
+            break;
+        case ScreenState::Track:
+            tracks_[current_track_]->Render(interface);
+            break;
+    }
 }
 
 void Manager:: HandleEvent(const Event& event) {
-
     assert_tracks(tracks_, current_track_, "handleEvent");
-
-    if (current_track_ >= 0 && current_track_ < NUM_TRACKS) {
-        tracks_[current_track_]->HandleEvent(event);
-    } else {
-        throw std::runtime_error{"Manager::handleEvent(): index [" + std::to_string(current_track_) + 
-            "] out of range [0, " + std::to_string(NUM_TRACKS) + "]"};
+    switch (screen_state_) {
+        case ScreenState::Timeline:
+            switch (event.type) {
+                case EventType::KeyPress:
+                    switch (event.value) {
+                        case GLFW_KEY_ENTER:
+                            screen_state_ = ScreenState::Track;
+                            break;
+                        case GLFW_KEY_UP:
+                            current_track_ = std::min(current_track_ + 1, tracks_.size() - 1);
+                            break;
+                        case GLFW_KEY_DOWN:
+                            current_track_ = clamp_decrement(current_track_);
+                            break;
+                    }
+                    break;
+            }
+            LOG_VAR(current_track_);
+            break;
+        case ScreenState::Track:
+            if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ESCAPE) {
+                screen_state_ = ScreenState::Timeline;
+            } else {
+                tracks_[current_track_]->HandleEvent(event);
+            }
+            break;
     }
+
 }
 
 } // namespace box

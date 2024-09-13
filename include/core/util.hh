@@ -23,7 +23,7 @@ namespace te = tracktion;
 namespace box {
 
 
-constexpr int NUM_TRACKS = 8;
+constexpr size_t NUM_TRACKS = 4;
 
 enum class LogLevel {Off, Debug, Warn, Err};
 
@@ -60,6 +60,8 @@ enum class DeviceType {
 enum class EventType {
     KeyPress,
     KeyRelease,
+    PotDown,
+    PotUp,
 };
 
 struct Event {

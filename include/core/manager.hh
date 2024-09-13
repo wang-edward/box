@@ -11,7 +11,7 @@ class Manager {
     };
 public:
     Manager();
-    void AddTrack(size_t index, std::unique_ptr<Track> track_manager);
+    void AddTrack(std::unique_ptr<Track> track);
     void SetCurrentTrack(size_t track_manager);
 
     void Render(Interface& interface);

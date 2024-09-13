@@ -79,7 +79,7 @@ int main() {
     track_manager->SetActivePlugin(1);
 
     box::Manager manager;
-    manager.AddTrack(0, std::move(track_manager));
+    manager.AddTrack(std::move(track_manager));
 
     try {
         auto &transport = edit.getTransport();

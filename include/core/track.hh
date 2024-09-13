@@ -24,9 +24,11 @@ public:
     void Render(Interface& Interface);
 
 private:
+    static constexpr size_t MAX_PLUGINS = 8;
     std::vector<std::unique_ptr<Plugin>> plugins_;
     size_t active_plugin_;
     te::AudioTrack &track_;
+    ScreenState screen_state_;
 };
 
 } // namespace box
