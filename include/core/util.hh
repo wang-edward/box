@@ -13,18 +13,17 @@ namespace te = tracktion;
 namespace box {
 
 
-constexpr size_t NUM_TRACKS = 4;
+constexpr size_t MAX_TRACKS = 8;
 
 enum class LogLevel {Off, Debug, Warn, Err};
 LogLevel string_to_loglevel(const std::string& s);
 std::string loglevel_to_string(LogLevel l);
 LogLevel get_loglevel();
 const LogLevel LOGLEVEL = get_loglevel();
-void log_msg(LogLevel l, const std::string& msg);
-#define LOG_MSG(l, msg) log_msg(l, msg)
+void LOG_MSG(const std::string& msg, LogLevel l = LogLevel::Debug);
 template<typename T>
 void log_var(const std::string &var_name, const T &var_value) {
-    log_msg(LogLevel::Debug, var_name + ": " + std::to_string(var_value));
+    LOG_MSG(var_name + ": " + std::to_string(var_value), LogLevel::Debug);
 }
 #define LOG_VAR(var) log_var(#var, var)
 

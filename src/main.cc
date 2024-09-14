@@ -25,7 +25,7 @@ int main() {
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
 
-    edit.ensureNumberOfAudioTracks(1);
+    edit.ensureNumberOfAudioTracks(8);
     auto first_track = te::getAudioTracks(edit)[0];
 
     box::Interface interface{};
@@ -60,8 +60,8 @@ int main() {
 
     track_manager->SetActivePlugin(1);
 
-    box::Manager manager;
-    manager.AddTrack(std::move(track_manager));
+    box::Manager manager(te::getAudioTracks(edit));
+    // manager.AddTrack(std::move(track_manager));
 
     try {
         auto &transport = edit.getTransport();

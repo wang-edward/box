@@ -10,17 +10,21 @@ class Manager {
         Track,
     };
 public:
-    Manager();
-    void AddTrack(std::unique_ptr<Track> track);
+    Manager(juce::Array<te::AudioTrack*> base_tracks);
     void SetCurrentTrack(size_t track_manager);
 
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
+// private:
+
+    void AddTrack();
+
     // TODO use array instead
-    std::vector<std::unique_ptr<Track>> tracks_;
     size_t current_track_;
     ScreenState screen_state_;
+    juce::Array<te::AudioTrack*> base_tracks_;
+    std::vector<std::unique_ptr<Track>> tracks_;
 };
 
 } // namespace box

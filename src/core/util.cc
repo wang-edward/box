@@ -27,7 +27,7 @@ LogLevel get_loglevel() {
     return LogLevel::Off; // default
 }
 
-void log_msg(LogLevel l, const std::string& msg) {
+void LOG_MSG(const std::string& msg, LogLevel l) {
     static LogLevel curr = get_loglevel();
 
     if (l < curr) {

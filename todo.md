@@ -1,5 +1,6 @@
 # doing?
 - UI
+- use te::Track inheritance instead of te::AudioTrack
 
 # SHA
 - Rewrite Parameter to be better
@@ -7,14 +8,37 @@
 
 # todo
 ## easy
-- use te::Track inheritance instead of te::AudioTrack
-- use glm::vec3 instead of Color
 
 ## long term
-- back to raylib backend
 - patchbay?
 
-# graphics notes
-cpu
-- make lowest level components with DrawPixel()
-- to swap to GPU, reimplement Render() with meshes
+## how do tracks work?
+inheritance
+- Track
+    - AutomationTrack
+    - ChordTrack
+    - ClipTrack
+        - ArrangerTrack
+        - AudioTrack
+        - MarkerTrack
+    - FolderTrack
+    - MasterTrack
+    - TempoTrack
+- TrackCompManager
+- EditItem
+
+How does TrackOutputWork?
+Example
+```cpp
+void AudioTrack::injectLiveMidiMessage (const MidiMessageArray::MidiMessageWithSource& message)
+{
+    TRACKTION_ASSERT_MESSAGE_THREAD
+    bool wasUsed = false;
+    listeners.call (&Listener::injectLiveMidiMessage, *this, message, wasUsed);
+
+    if (! wasUsed)
+        edit.warnOfWastedMidiMessages (nullptr, this);
+}
+```
+- TrackOutput is set up as a Listener to AudioTrack???
+- and then when this is called TrackOutput gets it and thats what makes the sound?
