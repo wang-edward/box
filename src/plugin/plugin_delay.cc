@@ -17,19 +17,19 @@ void Delay:: HandleEvent(const Event &event) {
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
-                case GLFW_KEY_1:
+                case KEY_ONE:
                     LOG_VAR(knob_feedback_.param_.GetNorm());
                     knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() + 0.125);
                     break;
-                case GLFW_KEY_2:
+                case KEY_TWO:
                     LOG_VAR(knob_feedback_.param_.GetNorm());
                     knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() - 0.125);
                     break;
-                case GLFW_KEY_3:
+                case KEY_THREE:
                     LOG_VAR(knob_mix_.param_.GetNorm());
                     knob_mix_.param_.SetNorm(knob_mix_.param_.GetNorm() + 0.125);
                     break;
-                case GLFW_KEY_4:
+                case KEY_FOUR:
                     LOG_VAR(knob_mix_.param_.GetNorm());
                     knob_mix_.param_.SetNorm(knob_mix_.param_.GetNorm() - 0.125);
                     break;

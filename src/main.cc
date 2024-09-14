@@ -17,28 +17,10 @@
 #include "plugin/reverb.hh"
 #include "plugin/tone_generator.hh"
 
+#include "raylib.h"
+
 int main() {
-    const juce::ScopedJuceInitialiser_GUI initialiser;
-
-    if (!glfwInit()) {
-        throw std::runtime_error("Failed to initialize GLFW");
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow *window = glfwCreateWindow(box::Interface::WIDTH * 4, box::Interface::HEIGHT * 4, "128x128 Display", nullptr, nullptr);
-    if (!window) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to create GLFW window");
-    }
-
-    glfwMakeContextCurrent(window);
-
-    if (glewInit() != GLEW_OK) {
-        throw std::runtime_error("Failed to initialize GLEW");
-    }
+    const juce::ScopedJuceInitialiser_GUI initialiser; // TODO what does this do
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
@@ -46,7 +28,7 @@ int main() {
     edit.ensureNumberOfAudioTracks(1);
     auto first_track = te::getAudioTracks(edit)[0];
 
-    box::Interface interface{window};
+    box::Interface interface{};
     std::unique_ptr<box::Track> track_manager = std::make_unique<box::Track>(*first_track);
 
     te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
@@ -87,19 +69,18 @@ int main() {
         while (!interface.ShouldClose()) {
             // poll and handle events
             box::Event event;
-            while (interface.PollEvent(event)) {
+            if (interface.PollEvent(event)) {
                 manager.HandleEvent(event);
             }
 
-            interface.PrepRender();
+            interface.PreRender();
 
             // do rendering
             {
-                // m.Render(pixel_shader, &red_tex);
                 manager.Render(interface);
             }
 
-            interface.Display();
+            interface.PostRender();
         }
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

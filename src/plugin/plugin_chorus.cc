@@ -16,11 +16,11 @@ void Chorus::HandleEvent(const Event &event) {
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
-                case GLFW_KEY_1:
+                case KEY_ONE:
                     LOG_VAR(knob_depth_.param_.GetValue());
                     knob_depth_.param_.SetValue(knob_depth_.param_.GetValue() + 0.125);
                     break;
-                case GLFW_KEY_2:
+                case KEY_TWO:
                     LOG_VAR(knob_depth_.param_.GetValue());
                     knob_depth_.param_.SetValue(knob_depth_.param_.GetValue() - 0.125);
                     break;

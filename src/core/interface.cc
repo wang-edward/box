@@ -1,28 +1,14 @@
 #include "core/interface.hh"
 #include <iostream>
+#include <algorithm>
 
 namespace box {
 
-Interface:: Interface(GLFWwindow *window):
-    window_{window},
-    pixel_shader_{"shader/texture.vert", "shader/texture.frag"},
-    pixel_quad_{
-        {
-            // Positions      // Texture Coords
-            -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,   // Top-left
-            -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,   // Bottom-left
-             1.0f, -1.0f, 0.0f,  1.0f, 0.0f,   // Bottom-right
-             1.0f,  1.0f, 0.0f,  1.0f, 1.0f    // Top-right
-        }, 
-        {
-            0, 1, 2,  // First triangle (Top-left, Bottom-left, Bottom-right)
-            2, 3, 0   // Second triangle (Bottom-right, Top-right, Top-left)
-        },
-        Mesh::Primitive::Triangles
-    }
-{
-    pixel_tex_.SetData(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    pixel_tex_.SetFiltering(GL_NEAREST, GL_NEAREST);
+Interface:: Interface() {
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(512, 512, "raylib - Rescalable 128x128 render");
+    target_ = LoadRenderTexture(WIDTH, HEIGHT);
+    SetTargetFPS(60);
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
@@ -31,83 +17,62 @@ Interface:: Interface(GLFWwindow *window):
 
 Interface:: ~Interface() {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
-        glfwDestroyWindow(window_);
-        glfwTerminate();
+        UnloadRenderTexture(target_);
+        CloseWindow();
     }
 }
 
-void Interface:: PrepRender() {
-    // Render to framebuffer
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    pixel_array_.fill({0, 0, 0});
-    
-    // do the rest of the rendering
+void Interface:: PreRender() {
+    BeginTextureMode(target_); // matches PostRender
+    ClearBackground(BLACK);
 }
 
-void Interface:: Display() {
+void Interface:: PostRender() {
     if (DISPLAY_TYPE == DeviceType::Emulator) {
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        int screen_width = GetScreenWidth();
+        int screen_height = GetScreenHeight();
 
-        // adjust for emu window
-        int window_width, window_height;
-        glfwGetFramebufferSize(window_, &window_width, &window_height);
-        glViewport(0, 0, window_width, window_height);
+        int square_len = std::min(screen_width, screen_height);
+        int pos_x = (screen_width - square_len) / 2;
+        int pos_y = (screen_height - square_len) / 2;
 
-        // setup texture
-        pixel_shader_.Bind();
-        pixel_tex_.Bind();
-
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixel_array_.data());
-
-        // Draw quad
-        pixel_quad_.Render(pixel_shader_, &pixel_tex_);
-
-        glfwSwapBuffers(window_);
+        EndTextureMode(); // matches PreRender
+        BeginDrawing();
+        DrawTexturePro(
+            target_.texture,
+            Rectangle{0, 0, float(target_.texture.width), float(-target_.texture.height)},
+            Rectangle{float(pos_x), float(pos_y), float(square_len), float(square_len)},
+            Vector2{0, 0},
+            0.0f,
+            WHITE
+        );
+        EndDrawing();
     // hardware rendering
     } else if (DISPLAY_TYPE == DeviceType::Hardware) {
-        GLubyte* pixels = new GLubyte[128 * 128 * 3]; // 128x128 texture with 3 components (RGB)
-        glReadPixels(0, 0, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-        for (int i = 0; i < 128*128*3; i++) {
-            if (pixels[i] > 0) {
-                std::cout << pixels[i] << " ";
-            }
-        }
-        std::cout << std::endl;
-
-        // std::cout << std::to_string(pixels[0]) << " " << std::to_string(pixels[1]) << " " << std::to_string(pixels[2]) << std::endl;
+        Image image = LoadImageFromTexture(target_.texture);
+        Color c = GetImageColor(image, 0, 0); // get pixel (0, 0)
     }
 }
 
-void Interface:: DrawPixel(uint8_t x, uint8_t y, Color color) {
-    pixel_array_[y * WIDTH + x] = color;
-}
-
+// this code has really bad performance. keys often get stuck,
+// but for the purpose of being an emulator this is fine.
 bool Interface:: PollEvent(Event& event) {
-    glfwPollEvents();
-
-    for (int value = GLFW_KEY_SPACE; value <= GLFW_KEY_LAST; ++value) {
-        int state = glfwGetKey(window_, value);
-        if (state == GLFW_PRESS) {
-            if (key_states_[value] == GLFW_RELEASE) {
-                event.type = EventType::KeyPress;
-                event.value = value;
-                key_states_[value] = state;
-                return true;
-            }
-        } else if (state == GLFW_RELEASE) {
-            if (key_states_[value] == GLFW_PRESS) {
-                event.type = EventType::KeyRelease;
-                event.value = value;
-                key_states_[value] = state;
-                return true;
-            }
+    for (auto key : keys_) {
+        if (IsKeyPressed(key)) {
+            event.type = EventType::KeyPress;
+            event.value = key;
+            return true;
+        } else if (IsKeyReleased(key)) {
+            event.type = EventType::KeyRelease;
+            event.value = key;
+            return true;
         }
     }
+    
     return false;
 }
 
-bool Interface::ShouldClose() const { return glfwWindowShouldClose(window_); }
+bool Interface::ShouldClose() const { return WindowShouldClose(); }
 
 } // namespace box

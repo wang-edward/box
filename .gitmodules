@@ -1,3 +1,6 @@
 [submodule "external/tracktion_engine"]
 	path = external/tracktion_engine
 	url = https://github.com/Tracktion/tracktion_engine
+[submodule "external/raylib"]
+	path = external/raylib
+	url = https://github.com/raysan5/raylib.git

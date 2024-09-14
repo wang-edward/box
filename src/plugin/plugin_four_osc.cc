@@ -12,7 +12,7 @@ void FourOsc:: Render(Interface &interface) {
     for (int y = 0; y < Interface::HEIGHT; ++y) {
         for (int x = 0; x < Interface::WIDTH; ++x) {
             if (x % 2 == 0 && y % 2 == 0) {
-                interface.DrawPixel(x, y, {255, 0, 0});
+                DrawCircle(x, y, 3, RED);
             }
         }
     }
@@ -24,11 +24,11 @@ void FourOsc:: HandleEvent(const Event &event) {
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
-                case GLFW_KEY_DOWN:
+                case KEY_DOWN:
                     LOG_VAR(knob_master_level_.param_.GetNorm());
                     knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() - 0.125);
                     break;
-                case GLFW_KEY_UP:
+                case KEY_UP:
                     LOG_VAR(knob_master_level_.param_.GetNorm());
                     knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() + 0.125);
                     break;
