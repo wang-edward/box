@@ -17,7 +17,10 @@
 #include "plugin/reverb.hh"
 #include "plugin/tone_generator.hh"
 
+#include "raylib.h"
+
 int main() {
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     const juce::ScopedJuceInitialiser_GUI initialiser;
 
     if (!glfwInit()) {
