@@ -9,6 +9,7 @@ Interface:: Interface() {
     InitWindow(512, 512, "raylib - Rescalable 128x128 render");
     target_ = LoadRenderTexture(WIDTH, HEIGHT);
     SetTargetFPS(60);
+    SetExitKey(0); // esc doesn't close program
 
     if constexpr (INPUT_TYPE == DeviceType::Hardware) {
         // Initialize microcontroller input handling (e.g., serial interface)
