@@ -15,7 +15,7 @@ size_t clamp_decrement(size_t x) {
     else return x - 1;
 }
 
-Manager:: Manager() : current_track_{0} {
+Manager:: Manager() : current_track_{0}, screen_state_{ScreenState::Timeline} {
 }
 
 void Manager:: AddTrack(std::unique_ptr<Track> track) {
@@ -33,6 +33,8 @@ void Manager:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Timeline:
             // render timeline
+            DrawText("TIMELINE", 10, 10, 5, DARKGRAY);
+
             break;
         case ScreenState::Track:
             tracks_[current_track_]->Render(interface);
@@ -41,19 +43,20 @@ void Manager:: Render(Interface& interface) {
 }
 
 void Manager:: HandleEvent(const Event& event) {
+    std::cout << "in" << std::endl;
     assert_tracks(tracks_, current_track_, "handleEvent");
     switch (screen_state_) {
         case ScreenState::Timeline:
             switch (event.type) {
                 case EventType::KeyPress:
                     switch (event.value) {
-                        case GLFW_KEY_ENTER:
+                        case KEY_ENTER:
                             screen_state_ = ScreenState::Track;
                             break;
-                        case GLFW_KEY_UP:
+                        case KEY_UP:
                             current_track_ = std::min(current_track_ + 1, tracks_.size() - 1);
                             break;
-                        case GLFW_KEY_DOWN:
+                        case KEY_DOWN:
                             current_track_ = clamp_decrement(current_track_);
                             break;
                     }
@@ -62,7 +65,7 @@ void Manager:: HandleEvent(const Event& event) {
             LOG_VAR(current_track_);
             break;
         case ScreenState::Track:
-            if (event.type == EventType::KeyPress && event.value == GLFW_KEY_ESCAPE) {
+            if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
                 screen_state_ = ScreenState::Timeline;
             } else {
                 tracks_[current_track_]->HandleEvent(event);
