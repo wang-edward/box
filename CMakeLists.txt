@@ -10,6 +10,7 @@ project(BOX VERSION 0.0.1)
 
 add_subdirectory(external/tracktion_engine/modules/juce)
 add_subdirectory(external/tracktion_engine/modules)
+add_subdirectory(external/raylib)
 
 # Specify CMake prefix path for Homebrew
 set(CMAKE_PREFIX_PATH /opt/homebrew/opt/glfw /opt/homebrew/opt/glew)
@@ -49,6 +50,7 @@ target_compile_definitions(Box
 
 target_link_libraries(Box
     PRIVATE
+        raylib
         tracktion::tracktion_engine
         juce::juce_core
         ${OPENGL_LIBRARIES}
