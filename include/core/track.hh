@@ -23,7 +23,7 @@ public:
     void HandleEvent(const Event& event);
     void Render(Interface& Interface);
 
-private:
+// private: // TODO
     static constexpr size_t MAX_PLUGINS = 8;
     std::vector<std::unique_ptr<Plugin>> plugins_;
     size_t active_plugin_;

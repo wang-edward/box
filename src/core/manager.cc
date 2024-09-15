@@ -1,4 +1,8 @@
 #include "core/manager.hh"
+#include "plugin/four_osc.hh"
+#include "plugin/delay.hh"
+#include "plugin/chorus.hh"
+#include "plugin/reverb.hh"
 #include <algorithm>
 
 namespace box {
@@ -10,9 +14,10 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
-Manager:: Manager(juce::Array<te::AudioTrack*> base_tracks) : 
+Manager:: Manager(te::Edit &edit):
+    edit_{edit},
     current_track_{0}, screen_state_{ScreenState::Timeline},
-    base_tracks_{base_tracks} 
+    base_tracks_{te::getAudioTracks(edit)} 
 {
     AddTrack(); // ensure there's always at least 1
 }
@@ -44,13 +49,24 @@ void Manager:: Render(Interface& interface) {
             tracks_[current_track_]->Render(interface);
             break;
         case ScreenState::PluginSelector:
-            plugin_selector_.Render(interface);
+            for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
+                if (i >= sel_plugin_names_.size()) break;
+                float x =  0;
+                float y = 16 * i;
+                float width = 128;
+                float height = 15;
+                Color color = RED;
+                if (sel_current_index_ == i) {
+                    color = BLUE;
+                }
+                DrawRectangleRec(Rectangle{x, y, width, height}, DARKGRAY);
+                DrawText(sel_plugin_names_[i].c_str(), x, y, 5, color);
+            }
             break;
     }
 }
 
 void Manager:: HandleEvent(const Event& event) {
-    LOG_VAR(tracks_.size());
     assert_tracks(tracks_, current_track_, "handleEvent");
     switch (screen_state_) {
         case ScreenState::Timeline:
@@ -91,8 +107,35 @@ void Manager:: HandleEvent(const Event& event) {
         case ScreenState::PluginSelector:
             if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
                 screen_state_ = ScreenState::Timeline;
-            } else {
-                plugin_selector_.HandleEvent(event);
+                return;
+            }
+            switch(event.type) {
+                case EventType::KeyPress:
+                    switch (event.value) {
+                        case KEY_K:
+                            sel_current_index_ = clamp_decrement(sel_current_index_);
+                            break;
+                        case KEY_J:
+                            sel_current_index_ = std::min(sel_current_index_ + 1, sel_plugin_names_.size() - 1);
+                            break;
+                        case KEY_ENTER:
+                            te::Plugin *p = edit_.getPluginCache().createNewPlugin(sel_plugin_names_[sel_current_index_], {}).get();
+                            switch(sel_current_index_) {
+                                case 0:
+                                    tracks_[current_track_]->AddPlugin(std::make_unique<FourOsc>(p));
+                                    break;
+                                case 1:
+                                    tracks_[current_track_]->AddPlugin(std::make_unique<Chorus>(p));
+                                    break;
+                                case 2:
+                                    tracks_[current_track_]->AddPlugin(std::make_unique<Reverb>(p));
+                                    break;
+                                case 3:
+                                    tracks_[current_track_]->AddPlugin(std::make_unique<Delay>(p));
+                                    break;
+                            }
+                            LOG_VAR(tracks_[current_track_]->plugins_.size());
+                    }
             }
             break;
     }

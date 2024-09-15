@@ -59,9 +59,9 @@ int main() {
     // te::Plugin * tone_generator = edit.getPluginCache().createNewPlugin(te::ToneGeneratorPlugin::xmlTypeName, {}).get();
     // track_manager->AddPlugin(std::make_unique<box::ToneGenerator>(tone_generator));
 
-    track_manager->SetActivePlugin(1);
+    // track_manager->SetActivePlugin(1);
 
-    box::Manager manager(te::getAudioTracks(edit));
+    box::Manager manager(edit);
     // manager.AddTrack(std::move(track_manager));
 
     try {
