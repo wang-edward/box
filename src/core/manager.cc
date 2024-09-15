@@ -20,8 +20,6 @@ Manager:: Manager(juce::Array<te::AudioTrack*> base_tracks) :
     base_tracks_{base_tracks} 
 {
     AddTrack(); // ensure there's always at least 1
-    custom_font_ = LoadFontEx("assets/Tiny5.ttf", 1000, nullptr, 0);
-    SetTextureFilter(custom_font_.texture, TEXTURE_FILTER_POINT);
 }
 
 void Manager:: AddTrack() {
@@ -39,8 +37,7 @@ void Manager:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Timeline:
             // render timeline
-            // DrawTextEx(custom_font_, "TIMELINE", {10, 10}, custom_font_.baseSize / 100, 1, WHITE);
-            DrawText("TIMELINE", 10, 10, 1, WHITE);
+            DrawText("TIMELINE", 10, 10, 5, DARKGRAY);
 
             break;
         case ScreenState::Track:

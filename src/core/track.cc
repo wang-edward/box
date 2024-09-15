@@ -45,17 +45,12 @@ void Track:: HandleEvent(const Event& event) {
 void Track:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Overview:
-            // switch (event.type) {
-            //     case KEY_A:
-            //         
-            // }
-            // TODO
             break;
         case ScreenState::Plugin:
             break;
     }
-    // assert_plugins(plugins_, active_plugin_, "render");
-    // plugins_[active_plugin_]->Render(interface);
+    assert_plugins(plugins_, active_plugin_, "render");
+    plugins_[active_plugin_]->Render(interface);
 }
 
 } // namespace box
