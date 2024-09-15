@@ -1,6 +1,5 @@
 # doing?
 - UI
-- use te::Track inheritance instead of te::AudioTrack
 
 # SHA
 - Rewrite Parameter to be better
@@ -8,9 +7,17 @@
 
 # todo
 ## easy
+- make const vectors arrays
 
 ## long term
 - patchbay?
+- distinction between instrument and effect? like having seperate slots for types of plugins
+- better way to manage colorschemes - MAINCOLOR, ALT1, ALT2, etc.
+
+# timeline
+- timer turns red when recording
+- timer turns grey when all tracks are muted
+- timer turns yellow when a track is solo'ed
 
 ## how do tracks work?
 inheritance

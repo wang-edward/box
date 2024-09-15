@@ -12,8 +12,11 @@ namespace te = tracktion;
 
 namespace box {
 
+// te::Edit *EDIT; // TODO good idea?? singleton?? what does that even mean
 
-constexpr size_t MAX_TRACKS = 8;
+constexpr size_t MAX_TRACKS = 4;
+
+size_t clamp_decrement(size_t x);
 
 enum class LogLevel {Off, Debug, Warn, Err};
 LogLevel string_to_loglevel(const std::string& s);

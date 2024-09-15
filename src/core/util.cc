@@ -2,6 +2,11 @@
 
 namespace box {
 
+size_t clamp_decrement(size_t x) {
+    if (x == 0) return 0;
+    else return x - 1;
+}
+
 LogLevel string_to_loglevel(const std::string& s) {
     if (s == "OFF") return LogLevel::Off;
     if (s == "DEBUG") return LogLevel::Debug;

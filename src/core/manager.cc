@@ -10,11 +10,6 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
-size_t clamp_decrement(size_t x) {
-    if (x == 0) return 0;
-    else return x - 1;
-}
-
 Manager:: Manager(juce::Array<te::AudioTrack*> base_tracks) : 
     current_track_{0}, screen_state_{ScreenState::Timeline},
     base_tracks_{base_tracks} 
@@ -37,11 +32,19 @@ void Manager:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Timeline:
             // render timeline
-            DrawText("TIMELINE", 10, 10, 5, DARKGRAY);
-
+            for (size_t i = 0; i < MAX_TRACKS; i++) {
+                float x = 0;
+                float y = (24 * i) + 32;
+                float width = 128;
+                float height = (24 * (i + 1)) + 32;
+                DrawRectangleRec(Rectangle{x, y, width, height}, colors_[i]);
+            }
             break;
         case ScreenState::Track:
             tracks_[current_track_]->Render(interface);
+            break;
+        case ScreenState::PluginSelector:
+            plugin_selector_.Render(interface);
             break;
     }
 }
@@ -71,6 +74,7 @@ void Manager:: HandleEvent(const Event& event) {
                             // AddTrack()
                             break;
                         case KEY_A: // add plugin
+                            screen_state_ = ScreenState::PluginSelector;
                             break;
                     }
                     break;
@@ -82,6 +86,13 @@ void Manager:: HandleEvent(const Event& event) {
                 screen_state_ = ScreenState::Timeline;
             } else {
                 tracks_[current_track_]->HandleEvent(event);
+            }
+            break;
+        case ScreenState::PluginSelector:
+            if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
+                screen_state_ = ScreenState::Timeline;
+            } else {
+                plugin_selector_.HandleEvent(event);
             }
             break;
     }
