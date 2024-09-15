@@ -21,6 +21,7 @@ public:
     void AddTrack();
 
     // TODO use array instead
+    Font custom_font_;
     size_t current_track_;
     ScreenState screen_state_;
     juce::Array<te::AudioTrack*> base_tracks_;

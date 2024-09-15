@@ -23,7 +23,7 @@ int main() {
     const juce::ScopedJuceInitialiser_GUI initialiser; // TODO what does this do
 
     te::Engine engine{"Tracktion Hello World"};
-    te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
+    te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forExamining, nullptr, 0};
 
     edit.ensureNumberOfAudioTracks(8);
     auto first_track = te::getAudioTracks(edit)[0];
@@ -65,7 +65,7 @@ int main() {
 
     try {
         auto &transport = edit.getTransport();
-        transport.play(false);
+        // transport.play(false);
         while (!interface.ShouldClose()) {
             // poll and handle events
             box::Event event;

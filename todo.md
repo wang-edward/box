@@ -1,6 +1,5 @@
 # doing?
 - UI
-- use te::Track inheritance instead of te::AudioTrack
 
 # SHA
 - Rewrite Parameter to be better
@@ -11,6 +10,11 @@
 
 ## long term
 - patchbay?
+
+# timeline
+- timer turns red when recording
+- timer turns grey when all tracks are muted
+- timer turns yellow when a track is solo'ed
 
 ## how do tracks work?
 inheritance
