@@ -1,4 +1,10 @@
 # doing?
+- trying to find a good way to manage state
+    - i think callbacks can be good?
+    - my problem is that Manager holds multiple screens, like the Tracks, Timeline, PluginSelector
+    - I can dispatch events and render easily downwards, but I don't know how to go the other way
+        - like modifying the state of Manager from a subcomponent
+    - The easiest way is having a reference back to Manager, but i think that's really really bad from a design standpoint
 - UI
 
 # SHA
@@ -49,3 +55,5 @@ void AudioTrack::injectLiveMidiMessage (const MidiMessageArray::MidiMessageWithS
 ```
 - TrackOutput is set up as a Listener to AudioTrack???
 - and then when this is called TrackOutput gets it and thats what makes the sound?
+- i'm just tokenizing words bro
+- dis jawn a bit complicated
