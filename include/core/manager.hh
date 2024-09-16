@@ -12,7 +12,7 @@ class Manager {
         PluginSelector,
     };
 public:
-    Manager(juce::Array<te::AudioTrack*> base_tracks);
+    Manager();
     void SetCurrentTrack(size_t track_manager);
 
     void Render(Interface& interface);

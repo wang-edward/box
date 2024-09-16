@@ -10,15 +10,14 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
-Manager:: Manager(juce::Array<te::AudioTrack*> base_tracks) : 
-    current_track_{0}, screen_state_{ScreenState::Timeline},
-    base_tracks_{base_tracks} 
+Manager:: Manager() : 
+    current_track_{0}, screen_state_{ScreenState::Timeline}
 {
     AddTrack(); // ensure there's always at least 1
 }
 
 void Manager:: AddTrack() {
-    tracks_.push_back(std::make_unique<Track>(*base_tracks_[tracks_.size()]));
+    // tracks_.push_back(std::make_unique<Track>(*base_tracks_[tracks_.size()]));
 }
 
 void Manager:: SetCurrentTrack(size_t track_index) {
