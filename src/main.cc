@@ -24,45 +24,9 @@ int main() {
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
-    // box::EDIT = &edit;
-
     edit.ensureNumberOfAudioTracks(8);
-    auto first_track = te::getAudioTracks(edit)[0];
-
     box::Interface interface{};
-    std::unique_ptr<box::Track> track_manager = std::make_unique<box::Track>(*first_track);
-
-    te::Plugin * four_osc = edit.getPluginCache().createNewPlugin(te::FourOscPlugin::xmlTypeName, {}).get();
-    track_manager->AddPlugin(std::make_unique<box::FourOsc>(four_osc));
-
-    te::Plugin * delay = edit.getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get();
-    track_manager->AddPlugin(std::make_unique<box::Delay>(delay));
-
-    // te::Plugin * phaser = edit.getPluginCache().createNewPlugin(te::PhaserPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Phaser>(phaser));
-
-    // te::Plugin * chorus = edit.getPluginCache().createNewPlugin(te::ChorusPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Chorus>(chorus));
-
-    // te::Plugin * compressor = edit.getPluginCache().createNewPlugin(te::CompressorPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Compressor>(compressor));
-
-    // te::Plugin * equaliser = edit.getPluginCache().createNewPlugin(te::EqualiserPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Equaliser>(equaliser));
-
-    // te::Plugin * latency = edit.getPluginCache().createNewPlugin(te::LatencyPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Latency>(latency));
-
-    // te::Plugin * reverb = edit.getPluginCache().createNewPlugin(te::ReverbPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::Reverb>(reverb));
-
-    // te::Plugin * tone_generator = edit.getPluginCache().createNewPlugin(te::ToneGeneratorPlugin::xmlTypeName, {}).get();
-    // track_manager->AddPlugin(std::make_unique<box::ToneGenerator>(tone_generator));
-
-    // track_manager->SetActivePlugin(1);
-
     box::Manager manager(edit);
-    // manager.AddTrack(std::move(track_manager));
 
     try {
         auto &transport = edit.getTransport();
