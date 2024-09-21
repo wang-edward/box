@@ -17,7 +17,8 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
 Manager:: Manager(te::Edit &edit):
     edit_{edit},
     current_track_{0}, screen_state_{ScreenState::Timeline},
-    base_tracks_{te::getAudioTracks(edit)} 
+    base_tracks_{te::getAudioTracks(edit)},
+    plugin_sel_{plugin_sel_callback_}
 {
     AddTrack(); // ensure there's always at least 1
 }
@@ -49,6 +50,7 @@ void Manager:: Render(Interface& interface) {
             tracks_[current_track_]->Render(interface);
             break;
         case ScreenState::PluginSelector:
+            plugin_sel_.Render(interface);
             break;
     }
 }
@@ -96,7 +98,7 @@ void Manager:: HandleEvent(const Event& event) {
                 screen_state_ = ScreenState::Timeline;
                 return;
             }
-            plugin_selector_.HandleEvent(event);
+            plugin_sel_.HandleEvent(event);
             break;
     }
 

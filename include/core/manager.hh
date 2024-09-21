@@ -36,7 +36,12 @@ public:
     size_t current_track_;
     std::vector<std::unique_ptr<Track>> tracks_;
     juce::Array<te::AudioTrack*> base_tracks_;
-    PluginSelector plugin_selector_;
+
+    std::function<void(const std::string &)> plugin_sel_callback_ = [this] (const std::string &name) {
+        std::cout << name << std::endl;
+        screen_state_ = ScreenState::Timeline;
+    };
+    PluginSelector plugin_sel_;
     // Timeline timeline_;
 
     size_t sel_current_index_ = 0;
