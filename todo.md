@@ -13,6 +13,7 @@
 - patchbay?
 - distinction between instrument and effect? like having seperate slots for types of plugins
 - better way to manage colorschemes - MAINCOLOR, ALT1, ALT2, etc.
+- better way to manage plugins - define stuff all in one place
 
 # timeline
 - timer turns red when recording
