@@ -9,12 +9,20 @@ static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, 
     }
 }
 
-Track:: Track(te::AudioTrack &track): track_{track} {}
+Track:: Track(te::AudioTrack &track): track_{track} {
+    Image star = LoadImage("assets/star_16x16_even.png");
+    icons_.star = LoadTextureFromImage(star);
+    UnloadImage(star);
+}
+
+Track:: ~Track() {
+    UnloadTexture(icons_.star);
+}
 
 void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) {
     size_t index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
-    plugins_.push_back(std::move(plugin));
+    plugins_[num_plugins_] = std::move(plugin);
 }
 
 void Track:: SetActivePlugin(size_t index) {
@@ -26,7 +34,6 @@ size_t Track:: GetActivePlugin() {
 }
 
 void Track:: HandleEvent(const Event& event) {
-    assert_plugins(plugins_, active_plugin_, "handleEvent");
 
     if (event.type == EventType::KeyPress && 
         KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) {
@@ -39,18 +46,41 @@ void Track:: HandleEvent(const Event& event) {
         track_.injectLiveMidiMessage(message, 0);
         return;
     }
-    plugins_[active_plugin_]->HandleEvent(event);
+    switch (screen_state_) {
+        case ScreenState::Overview:
+            break;
+        case ScreenState::Plugin:
+            plugins_[active_plugin_]->HandleEvent(event);
+            break;
+    }
 }
 
 void Track:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Overview:
+            // draw grid
+            for (size_t i = 1; i < GRID_SIZE; i++) {
+                float pos = static_cast<float>(i);
+                DrawLineV(Vector2{0, pos * 32}, Vector2{128, pos * 32}, WHITE);
+                DrawLineV(Vector2{pos * 32, 0}, Vector2{pos * 32, 128}, WHITE);
+            }
+
+            for (size_t i = 0; i < MAX_PLUGINS; i++) {
+                if (plugins_[i] == nullptr) {
+                    auto x = static_cast<float>((i % 4) * 32 + 16);
+                    auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
+                    DrawTextPro(GetFontDefault(), "none", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+
+                    // integer div
+                    DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f, RED);
+                    DrawTexture(icons_.star, x - 8, y - 8, WHITE);
+                }
+            }
             break;
         case ScreenState::Plugin:
+            plugins_[active_plugin_]->Render(interface);
             break;
     }
-    assert_plugins(plugins_, active_plugin_, "render");
-    plugins_[active_plugin_]->Render(interface);
 }
 
 } // namespace box

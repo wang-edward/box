@@ -34,13 +34,22 @@ void Manager:: Render(Interface& interface) {
     assert_tracks(tracks_, current_track_, "render");
     switch (screen_state_) {
         case ScreenState::Timeline:
-            // render timeline
-            for (size_t i = 0; i < MAX_TRACKS; i++) {
+            // render tracks
+            for (size_t i = 0; i < tracks_.size(); i++) {
                 float x = 0;
                 float y = (24 * i) + 32;
                 float width = 128;
-                float height = (24 * (i + 1)) + 32;
+                float height = 24;
                 DrawRectangleRec(Rectangle{x, y, width, height}, colors_[i]);
+            }
+
+            // render active track
+            {
+                float x = 0;
+                float y = (24 * current_track_) + 32;
+                float width = 128;
+                float height = 24;
+                DrawRectangleRec(Rectangle{x, y, width, height}, {0xff, 0xff, 0xff, 0x80});
             }
             break;
         case ScreenState::Track:
@@ -62,14 +71,13 @@ void Manager:: HandleEvent(const Event& event) {
                         case KEY_ENTER:
                             screen_state_ = ScreenState::Track;
                             break;
-                        case KEY_UP:
+                        case KEY_J:
                             current_track_ = std::min(current_track_ + 1, clamp_decrement(tracks_.size()));
                             break;
-                        case KEY_DOWN:
+                        case KEY_K:
                             current_track_ = clamp_decrement(current_track_);
                             break;
                         case KEY_O: // add track
-                            // assert?
                             if (tracks_.size() < MAX_TRACKS) {
                                 AddTrack();
                             }
