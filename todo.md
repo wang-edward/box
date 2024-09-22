@@ -1,11 +1,8 @@
 # doing?
-- trying to find a good way to manage state
-    - i think callbacks can be good?
-    - my problem is that Manager holds multiple screens, like the Tracks, Timeline, PluginSelector
-    - I can dispatch events and render easily downwards, but I don't know how to go the other way
-        - like modifying the state of Manager from a subcomponent
-    - The easiest way is having a reference back to Manager, but i think that's really really bad from a design standpoint
+- trying to find a good way to manage state - use callbacks
 - UI
+- figure out some way to better assert_tracks or whatever
+    - like how do i handle when an array of things has len 0
 
 # SHA
 - Rewrite Parameter to be better
