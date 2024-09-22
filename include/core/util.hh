@@ -12,7 +12,7 @@ namespace te = tracktion;
 
 namespace box {
 
-// te::Edit *EDIT; // TODO good idea?? singleton?? what does that even mean
+// static te::Edit *EDIT; // TODO good idea?? singleton?? what does that even mean
 
 constexpr size_t MAX_TRACKS = 4;
 

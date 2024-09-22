@@ -6,9 +6,16 @@ void assert_index(std::vector<std::string> v, size_t curr) {
     if (curr >= v.size()) throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
 }
 
+PluginSelector:: PluginSelector(std::function<void(const std::string &)> callback)
+    : callback_{callback}
+{
+
+}
+
 void PluginSelector:: Render(Interface &interface) {
     for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
         if (i >= plugin_names_.size()) break;
+        auto name = plugin_names_[i];
         float x =  0;
         float y = 16 * i;
         float width = 128;
@@ -18,7 +25,7 @@ void PluginSelector:: Render(Interface &interface) {
             color = BLUE;
         }
         DrawRectangleRec(Rectangle{x, y, width, height}, DARKGRAY);
-        DrawText(plugin_names_[i].c_str(), x, y, 5, color);
+        DrawText(name.c_str(), x, y, 5, color);
     }
 }
 
@@ -32,7 +39,10 @@ void PluginSelector:: HandleEvent(const Event &event) {
                 case KEY_J:
                     current_index_ = std::min(current_index_ + 1, plugin_names_.size() - 1);
                     break;
+                case KEY_ENTER:
+                    callback_(plugin_names_[current_index_]);
             }
+            break;
     }
 }
 
