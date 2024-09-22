@@ -3,6 +3,7 @@
 - UI
 - figure out some way to better assert_tracks or whatever
     - like how do i handle when an array of things has len 0
+- timeline refactor
 
 # SHA
 - Rewrite Parameter to be better
