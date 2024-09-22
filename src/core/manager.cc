@@ -1,16 +1,12 @@
 #include "core/manager.hh"
-#include "plugin/four_osc.hh"
-#include "plugin/delay.hh"
-#include "plugin/chorus.hh"
-#include "plugin/reverb.hh"
 #include <algorithm>
 
 namespace box {
 
 static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, size_t index, const std::string &name) {
-    if (!(index >= 0 && index < MAX_TRACKS)) {
+    if (tracks.size() == 0 || index >= tracks.size()) {
         throw std::runtime_error{"Manager::" + name + "(): index [" + std::to_string(index) + 
-            "] out of range: [0, " + std::to_string(MAX_TRACKS) + "]"};
+            "] out of range: [0, " + std::to_string(tracks.size()) + "]"};
     }
 }
 
@@ -21,6 +17,7 @@ Manager:: Manager(te::Edit &edit):
     plugin_sel_{plugin_sel_callback_}
 {
     AddTrack(); // ensure there's always at least 1
+    LOG_VAR(tracks_.size());
 }
 
 void Manager:: AddTrack() {
@@ -76,7 +73,6 @@ void Manager:: HandleEvent(const Event& event) {
                             if (tracks_.size() < MAX_TRACKS) {
                                 AddTrack();
                             }
-                            // AddTrack()
                             break;
                         case KEY_A: // add plugin
                             screen_state_ = ScreenState::PluginSelector;

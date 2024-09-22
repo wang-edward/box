@@ -59,5 +59,4 @@ const std::unordered_map<int, int> KEY_TO_MIDI = {
     {KEY_L, 74}   // D5
 };
 
-
 } // namespace box
