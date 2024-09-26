@@ -35,6 +35,7 @@ public:
 
     struct Icons{
         Texture2D star;
+        Texture2D four;
     };
     Icons icons_;
 };

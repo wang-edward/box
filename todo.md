@@ -1,4 +1,6 @@
 # doing?
+- Selector should be accessed through Track, not through Manager
+- icon in plugin, not in track
 
 
 # backlog

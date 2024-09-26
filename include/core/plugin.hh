@@ -15,6 +15,7 @@ public:
 
     virtual ~Plugin() {}
 private:
+    Texture2D icon_;
     te::Plugin *const plugin_;
 };
 
