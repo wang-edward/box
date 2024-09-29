@@ -20,7 +20,7 @@
 #include "raylib.h"
 
 int main() {
-    const juce::ScopedJuceInitialiser_GUI initialiser; // TODO what does this do
+   const juce::ScopedJuceInitialiser_GUI initialiser; // you need this otherwise the entire engine doesn't work??
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
