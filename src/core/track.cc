@@ -28,6 +28,7 @@ void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) {
     size_t index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_[num_plugins_] = std::move(plugin);
+    num_plugins_ += 1;
 }
 
 void Track:: SetActivePlugin(size_t index) {
@@ -71,20 +72,15 @@ void Track:: Render(Interface& interface) {
             }
 
             for (size_t i = 0; i < MAX_PLUGINS; i++) {
+                auto x = static_cast<float>((i % 4) * 32 + 16);
+                auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
                 if (plugins_[i] == nullptr) {
-                    auto x = static_cast<float>((i % 4) * 32 + 16);
-                    auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
-
-                    // integer div
                     DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f, RED);
-                    if (i >= 4) {
-                        DrawTexture(icons_.star, x - 8, y - 8, WHITE);
-                    DrawTextPro(GetFontDefault(), "star", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
-                    } else {
-                        DrawTexture(icons_.four, x - 8, y - 8, WHITE);
-                    DrawTextPro(GetFontDefault(), "4osc", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
-                    }
-                } 
+                    DrawTextPro(GetFontDefault(), "none", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+                } else {
+                    DrawTexture(plugins_[i]->icon_, x - 8, y - 8, WHITE);
+                    DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+                }
             }
             break;
         case ScreenState::Plugin:

@@ -1,6 +1,41 @@
 # doing?
+- MAKE EDIT GLOBAL
 - Selector should be accessed through Track, not through Manager
-- icon in plugin, not in track
+- Use PluginConfig instead of Plugin
+    - this holds data like the icon and the name and stuff
+    - and then we can only have 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # backlog
