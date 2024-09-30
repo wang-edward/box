@@ -3,6 +3,8 @@
 #include "core/track.hh"
 #include "core/plugin_selector.hh"
 #include "core/timeline.hh"
+#include "plugin/chorus.hh"
+#include "plugin/four_osc.hh"
 
 namespace box {
 
@@ -38,19 +40,23 @@ public:
     juce::Array<te::AudioTrack*> base_tracks_;
 
     std::function<void(const std::string &)> plugin_sel_callback_ = [this] (const std::string &name) {
-        std::cout << name << std::endl;
         screen_state_ = ScreenState::Timeline;
+        std::cout << name << std::endl;
+        
+        std::unique_ptr<Plugin> p;
+        auto base = edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
+
+        if (name == te::ChorusPlugin::xmlTypeName) {
+            p = std::make_unique<Chorus>(base);
+        } else if (name == te::FourOscPlugin::xmlTypeName) {
+            p = std::make_unique<FourOsc>(base);
+        }
+
+        tracks_[current_track_]-> AddPlugin(std::move(p));
     };
     PluginSelector plugin_sel_;
-    // Timeline timeline_;
 
-    size_t sel_current_index_ = 0;
-    const std::vector<std::string> sel_plugin_names_ = {
-        te::FourOscPlugin::xmlTypeName,
-        te::ChorusPlugin::xmlTypeName,
-        te::ReverbPlugin::xmlTypeName,
-        te::DelayPlugin::xmlTypeName,
-    };
+    Timeline timeline_;
 };
 
 } // namespace box

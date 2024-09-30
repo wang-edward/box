@@ -13,8 +13,8 @@ public:
     virtual void HandleEvent(const Event &event) = 0;
     te::Plugin *const GetPlugin() const; 
 
-    virtual ~Plugin() {}
-private:
+    virtual ~Plugin();
+    Texture2D icon_;
     te::Plugin *const plugin_;
 };
 
