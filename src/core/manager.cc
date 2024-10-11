@@ -13,8 +13,7 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
 Manager:: Manager(te::Edit &edit):
     edit_{edit},
     current_track_{0}, screen_state_{ScreenState::Timeline},
-    base_tracks_{te::getAudioTracks(edit)},
-    plugin_sel_{plugin_sel_callback_}
+    base_tracks_{te::getAudioTracks(edit)}
 {
     AddTrack(); // ensure there's always at least 1
     LOG_VAR(tracks_.size());

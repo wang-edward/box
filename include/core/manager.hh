@@ -9,12 +9,12 @@
 namespace box {
 
 class Manager {
+public:
     enum class ScreenState {
         Timeline,
         Track,
         PluginSelector,
     };
-public:
     Manager(te::Edit &edit);
     void SetCurrentTrack(size_t track_manager);
 
@@ -54,7 +54,6 @@ public:
         tracks_[current_track_]-> AddPlugin(std::move(p));
     };
     PluginSelector plugin_sel_;
-
     Timeline timeline_;
 };
 

@@ -12,17 +12,18 @@ const std::vector<std::string> PluginSelector:: PLUGIN_NAMES = {
     te::ReverbPlugin::xmlTypeName,
 };
 
-void assert_index(std::vector<std::string> v, size_t curr) {
+void assert_index(std::vector<std::string> v, size_t curr) 
+{
     if (curr >= v.size()) throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
 }
 
-PluginSelector:: PluginSelector(std::function<void(const std::string &)> callback)
-    : callback_{callback}
+PluginSelector:: PluginSelector()
 {
 
 }
 
-void PluginSelector:: Render(Interface &interface) {
+void PluginSelector:: Render(Interface &interface) 
+{
     for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
         if (i >= PLUGIN_NAMES.size()) break;
         auto name = PLUGIN_NAMES[i];
@@ -39,7 +40,8 @@ void PluginSelector:: Render(Interface &interface) {
     }
 }
 
-void PluginSelector:: HandleEvent(const Event &event) {
+void PluginSelector:: HandleEvent(const Event &event) 
+{
     switch(event.type) {
         case EventType::KeyPress:
             switch (event.value) {
@@ -50,7 +52,7 @@ void PluginSelector:: HandleEvent(const Event &event) {
                     current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
                     break;
                 case KEY_ENTER:
-                    callback_(PLUGIN_NAMES[current_index_]);
+                    // callback_(PLUGIN_NAMES[current_index_]);
             }
             break;
     }
