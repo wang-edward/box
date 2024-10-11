@@ -24,10 +24,11 @@ int main() {
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
-    box::EDIT = &edit;
     edit.ensureNumberOfAudioTracks(8);
     box::Interface interface{};
     box::Manager manager(edit);
+
+    box::MANAGER = &manager;
 
     try {
         auto &transport = edit.getTransport();

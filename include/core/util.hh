@@ -12,8 +12,8 @@ namespace te = tracktion;
 
 namespace box {
 
-// static te::Edit *EDIT; // TODO good idea?? singleton?? what does that even mean
-static te::Edit *EDIT;
+class Manager;
+static Manager *MANAGER;
 
 constexpr size_t MAX_TRACKS = 4;
 
