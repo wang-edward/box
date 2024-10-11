@@ -21,8 +21,6 @@ public:
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
-// private:
-
     void AddTrack();
 
     // TODO use array instead
@@ -46,6 +44,7 @@ public:
         std::unique_ptr<Plugin> p;
         auto base = edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
 
+        // TODO use cast?
         if (name == te::ChorusPlugin::xmlTypeName) {
             p = std::make_unique<Chorus>(base);
         } else if (name == te::FourOscPlugin::xmlTypeName) {

@@ -14,8 +14,8 @@ PluginSelector:: PluginSelector(std::function<void(const std::string &)> callbac
 
 void PluginSelector:: Render(Interface &interface) {
     for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
-        if (i >= plugin_names_.size()) break;
-        auto name = plugin_names_[i];
+        if (i >= PLUGIN_NAMES.size()) break;
+        auto name = PLUGIN_NAMES[i];
         float x =  0;
         float y = 16 * i;
         float width = 128;
@@ -37,10 +37,10 @@ void PluginSelector:: HandleEvent(const Event &event) {
                     current_index_ = clamp_decrement(current_index_);
                     break;
                 case KEY_J:
-                    current_index_ = std::min(current_index_ + 1, plugin_names_.size() - 1);
+                    current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
                     break;
                 case KEY_ENTER:
-                    callback_(plugin_names_[current_index_]);
+                    callback_(PLUGIN_NAMES[current_index_]);
             }
             break;
     }

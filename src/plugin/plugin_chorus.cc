@@ -6,6 +6,9 @@ Chorus::Chorus(te::Plugin *p):
     Plugin(p), base_plugin_{static_cast<te::ChorusPlugin *>(p)},
     knob_depth_{32, 64, 5, {0, 255, 0}, base_plugin_->depthMs, nullptr}
 {
+    Image icon = LoadImage("assets/star_16x16.png");
+    icon_ = LoadTextureFromImage(icon);
+    UnloadImage(icon);
 }
 
 void Chorus::Render(Interface &interface) {
@@ -29,6 +32,10 @@ void Chorus::HandleEvent(const Event &event) {
         case EventType::KeyRelease:
             break;
     }
+}
+
+Texture2D Chorus:: GetIcon() const {
+    return icon_;
 }
 
 } // namespace box

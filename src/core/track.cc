@@ -9,22 +9,16 @@ static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, 
     }
 }
 
-Track:: Track(te::AudioTrack &track): track_{track} {
-    Image star = LoadImage("assets/star_16x16_even.png");
-    icons_.star = LoadTextureFromImage(star);
-    UnloadImage(star);
-
-    Image four = LoadImage("assets/four_16x16.png");
-    icons_.four = LoadTextureFromImage(four);
-    UnloadImage(four);
+Track:: Track(te::AudioTrack &track): track_{track} 
+{
 }
 
-Track:: ~Track() {
-    UnloadTexture(icons_.star);
-    UnloadTexture(icons_.four);
+Track:: ~Track() 
+{
 }
 
-void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) {
+void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) 
+{
     size_t index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_[num_plugins_] = std::move(plugin);
@@ -78,7 +72,7 @@ void Track:: Render(Interface& interface) {
                     DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f, RED);
                     DrawTextPro(GetFontDefault(), "none", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
                 } else {
-                    DrawTexture(plugins_[i]->icon_, x - 8, y - 8, WHITE);
+                    DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
                     DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
                 }
             }

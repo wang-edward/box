@@ -24,7 +24,6 @@ public:
     void HandleEvent(const Event& event);
     void Render(Interface& Interface);
 
-// private: // TODO
     static constexpr size_t MAX_PLUGINS = 8;
     static constexpr size_t GRID_SIZE = 4;
     std::array<std::unique_ptr<Plugin>, MAX_PLUGINS> plugins_ = { nullptr };
@@ -32,12 +31,6 @@ public:
     size_t active_plugin_ = -1; // TODO what is this bro
     te::AudioTrack &track_;
     ScreenState screen_state_ = ScreenState::Overview;
-
-    struct Icons{
-        Texture2D star;
-        Texture2D four;
-    };
-    Icons icons_;
 };
 
 } // namespace box
