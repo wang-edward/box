@@ -2,6 +2,16 @@
 
 namespace box {
 
+const std::vector<std::string> PluginSelector:: PLUGIN_NAMES = {
+    te::FourOscPlugin::xmlTypeName,
+    te::ChorusPlugin::xmlTypeName,
+    te::CompressorPlugin::xmlTypeName,
+    te::DelayPlugin::xmlTypeName,
+    te::EqualiserPlugin::xmlTypeName,
+    te::PhaserPlugin::xmlTypeName,
+    te::ReverbPlugin::xmlTypeName,
+};
+
 void assert_index(std::vector<std::string> v, size_t curr) {
     if (curr >= v.size()) throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
 }
