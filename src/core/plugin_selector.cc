@@ -51,7 +51,7 @@ void PluginSelector:: HandleEvent(const Event &event)
                 case KEY_J:
                     current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
                     break;
-                case KEY_ENTER:
+                // case KEY_ENTER:
                     // callback_(PLUGIN_NAMES[current_index_]);
             }
             break;
