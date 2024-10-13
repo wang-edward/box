@@ -1,16 +1,16 @@
-#include "core/manager.hh"
+#include "core/app.hh"
 #include <algorithm>
 
 namespace box {
 
 static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, size_t index, const std::string &name) {
     if (tracks.size() == 0 || index >= tracks.size()) {
-        throw std::runtime_error{"Manager::" + name + "(): index [" + std::to_string(index) + 
+        throw std::runtime_error{"App::" + name + "(): index [" + std::to_string(index) + 
             "] out of range: [0, " + std::to_string(tracks.size()) + "]"};
     }
 }
 
-Manager:: Manager(te::Edit &edit):
+App:: App(te::Edit &edit):
     edit_{edit},
     current_track_{0}, screen_state_{ScreenState::Timeline},
     base_tracks_{te::getAudioTracks(edit)}
@@ -19,17 +19,17 @@ Manager:: Manager(te::Edit &edit):
     LOG_VAR(tracks_.size());
 }
 
-void Manager:: AddTrack() {
+void App:: AddTrack() {
     tracks_.push_back(std::make_unique<Track>(*base_tracks_[tracks_.size()]));
 }
 
-void Manager:: SetCurrentTrack(size_t track_index) {
+void App:: SetCurrentTrack(size_t track_index) {
     if (track_index >= 0 && track_index < MAX_TRACKS) {
         current_track_ = track_index;
     }
 }
 
-void Manager:: Render(Interface& interface) {
+void App:: Render(Interface& interface) {
     assert_tracks(tracks_, current_track_, "render");
     switch (screen_state_) {
         case ScreenState::Timeline:
@@ -44,7 +44,7 @@ void Manager:: Render(Interface& interface) {
     }
 }
 
-void Manager:: HandleEvent(const Event& event) {
+void App:: HandleEvent(const Event& event) {
     assert_tracks(tracks_, current_track_, "handleEvent");
     switch (screen_state_) {
         case ScreenState::Timeline:

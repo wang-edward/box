@@ -6,7 +6,7 @@
 #include "core/util.hh"
 #include "core/interface.hh"
 #include "core/track.hh"
-#include "core/manager.hh"
+#include "core/app.hh"
 #include "plugin/four_osc.hh"
 #include "plugin/delay.hh"
 #include "plugin/phaser.hh"
@@ -27,8 +27,8 @@ int main() {
     edit.ensureNumberOfAudioTracks(8);
     box::Interface interface{};
 
-    box::Manager manager(edit);
-    box::MANAGER = &manager;
+    box::App app(edit);
+    box::APP = &app;
 
     try {
         auto &transport = edit.getTransport();
@@ -37,14 +37,14 @@ int main() {
             // poll and handle events
             box::Event event;
             if (interface.PollEvent(event)) {
-                manager.HandleEvent(event);
+                app.HandleEvent(event);
             }
 
             interface.PreRender();
 
             // do rendering
             {
-                manager.Render(interface);
+                app.Render(interface);
             }
 
             interface.PostRender();

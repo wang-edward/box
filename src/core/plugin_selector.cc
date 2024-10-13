@@ -1,5 +1,5 @@
 #include "core/plugin_selector.hh"
-#include "core/manager.hh"
+#include "core/app.hh"
 
 namespace box {
 
@@ -53,18 +53,18 @@ void PluginSelector:: HandleEvent(const Event &event)
                     current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
                     break;
                case KEY_ENTER:
-                    MANAGER->screen_state_ = Manager::ScreenState::Timeline;
+                    APP->screen_state_ = App::ScreenState::Timeline;
                     const auto &name = PLUGIN_NAMES[current_index_];
 
                     std::unique_ptr<Plugin> p;
-                    auto base = MANAGER->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
+                    auto base = APP->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
                     // TODO use cast?
                     if (name == te::ChorusPlugin::xmlTypeName) {
                         p = std::make_unique<Chorus>(base);
                     } else if (name == te::FourOscPlugin::xmlTypeName) {
                         p = std::make_unique<FourOsc>(base);
                     }
-                    MANAGER->tracks_[MANAGER->current_track_]-> AddPlugin(std::move(p));
+                    APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));
                     break;
             }
             break;

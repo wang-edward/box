@@ -2,7 +2,7 @@
 
 namespace box {
 
-Manager* MANAGER = nullptr;  // Define the global MANAGER variable
+App* APP = nullptr;  // Define the global APP variable
 
 size_t clamp_decrement(size_t x) {
     if (x == 0) return 0;

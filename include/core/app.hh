@@ -8,7 +8,7 @@
 
 namespace box {
 
-class Manager {
+class App {
 public:
     enum class ScreenState {
         Timeline,
@@ -16,11 +16,11 @@ public:
         PluginSelector,
     };
 
-    Manager(te::Edit &edit);
+    App(te::Edit &edit);
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
-    void SetCurrentTrack(size_t track_manager);
+    void SetCurrentTrack(size_t track_app);
     void AddTrack();
 
     te::Edit &edit_ ;
