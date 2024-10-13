@@ -13,7 +13,7 @@ namespace te = tracktion;
 namespace box {
 
 class Manager;
-static Manager *MANAGER;
+extern Manager *MANAGER;
 
 constexpr size_t MAX_TRACKS = 4;
 
