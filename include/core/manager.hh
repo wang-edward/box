@@ -17,9 +17,10 @@ public:
     };
 
     Manager(te::Edit &edit);
-    void SetCurrentTrack(size_t track_manager);
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
+
+    void SetCurrentTrack(size_t track_manager);
     void AddTrack();
 
     te::Edit &edit_ ;
