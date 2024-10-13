@@ -2,8 +2,4 @@
 
 namespace box {
 
-Plugin:: ~Plugin() {
-    UnloadTexture(icon_);
-}
-
 }

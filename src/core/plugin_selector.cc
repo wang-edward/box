@@ -1,21 +1,33 @@
 #include "core/plugin_selector.hh"
+#include "core/manager.hh"
 
 namespace box {
 
-void assert_index(std::vector<std::string> v, size_t curr) {
+const std::vector<std::string> PluginSelector:: PLUGIN_NAMES = {
+    te::FourOscPlugin::xmlTypeName,
+    te::ChorusPlugin::xmlTypeName,
+    te::CompressorPlugin::xmlTypeName,
+    te::DelayPlugin::xmlTypeName,
+    te::EqualiserPlugin::xmlTypeName,
+    te::PhaserPlugin::xmlTypeName,
+    te::ReverbPlugin::xmlTypeName,
+};
+
+void assert_index(std::vector<std::string> v, size_t curr) 
+{
     if (curr >= v.size()) throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
 }
 
-PluginSelector:: PluginSelector(std::function<void(const std::string &)> callback)
-    : callback_{callback}
+PluginSelector:: PluginSelector()
 {
 
 }
 
-void PluginSelector:: Render(Interface &interface) {
+void PluginSelector:: Render(Interface &interface) 
+{
     for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
-        if (i >= plugin_names_.size()) break;
-        auto name = plugin_names_[i];
+        if (i >= PLUGIN_NAMES.size()) break;
+        auto name = PLUGIN_NAMES[i];
         float x =  0;
         float y = 16 * i;
         float width = 128;
@@ -29,7 +41,8 @@ void PluginSelector:: Render(Interface &interface) {
     }
 }
 
-void PluginSelector:: HandleEvent(const Event &event) {
+void PluginSelector:: HandleEvent(const Event &event) 
+{
     switch(event.type) {
         case EventType::KeyPress:
             switch (event.value) {
@@ -37,10 +50,22 @@ void PluginSelector:: HandleEvent(const Event &event) {
                     current_index_ = clamp_decrement(current_index_);
                     break;
                 case KEY_J:
-                    current_index_ = std::min(current_index_ + 1, plugin_names_.size() - 1);
+                    current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
                     break;
-                case KEY_ENTER:
-                    callback_(plugin_names_[current_index_]);
+               case KEY_ENTER:
+                    MANAGER->screen_state_ = Manager::ScreenState::Timeline;
+                    const auto &name = PLUGIN_NAMES[current_index_];
+
+                    std::unique_ptr<Plugin> p;
+                    auto base = MANAGER->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
+                    // TODO use cast?
+                    if (name == te::ChorusPlugin::xmlTypeName) {
+                        p = std::make_unique<Chorus>(base);
+                    } else if (name == te::FourOscPlugin::xmlTypeName) {
+                        p = std::make_unique<FourOsc>(base);
+                    }
+                    MANAGER->tracks_[MANAGER->current_track_]-> AddPlugin(std::move(p));
+                    break;
             }
             break;
     }

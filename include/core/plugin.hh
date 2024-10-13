@@ -8,13 +8,13 @@ namespace box {
 class Plugin {
 public:
     Plugin(te::Plugin *p);
+    virtual ~Plugin() = default;
 
     virtual void Render(Interface &interface) = 0;
     virtual void HandleEvent(const Event &event) = 0;
     te::Plugin *const GetPlugin() const; 
 
-    virtual ~Plugin();
-    Texture2D icon_;
+    virtual Texture2D GetIcon() const = 0;
     te::Plugin *const plugin_;
 };
 

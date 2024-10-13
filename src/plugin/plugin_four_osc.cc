@@ -9,9 +9,15 @@ FourOsc:: FourOsc(te::Plugin *p):
     Image four = LoadImage("assets/four_16x16.png");
     icon_ = LoadTextureFromImage(four);
     UnloadImage(four);
+
+    // TODO for testing effects
     for (int i = 0; i < base_plugin_->oscParams.size(); i++) {
         base_plugin_->oscParams[i]->waveShapeValue.setValue(2, nullptr);
     }
+}
+
+FourOsc:: ~FourOsc() {
+    UnloadTexture(icon_);
 }
 
 void FourOsc:: Render(Interface &interface) {
@@ -31,9 +37,7 @@ void FourOsc:: HandleEvent(const Event &event) {
         case EventType::KeyPress:
             switch(event.value) {
                 case KEY_DOWN:
-                    LOG_VAR(knob_master_level_.param_.GetNorm());
-                    knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() - 0.125);
-                    break;
+                    LOG_VAR(knob_master_level_.param_.GetNorm()); knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() - 0.125); break;
                 case KEY_UP:
                     LOG_VAR(knob_master_level_.param_.GetNorm());
                     knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() + 0.125);
@@ -43,6 +47,10 @@ void FourOsc:: HandleEvent(const Event &event) {
         case EventType::KeyRelease:
             break;
     }
+}
+
+Texture2D FourOsc:: GetIcon() const {
+    return icon_;
 }
 
 } // namespace box
