@@ -8,14 +8,17 @@
 
 namespace box {
 
-class App {
-public:
+struct App {
     enum class ScreenState {
         Timeline,
         Track,
         PluginSelector,
     };
 
+    enum class Mode {
+        Normal,
+        Insert,
+    };
     App(te::Edit &edit);
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
@@ -23,8 +26,10 @@ public:
     void SetCurrentTrack(size_t track_app);
     void AddTrack();
 
-    te::Edit &edit_ ;
     ScreenState screen_state_;
+    Mode mode_;
+
+    te::Edit &edit_ ;
 
     size_t current_track_;
     std::vector<std::unique_ptr<Track>> tracks_;

@@ -12,7 +12,7 @@ namespace te = tracktion;
 
 namespace box {
 
-class App;
+struct App;
 extern App *APP;
 
 constexpr size_t MAX_TRACKS = 4;
