@@ -12,7 +12,7 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
 
 App:: App(te::Edit &edit):
     edit_{edit},
-    current_track_{0}, screen_state_{ScreenState::Timeline},
+    current_track_{0},
     base_tracks_{te::getAudioTracks(edit)}
 {
     AddTrack(); // ensure there's always at least 1
