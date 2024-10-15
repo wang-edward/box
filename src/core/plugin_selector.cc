@@ -44,30 +44,34 @@ void PluginSelector:: Render(Interface &interface)
 void PluginSelector:: HandleEvent(const Event &event) 
 {
     switch(event.type) {
-        case EventType::KeyPress:
-            switch (event.value) {
-                case KEY_K:
-                    current_index_ = clamp_decrement(current_index_);
-                    break;
-                case KEY_J:
-                    current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
-                    break;
-               case KEY_ENTER:
-                    APP->screen_state_ = App::ScreenState::Timeline;
-                    const auto &name = PLUGIN_NAMES[current_index_];
-
-                    std::unique_ptr<Plugin> p;
-                    auto base = APP->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
-                    // TODO use cast?
-                    if (name == te::ChorusPlugin::xmlTypeName) {
-                        p = std::make_unique<Chorus>(base);
-                    } else if (name == te::FourOscPlugin::xmlTypeName) {
-                        p = std::make_unique<FourOsc>(base);
-                    }
-                    APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));
-                    break;
-            }
+    case EventType::KeyPress:
+        switch (event.value) {
+        case KEY_ESCAPE:
+            APP->screen_state_ = App::ScreenState::Track;
             break;
+        case KEY_K:
+            current_index_ = clamp_decrement(current_index_);
+            break;
+        case KEY_J:
+            current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
+            break;
+       case KEY_ENTER:
+            // TODO proper back button?
+            APP->screen_state_ = App::ScreenState::Track;
+            const auto &name = PLUGIN_NAMES[current_index_];
+
+            std::unique_ptr<Plugin> p;
+            auto base = APP->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
+            // TODO use cast?
+            if (name == te::ChorusPlugin::xmlTypeName) {
+                p = std::make_unique<Chorus>(base);
+            } else if (name == te::FourOscPlugin::xmlTypeName) {
+                p = std::make_unique<FourOsc>(base);
+            }
+            APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));
+            break;
+        }
+        break;
     }
 }
 
