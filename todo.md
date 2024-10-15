@@ -1,50 +1,14 @@
 # doing?
-- MAKE EDIT GLOBAL: wait why
-- Selector should be accessed through Track, not through Manager
-- Use PluginConfig instead of Plugin
+[*] Selector should be accessed through Track, not through Manager
+[ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
     - and then we can only have 
 
-- make class into struct
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# backlog
-- trying to find a good way to manage state - use callbacks
-- UI
-
-
+# formatting stuff to keep in mind (virus type spread)
+- make class into struct 
+- put { on nextline of func def
+- same thing for if? cuz when u have a long if statement its not obvious when the conditional ends and the code begins
+- dont indent after switch
 
 # SHA
 - Rewrite Parameter to be better
@@ -67,6 +31,7 @@
 - better way to manage colorschemes - MAINCOLOR, ALT1, ALT2, etc.
 - better way to manage plugins - define stuff all in one place
 - timeline refactor - should Timeline == Manager?
+- store icon in static plugin, uses way too much memory for no reason
 
 # timeline
 - timer turns red when recording
