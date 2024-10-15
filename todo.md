@@ -10,6 +10,10 @@
 - same thing for if? cuz when u have a long if statement its not obvious when the conditional ends and the code begins
 - dont indent after switch
 
+# future stuff to keep in mind
+- switch state machine doesn't work great when there are 2 paths to a screen
+    - which one do you go back to?
+
 # SHA
 - Rewrite Parameter to be better
 - has getNorm for CV
