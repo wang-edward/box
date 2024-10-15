@@ -23,28 +23,29 @@ void Timeline:: Render(Interface &interface) {
 }
 
 void Timeline:: HandleEvent(const Event &event) {
-    switch (event.type) {
+    switch (screen_state_) {
+    case ScreenState::Overview:
+        switch (event.type) {
         case EventType::KeyPress:
             switch (event.value) {
-                case KEY_ENTER:
-                    APP->screen_state_ = App::ScreenState::Track;
-                    break;
-                case KEY_J:
-                    APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
-                    break;
-                case KEY_K:
-                    APP->current_track_ = clamp_decrement(APP->current_track_);
-                    break;
-                case KEY_O: // add track
-                    if (APP->tracks_.size() < MAX_TRACKS) {
-                        APP->AddTrack();
-                    }
-                    break;
-                case KEY_A: // add plugin
-                    APP->screen_state_ = App::ScreenState::PluginSelector;
-                    break;
+            case KEY_ENTER:
+                APP->screen_state_ = App::ScreenState::Track;
+                break;
+            case KEY_J:
+                APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
+                break;
+            case KEY_K:
+                APP->current_track_ = clamp_decrement(APP->current_track_);
+                break;
+            case KEY_O: // add track
+                if (APP->tracks_.size() < MAX_TRACKS) {
+                    APP->AddTrack();
+                }
+                break;
             }
             break;
+        }
+        break;
     }
 }
 
