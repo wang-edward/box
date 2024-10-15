@@ -26,8 +26,8 @@ struct App {
     void SetCurrentTrack(size_t track_app);
     void AddTrack();
 
-    ScreenState screen_state_;
-    Mode mode_;
+    ScreenState screen_state_ = ScreenState::Timeline;
+    Mode mode_ = Mode::Normal;
 
     te::Edit &edit_ ;
 
