@@ -46,22 +46,22 @@ void App:: Render(Interface& interface) {
 
 void App:: HandleEvent(const Event& event) {
     assert_tracks(tracks_, current_track_, "handleEvent");
+    if (event.type == EventType::KeyPress && event.value == KEY_I) {
+        if (mode_ == Mode::Normal) {
+            mode_ = Mode::Insert;
+        } else if (mode_ == Mode::Insert) {
+            mode_ = Mode::Normal;
+        }
+    }
+
     switch (screen_state_) {
         case ScreenState::Timeline:
             timeline_.HandleEvent(event);
             break;
         case ScreenState::Track:
-            if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
-                screen_state_ = ScreenState::Timeline;
-            } else {
-                tracks_[current_track_]->HandleEvent(event);
-            }
+            tracks_[current_track_]->HandleEvent(event);
             break;
         case ScreenState::PluginSelector:
-            if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
-                screen_state_ = ScreenState::Timeline;
-                return;
-            }
             plugin_sel_.HandleEvent(event);
             break;
     }
