@@ -37,6 +37,12 @@ void App:: SetCurrentTrack(size_t track_index)
 void App:: Render(Interface& interface) 
 {
     assert_tracks(tracks_, current_track_, "render");
+
+    if (mode_ == Mode::Insert)
+    {
+        DrawRectangleLines(0, 0, 128, 128, PURPLE);
+    }
+
     switch (screen_state_) 
     {
     case ScreenState::Timeline:
