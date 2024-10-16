@@ -5,6 +5,10 @@
     - this holds data like the icon and the name and stuff
     - and then we can only have 
 
+# Track::Plugin view
+- deleting plugins causes it to shrink down
+- you can only put active_plugin_ on an index that exists
+
 # formatting stuff to keep in mind (virus type spread)
 - make class into struct 
 - put { on nextline of func def

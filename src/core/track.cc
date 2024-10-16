@@ -34,6 +34,30 @@ int Track:: GetActivePlugin() {
     return active_plugin_;
 }
 
+int clamp_index(int i, int len) {
+    int range = len ;
+    int val = i % range;
+    if (val < 0) val += range;
+    return val;
+}
+
+int clamp_index(int curr, int offset, int len) {
+    // assume 4 columns
+    int target = curr + offset;
+    if (target < 0 || target >= len) return curr;
+    if (offset == 4 || offset == -4) {
+        int curr_row = curr / 4;
+        int target_row = target / 4;
+        if (curr_row == target_row - 1
+            || curr_row == target_row + 1)
+        {
+            return curr;
+        }
+    } else {
+        return target;
+    }
+}
+
 void Track:: HandleEvent(const Event& event) {
     switch (screen_state_) {
     case ScreenState::Overview:
@@ -44,9 +68,29 @@ void Track:: HandleEvent(const Event& event) {
                 switch (event.value) {
                 case KEY_ESCAPE:
                     APP->screen_state_ = App::ScreenState::Timeline;
+                    break;
                 case KEY_A:
-                    LOG_MSG("yo");
                     APP->screen_state_ = App::ScreenState::PluginSelector;
+                    break;
+                case KEY_H:
+                    LOG_MSG("left");
+                    active_plugin_ = clamp_index(active_plugin_, - 1, num_plugins_);
+                    LOG_VAR(active_plugin_);
+                    break;
+                case KEY_J:
+                    LOG_MSG("down");
+                    active_plugin_ = clamp_index(active_plugin_, + 4, num_plugins_);
+                    LOG_VAR(active_plugin_);
+                    break;
+                case KEY_K:
+                    LOG_MSG("up");
+                    active_plugin_ = clamp_index(active_plugin_, - 4, num_plugins_);
+                    LOG_VAR(active_plugin_);
+                    break;
+                case KEY_L:
+                    LOG_MSG("right");
+                    active_plugin_ = clamp_index(active_plugin_, + 1, num_plugins_);
+                    LOG_VAR(active_plugin_);
                     break;
                 }
                 break;
@@ -94,6 +138,10 @@ void Track:: Render(Interface& interface) {
                 } else {
                     DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
                     DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+                }
+
+                if (i == active_plugin_) {
+                    DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 5.0f, GREEN);
                 }
             }
             break;
