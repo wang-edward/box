@@ -5,6 +5,15 @@
     - this holds data like the icon and the name and stuff
     - and then we can only have 
 
+[ ] What is the state machine hierarchy?
+- right now it goes ScreenState -> Mode -> EventType -> event.value
+- but maybe it should be Mode first?
+[ ] Pots should be excluded from modal stuff. That way you can actually adjust the params while you are playing notes
+
+
+
+
+
 # Track::Plugin view
 - deleting plugins causes it to shrink down
 - you can only put active_plugin_ on an index that exists
