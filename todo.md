@@ -1,5 +1,4 @@
 # doing?
-[*] Selector should be accessed through Track, not through Manager
 [ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
     - and then we can only have 
