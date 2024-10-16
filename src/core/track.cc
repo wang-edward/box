@@ -97,12 +97,17 @@ void Track:: HandleEvent(const Event& event)
         }
         break;
     case ScreenState::Plugin:
+        if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
+            screen_state_ = ScreenState::Overview;
+            return;
+        }
         plugins_[active_plugin_]->HandleEvent(event);
         break;
     }
 }
 
-void Track:: Render(Interface& interface) {
+void Track:: Render(Interface& interface)
+{
     switch (screen_state_) {
         case ScreenState::Overview:
             // draw grid
