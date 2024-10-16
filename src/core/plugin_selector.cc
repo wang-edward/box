@@ -25,7 +25,8 @@ PluginSelector:: PluginSelector()
 
 void PluginSelector:: Render(Interface &interface) 
 {
-    for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
+    for (size_t i = 0; i < interface.HEIGHT / 8; i++) 
+    {
         if (i >= PLUGIN_NAMES.size()) break;
         auto name = PLUGIN_NAMES[i];
         float x =  0;
@@ -33,7 +34,8 @@ void PluginSelector:: Render(Interface &interface)
         float width = 128;
         float height = 15;
         Color color = RED;
-        if (current_index_ == i) {
+        if (current_index_ == i) 
+        {
             color = BLUE;
         }
         DrawRectangleRec(Rectangle{x, y, width, height}, DARKGRAY);
@@ -43,9 +45,11 @@ void PluginSelector:: Render(Interface &interface)
 
 void PluginSelector:: HandleEvent(const Event &event) 
 {
-    switch(event.type) {
+    switch(event.type) 
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value) 
+        {
         case KEY_ESCAPE:
             APP->screen_state_ = App::ScreenState::Track;
             break;
@@ -63,9 +67,12 @@ void PluginSelector:: HandleEvent(const Event &event)
             std::unique_ptr<Plugin> p;
             auto base = APP->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
             // TODO use cast?
-            if (name == te::ChorusPlugin::xmlTypeName) {
+            if (name == te::ChorusPlugin::xmlTypeName) 
+            {
                 p = std::make_unique<Chorus>(base);
-            } else if (name == te::FourOscPlugin::xmlTypeName) {
+            } 
+            else if (name == te::FourOscPlugin::xmlTypeName) 
+            {
                 p = std::make_unique<FourOsc>(base);
             }
             APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));

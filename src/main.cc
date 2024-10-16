@@ -19,8 +19,10 @@
 
 #include "raylib.h"
 
-int main() {
-   const juce::ScopedJuceInitialiser_GUI initialiser; // you need this otherwise the entire engine doesn't work??
+
+int main() 
+{
+    const juce::ScopedJuceInitialiser_GUI initialiser; // you need this otherwise the entire engine doesn't work??
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
@@ -30,13 +32,16 @@ int main() {
     box::App app(edit);
     box::APP = &app;
 
-    try {
+    try 
+    {
         auto &transport = edit.getTransport();
         transport.play(false);
-        while (!interface.ShouldClose()) {
+        while (!interface.ShouldClose()) 
+        {
             // poll and handle events
             box::Event event;
-            if (interface.PollEvent(event)) {
+            if (interface.PollEvent(event)) 
+            {
                 app.HandleEvent(event);
             }
 
@@ -49,7 +54,9 @@ int main() {
 
             interface.PostRender();
         }
-    } catch (std::exception &e) {
+    } 
+    catch (std::exception &e) 
+    {
         std::cerr << e.what() << std::endl;
     }
     return 0;
