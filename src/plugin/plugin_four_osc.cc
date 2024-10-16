@@ -4,7 +4,7 @@ namespace box {
 
 FourOsc:: FourOsc(te::Plugin *p): 
     Plugin(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
-    knob_master_level_{32, 64, 5, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
+    knob_master_level_{32, 64, 16, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
 {
     Image four = LoadImage("assets/four_16x16.png");
     icon_ = LoadTextureFromImage(four);

@@ -15,10 +15,10 @@ public:
 
     virtual void Render(Interface &interface) 
     {
-        // DrawCircle(32, 32, 5, GREEN);
         auto angle = param_.GetNorm() * 360;
-        DrawCircleSector(Vector2{32, 32}, 5, 0.f, angle, 360, GREEN);
-        // void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color); 
+        auto x = static_cast<float>(x_);
+        auto y = static_cast<float>(y_);
+        DrawCircleSector(Vector2{x, y}, radius_, 0.f, angle, 360, GREEN);
     }
     virtual void HandleEvent(const Event& event) 
     {
