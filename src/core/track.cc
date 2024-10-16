@@ -4,7 +4,7 @@
 
 namespace box {
 
-static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, size_t index, std::string function_name) {
+static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, int index, std::string function_name) {
     if (index >= plugins.size()) {
         throw std::runtime_error{"Track::" + function_name + " => index ["+ std::to_string(index) + "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
     }
@@ -20,17 +20,17 @@ Track:: ~Track()
 
 void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) 
 {
-    size_t index = plugins_.size();
+    int index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_[num_plugins_] = std::move(plugin);
     num_plugins_ += 1;
 }
 
-void Track:: SetActivePlugin(size_t index) {
+void Track:: SetActivePlugin(int index) {
     active_plugin_ = index;
 }
 
-size_t Track:: GetActivePlugin() {
+int Track:: GetActivePlugin() {
     return active_plugin_;
 }
 
@@ -79,13 +79,13 @@ void Track:: Render(Interface& interface) {
     switch (screen_state_) {
         case ScreenState::Overview:
             // draw grid
-            for (size_t i = 1; i < GRID_SIZE; i++) {
+            for (int i = 1; i < GRID_SIZE; i++) {
                 float pos = static_cast<float>(i);
                 DrawLineV(Vector2{0, pos * 32}, Vector2{128, pos * 32}, WHITE);
                 DrawLineV(Vector2{pos * 32, 0}, Vector2{pos * 32, 128}, WHITE);
             }
 
-            for (size_t i = 0; i < MAX_PLUGINS; i++) {
+            for (int i = 0; i < MAX_PLUGINS; i++) {
                 auto x = static_cast<float>((i % 4) * 32 + 16);
                 auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
                 if (plugins_[i] == nullptr) {
