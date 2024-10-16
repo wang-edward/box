@@ -20,45 +20,33 @@ Track:: ~Track()
 
 void Track:: AddPlugin(std::unique_ptr<Plugin> plugin) 
 {
+    if (active_plugin_ == -1) active_plugin_ = 0; // TODO better way to handle this
     int index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_[num_plugins_] = std::move(plugin);
     num_plugins_ += 1;
 }
 
-void Track:: SetActivePlugin(int index) {
+void Track:: SetActivePlugin(int index) 
+{
     active_plugin_ = index;
 }
 
-int Track:: GetActivePlugin() {
+int Track:: GetActivePlugin() 
+{
     return active_plugin_;
 }
 
-int clamp_index(int i, int len) {
+int clamp_index(int i, int len) 
+{
     int range = len ;
     int val = i % range;
     if (val < 0) val += range;
     return val;
 }
 
-int clamp_index(int curr, int offset, int len) {
-    // assume 4 columns
-    int target = curr + offset;
-    if (target < 0 || target >= len) return curr;
-    if (offset == 4 || offset == -4) {
-        int curr_row = curr / 4;
-        int target_row = target / 4;
-        if (curr_row == target_row - 1
-            || curr_row == target_row + 1)
-        {
-            return curr;
-        }
-    } else {
-        return target;
-    }
-}
-
-void Track:: HandleEvent(const Event& event) {
+void Track:: HandleEvent(const Event& event) 
+{
     switch (screen_state_) {
     case ScreenState::Overview:
         switch (APP->mode_) {
@@ -72,25 +60,20 @@ void Track:: HandleEvent(const Event& event) {
                 case KEY_A:
                     APP->screen_state_ = App::ScreenState::PluginSelector;
                     break;
+                // TODO KEY_J and KEY_K move up and down
                 case KEY_H:
                     LOG_MSG("left");
-                    active_plugin_ = clamp_index(active_plugin_, - 1, num_plugins_);
-                    LOG_VAR(active_plugin_);
-                    break;
-                case KEY_J:
-                    LOG_MSG("down");
-                    active_plugin_ = clamp_index(active_plugin_, + 4, num_plugins_);
-                    LOG_VAR(active_plugin_);
-                    break;
-                case KEY_K:
-                    LOG_MSG("up");
-                    active_plugin_ = clamp_index(active_plugin_, - 4, num_plugins_);
+                    active_plugin_ = clamp_index(active_plugin_ - 1, num_plugins_);
                     LOG_VAR(active_plugin_);
                     break;
                 case KEY_L:
                     LOG_MSG("right");
-                    active_plugin_ = clamp_index(active_plugin_, + 1, num_plugins_);
+                    active_plugin_ = clamp_index(active_plugin_ + 1, num_plugins_);
                     LOG_VAR(active_plugin_);
+                    break;
+                case KEY_ENTER:
+                    // TODO sketchy
+                    if (active_plugin_ != -1) screen_state_ = ScreenState::Plugin;
                     break;
                 }
                 break;

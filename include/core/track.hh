@@ -28,7 +28,7 @@ public:
     static constexpr int GRID_SIZE = 4;
     std::array<std::unique_ptr<Plugin>, MAX_PLUGINS> plugins_ = { nullptr };
     int num_plugins_ = 0;
-    int active_plugin_ = 0; // TODO what is this bro
+    int active_plugin_ = -1;
     te::AudioTrack &track_;
     ScreenState screen_state_ = ScreenState::Overview;
 };
