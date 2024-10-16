@@ -1,4 +1,5 @@
 # doing?
+[ ] Bring back plugin rendering
 [ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
     - and then we can only have 
