@@ -1,4 +1,5 @@
 # doing?
+[ ] Track overview shows current plugin
 [ ] Bring back plugin rendering
 [ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
@@ -13,6 +14,8 @@
 # future stuff to keep in mind
 - switch state machine doesn't work great when there are 2 paths to a screen
     - which one do you go back to?
+- find a linter that catches switch fallthrough
+    - this is gonna be a huge issue when the paths get big
 
 # SHA
 - Rewrite Parameter to be better
