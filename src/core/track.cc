@@ -110,7 +110,31 @@ void Track:: HandleEvent(const Event& event)
             screen_state_ = ScreenState::Overview;
             return;
         }
-        plugins_[active_plugin_]->HandleEvent(event);
+        switch (APP->mode_)
+        {
+            case App::Mode::Normal:
+                plugins_[active_plugin_]->HandleEvent(event);
+                break;
+            case App::Mode::Insert:
+                // TODO this is a copy of the code in Overview::Insert
+                switch (event.type) 
+                {
+                case EventType::KeyPress:
+                    if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) 
+                    {
+                        auto message = juce::MidiMessage::noteOn (1, KEY_TO_MIDI.at(event.value), (float) 1.0);
+                        track_.injectLiveMidiMessage(message, 0);
+                    } 
+                    break;
+                case EventType::KeyRelease:
+                    if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()) 
+                    {
+                        auto message = juce::MidiMessage::noteOff(1, KEY_TO_MIDI.at(event.value));
+                        track_.injectLiveMidiMessage(message, 0);
+                    }
+                    break;
+                }
+        }
         break;
     }
 }
