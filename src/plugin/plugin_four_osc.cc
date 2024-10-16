@@ -32,7 +32,6 @@ void FourOsc:: Render(Interface &interface) {
 }
 
 void FourOsc:: HandleEvent(const Event &event) {
-    LOG_MSG("hello");
     switch (event.type) {
         case EventType::KeyPress:
             switch(event.value) {
