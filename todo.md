@@ -1,9 +1,12 @@
 # doing?
-[ ] What is the state machine hierarchy?
-- right now it goes ScreenState -> Mode -> EventType -> event.value
-- but maybe it should be Mode first?
-
-
+- CachedValue wrapper
+    - enforces a clamp
+    - default value
+    - provides GetNorm()
+- AutomatableParameter wrapper
+    - can honestly just use the object itself
+- Then for Parameter just do a std::variant
+    - dispatch with switch
 
 
 
@@ -20,6 +23,9 @@
 # future stuff to keep in mind
 - switch state machine doesn't work great when there are 2 paths to a screen
     - which one do you go back to?
+- What is the state machine hierarchy?
+    - right now it goes ScreenState -> Mode -> EventType -> event.value
+    - but maybe it should be Mode first?
 - find a linter that catches switch fallthrough
     - this is gonna be a huge issue when the paths get big
 - Pots should be excluded from modal stuff. That way you can actually adjust the params while you are playing notes
@@ -28,7 +34,6 @@
 [ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
     - and then we can only have 
-
 
 # SHA
 - Rewrite Parameter to be better
