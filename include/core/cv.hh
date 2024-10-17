@@ -27,8 +27,8 @@ struct CV {
         value_ = range * norm;
     }
 
-    T GetValue() { return value_.get(); }
-    T GetNorm()
+    T GetValue() const { return value_.get(); }
+    T GetNorm() const
     {
         const auto range = max_ - min_;
         return value_ / range;
