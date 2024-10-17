@@ -1,8 +1,4 @@
 # doing?
-- CachedValue wrapper
-    - enforces a clamp
-    - default value
-    - provides GetNorm()
 - AutomatableParameter wrapper
     - can honestly just use the object itself
 - Then for Parameter just do a std::variant
