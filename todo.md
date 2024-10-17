@@ -1,8 +1,5 @@
 # doing?
-- AutomatableParameter wrapper
-    - can honestly just use the object itself
-- Then for Parameter just do a std::variant
-    - dispatch with switch
+- some log scale for Norm
 
 
 
