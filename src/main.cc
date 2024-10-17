@@ -8,14 +8,7 @@
 #include "core/track.hh"
 #include "core/app.hh"
 #include "plugin/four_osc.hh"
-#include "plugin/delay.hh"
-#include "plugin/phaser.hh"
 #include "plugin/chorus.hh"
-#include "plugin/compressor.hh"
-#include "plugin/equaliser.hh"
-#include "plugin/latency.hh"
-#include "plugin/reverb.hh"
-#include "plugin/tone_generator.hh"
 
 #include "raylib.h"
 
