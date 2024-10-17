@@ -22,7 +22,7 @@ struct CV {
 
     void SetNorm(T norm)
     {
-        assert(0 <= new_value && new_value <= 1);
+        norm = std::clamp(norm, static_cast<T>(0), static_cast<T>(1));
         const auto range = max_ - min_;
         value_ = range * norm;
     }
