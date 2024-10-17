@@ -5,7 +5,7 @@ namespace box {
 
 Chorus::Chorus(te::Plugin *p)
     : Plugin(p), base_plugin_{static_cast<te::ChorusPlugin *>(p)},
-    knob_depth_{CV<float>{base_plugin_->depthMs, 0.0, 100.0}}
+    knob_depth_{CV<float>{base_plugin_->depthMs, 0.0, 10.0}}
     // knob_depth_{32, 64, 5, {0, 255, 0}, base_plugin_->depthMs, nullptr}
 {
     Image icon = LoadImage("assets/star_16x16.png");
