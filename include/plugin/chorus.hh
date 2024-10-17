@@ -17,6 +17,11 @@ private:
     Texture2D icon_;
     te::ChorusPlugin *base_plugin_;
     Knob<float> knob_depth_;
+    Knob<float> knob_width_;
+    Knob<float> knob_speed_;
+    Knob<float> knob_mix_;
+
+    juce::CachedValue<float> depthMs, width, mixProportion, speedHz;
 };
 
 

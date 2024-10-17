@@ -16,7 +16,11 @@ struct Knob {
         auto angle = param_.GetNorm() * 360;
         auto x = static_cast<float>(x_);
         auto y = static_cast<float>(y_);
-        DrawCircleSector(Vector2{x, y}, radius_, 0.f, angle, 360, GREEN);
+        DrawCircleSector(Vector2{x, y}, radius_, 0.f, angle, 360, color_);
+
+        const int font_size = 10;
+        int width = MeasureText(name_.c_str(), font_size);
+        DrawText(name_.c_str(), x - (width / 2), y + 20, font_size, WHITE);
     }
     virtual void HandleEvent(const Event& event) 
     {
