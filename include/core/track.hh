@@ -20,14 +20,14 @@ public:
     void AddPlugin(std::unique_ptr<Plugin> plugin);
     void SetActivePlugin(int index);
     int GetActivePlugin();
+    void RemoveActivePlugin();
 
     void HandleEvent(const Event& event);
     void Render(Interface& Interface);
 
     static constexpr int MAX_PLUGINS = 8;
     static constexpr int GRID_SIZE = 4;
-    std::array<std::unique_ptr<Plugin>, MAX_PLUGINS> plugins_ = { nullptr };
-    int num_plugins_ = 0;
+    std::vector<std::unique_ptr<Plugin>> plugins_;
     int active_plugin_ = -1;
     te::AudioTrack &track_;
     ScreenState screen_state_ = ScreenState::Overview;

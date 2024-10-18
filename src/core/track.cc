@@ -25,8 +25,23 @@ void Track:: AddPlugin(std::unique_ptr<Plugin> plugin)
     if (active_plugin_ == -1) active_plugin_ = 0; // TODO better way to handle this
     int index = plugins_.size();
     track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
-    plugins_[num_plugins_] = std::move(plugin);
-    num_plugins_ += 1;
+    plugins_.push_back(std::move(plugin));
+}
+
+void Track:: RemoveActivePlugin()
+{
+    if (plugins_.size() == 0)
+    {
+        LOG_MSG("tried to remove plugin from empty track", LogLevel::Warn);
+        return;
+    }
+    if (active_plugin_ == -1)
+    {
+        LOG_MSG("tried to remove active_plugin == -1", LogLevel::Warn);
+        return;
+    }
+    plugins_.erase(plugins_.begin() + active_plugin_);
+
 }
 
 void Track:: SetActivePlugin(int index) 
@@ -65,15 +80,18 @@ void Track:: HandleEvent(const Event& event)
                 case KEY_A:
                     APP->screen_state_ = App::ScreenState::PluginSelector;
                     break;
+                case KEY_X:
+
+                    break;
                 // TODO KEY_J and KEY_K move up and down
                 case KEY_H:
                     LOG_MSG("left");
-                    active_plugin_ = clamp_index(active_plugin_ - 1, num_plugins_);
+                    active_plugin_ = clamp_index(active_plugin_ - 1, plugins_.size());
                     LOG_VAR(active_plugin_);
                     break;
                 case KEY_L:
                     LOG_MSG("right");
-                    active_plugin_ = clamp_index(active_plugin_ + 1, num_plugins_);
+                    active_plugin_ = clamp_index(active_plugin_ + 1, plugins_.size());
                     LOG_VAR(active_plugin_);
                     break;
                 case KEY_ENTER:
@@ -152,25 +170,25 @@ void Track:: Render(Interface& interface)
                 DrawLineV(Vector2{pos * 32, 0}, Vector2{pos * 32, 128}, WHITE);
             }
 
-            for (int i = 0; i < MAX_PLUGINS; i++) 
+            for (int i = 0; i < plugins_.size(); i++) 
             {
                 auto x = static_cast<float>((i % 4) * 32 + 16);
                 auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
-                if (plugins_[i] == nullptr) 
-                {
-                    DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f, RED);
-                    DrawTextPro(GetFontDefault(), "none", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
-                } 
-                else 
-                {
-                    DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
-                    DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
-                }
+                DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
+                // TODO draw proper name
+                DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
 
                 if (i == active_plugin_) 
                 {
                     DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 5.0f, GREEN);
                 }
+            }
+            for (int i = plugins_.size(); i < MAX_PLUGINS; i++)
+            {
+                auto x = static_cast<float>((i % 4) * 32 + 16);
+                auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
+                DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f, RED);
+                DrawTextPro(GetFontDefault(), "none", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
             }
             break;
         case ScreenState::Plugin:
