@@ -6,7 +6,13 @@
 namespace box {
 
 template <typename T>
-struct Knob {
+struct Knob
+{
+    Parameter<T> param_;
+    uint8_t x_, y_, radius_;
+    Color color_;
+    std::string name_;
+
     Knob(Parameter<T> p, uint8_t x, uint8_t y, uint8_t radius, Color color, std::string name = "")
     : param_{p}, x_{x}, y_{y}, radius_{radius}, color_{color}, name_{name}
     {}
@@ -26,11 +32,6 @@ struct Knob {
     {
         
     }
-
-    Parameter<T> param_;
-    uint8_t x_, y_, radius_;
-    Color color_;
-    std::string name_;
 };
 
 } // namespace box
