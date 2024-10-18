@@ -40,7 +40,7 @@ void App:: Render(Interface& interface)
 
     if (mode_ == Mode::Insert)
     {
-        DrawRectangleLines(0, 0, 128, 128, PURPLE);
+        DrawRectangleLines(0, 0, 128, 128 - 1, PURPLE); // -1 so bottom row shows
     }
 
     switch (screen_state_) 
