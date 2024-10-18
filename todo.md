@@ -1,4 +1,7 @@
 # doing?
+- be able to remove plugin from Track
+- test if Parameter works with AP
+
 - some log scale for Norm
 
 
