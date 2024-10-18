@@ -18,7 +18,7 @@ public:
 private:
     Texture2D icon_;
     te::FourOscPlugin *base_plugin_;
-    // Knob<float> knob_master_level_;
+    Knob<float> knob_master_level_;
 };
 
 
