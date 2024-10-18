@@ -1,6 +1,7 @@
 #include "core/track.hh"
 #include "core/util.hh"
 #include "core/app.hh"
+#include <algorithm>
 
 namespace box {
 
@@ -41,7 +42,8 @@ void Track:: RemoveActivePlugin()
         return;
     }
     plugins_.erase(plugins_.begin() + active_plugin_);
-
+    // TODO check for underflow messing up min
+    active_plugin_ = std::min(active_plugin_, static_cast<int>(plugins_.size()) - 1);
 }
 
 void Track:: SetActivePlugin(int index) 
@@ -81,7 +83,17 @@ void Track:: HandleEvent(const Event& event)
                     APP->screen_state_ = App::ScreenState::PluginSelector;
                     break;
                 case KEY_X:
-
+                    RemoveActivePlugin();
+                    break;
+                case KEY_P:
+                    {
+                        auto l = track_.pluginList.getPlugins();
+                        for (auto p : l)
+                        {
+                            std::cout << p->getName() << ", ";
+                        }
+                        std::cout << std::endl;
+                    }
                     break;
                 // TODO KEY_J and KEY_K move up and down
                 case KEY_H:

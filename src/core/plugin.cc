@@ -2,9 +2,17 @@
 
 namespace box {
 
-Plugin:: Plugin(te::Plugin *p): plugin_{p} {}
+Plugin:: Plugin(te::Plugin *p)
+: plugin_{p}
+{}
 
-te::Plugin *const Plugin:: GetPlugin() const {
+Plugin:: ~Plugin()
+{
+    plugin_->deleteFromParent();
+}
+
+te::Plugin *const Plugin:: GetPlugin() const
+{
     return plugin_;
 }
 
