@@ -17,7 +17,7 @@ public:
     : param_{cv}
     {}
 
-    Parameter(AP p)
+    Parameter(AP *p)
     : param_{p}
     {}
 
