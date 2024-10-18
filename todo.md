@@ -47,6 +47,7 @@
 
 
 ## long term
+- get rid of Interface, it doesn't really do anything
 - patchbay?
 - distinction between instrument and effect? like having seperate slots for types of plugins
 - better way to manage colorschemes - MAINCOLOR, ALT1, ALT2, etc.
