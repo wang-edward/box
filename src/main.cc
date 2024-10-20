@@ -28,7 +28,10 @@ int main()
     try 
     {
         auto &transport = edit.getTransport();
+
+        // TODO bad workaround, need to figure out how to initialize listeners properly
         transport.play(false);
+        transport.stop(true, true, false, false);
         while (!interface.ShouldClose()) 
         {
             // poll and handle events

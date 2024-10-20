@@ -49,6 +49,8 @@ void Timeline:: HandleEvent(const Event &event)
                     APP->AddTrack();
                 }
                 break;
+            case KEY_P:
+                LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
             }
             break;
         }
