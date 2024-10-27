@@ -25,10 +25,39 @@ int main()
     box::App app(edit);
     box::APP = &app;
 
-    try 
+    try
     {
+
+        {
+            // for (auto& midiIn : engine.getDeviceManager().getMidiInDevices())
+            // {
+            //     midiIn->setMonitorMode (te::InputDevice::MonitorMode::automatic);
+            //     midiIn->setEnabled (true);
+            // }
+
+            edit.getTransport().ensureContextAllocated();
+
+            int index = 0;
+
+            for (auto instance : edit.getAllInputDevices())
+            {
+                if (instance->getInputDevice().getDeviceType() == te::InputDevice::physicalMidiDevice)
+                {
+                    auto t = box::APP->base_tracks_[index];
+                    {
+                        [[ maybe_unused ]] auto res = instance->setTarget (t->itemID, true, &edit.getUndoManager(), 0);
+                        instance->setRecordingEnabled(*t, true);
+
+                        index++;
+                    }
+                }
+            }
+
+            // edit.restartPlayback();
+        }
         auto &transport = edit.getTransport();
-        transport.ensureContextAllocated(true);
+        // transport.ensureContextAllocated(true);
+        // transport.play(false);
         while (!interface.ShouldClose()) 
         {
             // poll and handle events
