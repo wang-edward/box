@@ -27,33 +27,46 @@ int main()
 
     try
     {
-
+        // try stuff
         {
-            // for (auto& midiIn : engine.getDeviceManager().getMidiInDevices())
-            // {
-            //     midiIn->setMonitorMode (te::InputDevice::MonitorMode::automatic);
-            //     midiIn->setEnabled (true);
-            // }
+            auto& dm = engine.getDeviceManager();
+
+            for (int i = 0; i < dm.getNumWaveInDevices(); i++)
+            {
+                if (auto wip = dm.getWaveInDevice (i))
+                {
+                    wip->setStereoPair (false);
+                }
+            }
+
+            for (int i = 0; i < dm.getNumWaveInDevices(); i++)
+            {
+                if (auto wip = dm.getWaveInDevice (i))
+                {
+                    wip->setEndToEnd (true);
+                    wip->setEnabled (true);
+                }
+            }
 
             edit.getTransport().ensureContextAllocated();
 
-            int index = 0;
-
+            int trackNum = 0;
             for (auto instance : edit.getAllInputDevices())
             {
-                if (instance->getInputDevice().getDeviceType() == te::InputDevice::physicalMidiDevice)
+                if (instance->getInputDevice().getDeviceType() == te::InputDevice::waveDevice)
                 {
-                    auto t = box::APP->base_tracks_[index];
+                    auto t = te::getAudioTracks(edit)[trackNum];
+                    if (t != nullptr)
                     {
-                        [[ maybe_unused ]] auto res = instance->setTarget (t->itemID, true, &edit.getUndoManager(), 0);
-                        instance->setRecordingEnabled(*t, true);
+                        instance->setTargetTrack (*t, 0, true, nullptr);
+                        instance->setRecordingEnabled (*t, true);
 
-                        index++;
+                        trackNum++;
                     }
                 }
             }
 
-            // edit.restartPlayback();
+            edit.restartPlayback();
         }
         auto &transport = edit.getTransport();
         // transport.ensureContextAllocated(true);
