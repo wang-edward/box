@@ -51,6 +51,22 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
+                break;
+            case KEY_R:
+                {
+                    auto &transport = APP->edit_.getTransport();
+                    LOG_VAR(transport.getCurrentPosition());
+                    LOG_VAR(transport.isRecording());
+                    if (transport.isRecording())
+                    {
+                        transport.stop(true, false);
+                    }
+                    else
+                    {
+                        transport.record(false);
+                    }
+                }
+                break;
             }
             break;
         }

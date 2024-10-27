@@ -40,7 +40,12 @@ void App:: Render(Interface& interface)
 
     if (mode_ == Mode::Insert)
     {
-        DrawRectangleLines(0, 0, 128, 128 - 1, PURPLE); // -1 so bottom row shows
+        DrawRectangleLines(0, 0, 128, 127, PURPLE); // -1 so bottom row shows
+    }
+    if (edit_.getTransport().isRecording())
+    {
+        LOG_MSG("isrec");
+        DrawRectangleLines(1, 1, 127, 126, RED); // -1 so bottom row shows
     }
 
     switch (screen_state_) 
