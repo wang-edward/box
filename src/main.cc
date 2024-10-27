@@ -36,13 +36,6 @@ int main()
                 if (auto wip = dm.getWaveInDevice (i))
                 {
                     wip->setStereoPair (false);
-                }
-            }
-
-            for (int i = 0; i < dm.getNumWaveInDevices(); i++)
-            {
-                if (auto wip = dm.getWaveInDevice (i))
-                {
                     wip->setEndToEnd (true);
                     wip->setEnabled (true);
                 }
@@ -69,8 +62,6 @@ int main()
             edit.restartPlayback();
         }
         auto &transport = edit.getTransport();
-        // transport.ensureContextAllocated(true);
-        // transport.play(false);
         while (!interface.ShouldClose()) 
         {
             // poll and handle events
