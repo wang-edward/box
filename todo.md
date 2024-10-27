@@ -1,9 +1,5 @@
 # doing?
-- be able to remove plugin from Track
-- test if Parameter works with AP
-
-- some log scale for Norm
-
+- figuring out midi recording
 
 
 # Track::Plugin view
@@ -25,6 +21,7 @@
 - find a linter that catches switch fallthrough
     - this is gonna be a huge issue when the paths get big
 - Pots should be excluded from modal stuff. That way you can actually adjust the params while you are playing notes
+- some log scale for Norm
 
 # stuff im NOT SURE if i should do
 [ ] Use PluginConfig instead of Plugin
