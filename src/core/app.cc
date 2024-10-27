@@ -38,16 +38,6 @@ void App:: Render(Interface& interface)
 {
     assert_tracks(tracks_, current_track_, "render");
 
-    if (mode_ == Mode::Insert)
-    {
-        DrawRectangleLines(0, 0, 128, 127, PURPLE); // -1 so bottom row shows
-    }
-    if (edit_.getTransport().isRecording())
-    {
-        LOG_MSG("isrec");
-        DrawRectangleLines(1, 1, 127, 126, RED); // -1 so bottom row shows
-    }
-
     switch (screen_state_) 
     {
     case ScreenState::Timeline:
@@ -59,6 +49,16 @@ void App:: Render(Interface& interface)
     case ScreenState::PluginSelector:
         plugin_sel_.Render(interface);
         break;
+    }
+
+    if (mode_ == Mode::Insert)
+    {
+        DrawRectangleLines(0, 0, 128, 127, PURPLE); // -1 so bottom row shows
+    }
+    if (edit_.getTransport().isRecording())
+    {
+        LOG_MSG("isrec");
+        DrawRectangleLines(1, 1, 126, 125, RED); // -1 so bottom row shows
     }
 }
 
