@@ -22,6 +22,15 @@ void Timeline:: Render(Interface &interface)
         float height = 24;
         DrawRectangleRec(Rectangle{x, y, width, height}, {0xff, 0xff, 0xff, 0x80});
     }
+
+    // render bar
+    {
+        double pos = APP->edit_.getTransport().getPosition().inSeconds();
+        auto text = std::to_string(pos);
+        const int font_size = 10;
+        int width = MeasureText(text.c_str(), font_size);
+        DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
+    }
 }
 
 void Timeline:: HandleEvent(const Event &event) 
