@@ -57,7 +57,6 @@ void App:: Render(Interface& interface)
     }
     if (edit_.getTransport().isRecording())
     {
-        LOG_MSG("isrec");
         DrawRectangleLines(1, 1, 126, 125, RED); // -1 so bottom row shows
     }
 }
