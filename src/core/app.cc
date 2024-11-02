@@ -12,7 +12,8 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
-App:: App(te::Edit &edit):
+App:: App(te::Engine &engine, te::Edit &edit):
+    engine_{engine},
     edit_{edit},
     current_track_{0},
     base_tracks_{te::getAudioTracks(edit)}

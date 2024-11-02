@@ -19,7 +19,7 @@ struct App {
         Normal,
         Insert,
     };
-    App(te::Edit &edit);
+    App(te::Engine &engine, te::Edit &edit);
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
@@ -29,6 +29,7 @@ struct App {
     ScreenState screen_state_ = ScreenState::Timeline;
     Mode mode_ = Mode::Normal;
 
+    te::Engine &engine_ ;
     te::Edit &edit_ ;
 
     size_t current_track_;

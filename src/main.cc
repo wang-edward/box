@@ -22,7 +22,7 @@ int main()
     edit.ensureNumberOfAudioTracks(8);
     box::Interface interface{};
 
-    box::App app(edit);
+    box::App app(engine, edit);
     box::APP = &app;
 
     try
@@ -39,6 +39,16 @@ int main()
                     wip->setEndToEnd (true);
                     wip->setEnabled (true);
                 }
+                else if (auto mip = dm.getMidiInDevice (i))
+                {
+                    mip->setEndToEndEnabled (true);
+                    mip->setEnabled (true);
+                }
+            }
+
+            if (engine.getDeviceManager().getDefaultMidiInDevice() == nullptr)
+            {
+                engine.getDeviceManager().createVirtualMidiDevice("Virtual");
             }
 
             edit.getTransport().ensureContextAllocated();
@@ -46,18 +56,31 @@ int main()
             int trackNum = 0;
             for (auto instance : edit.getAllInputDevices())
             {
-                if (instance->getInputDevice().getDeviceType() == te::InputDevice::waveDevice)
+                auto device_type = instance->getInputDevice().getDeviceType();
+                if (device_type == te::InputDevice::waveDevice)
                 {
                     auto t = te::getAudioTracks(edit)[trackNum];
                     if (t != nullptr)
                     {
-                        instance->setTargetTrack (*t, 0, true, nullptr);
+                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
+                        instance->setRecordingEnabled (*t, true);
+
+                        trackNum++;
+                    }
+                }
+                else if (device_type == te::InputDevice::physicalMidiDevice)
+                {
+                    auto t = te::getAudioTracks(edit)[trackNum];
+                    if (t != nullptr)
+                    {
+                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
                         instance->setRecordingEnabled (*t, true);
 
                         trackNum++;
                     }
                 }
             }
+            te::MidiInputDevice* dev = engine.getDeviceManager().getDefaultMidiInDevice();
 
             edit.restartPlayback();
         }
