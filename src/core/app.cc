@@ -87,6 +87,32 @@ void App:: HandleEvent(const Event& event)
         }
     }
 
+    if (mode_ == Mode::Insert)
+    {
+        switch (event.type)
+        {
+        case EventType::KeyPress:
+            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
+            {
+                auto message = juce::MidiMessage::noteOn(1, KEY_TO_MIDI.at(event.value), 1.0f);
+                te::MidiInputDevice* dev = APP->engine_.getDeviceManager().getDefaultMidiInDevice();
+                dev->keyboardState.noteOn(1, KEY_TO_MIDI.at(event.value), 1.0);
+            }
+            break;
+        case EventType::KeyRelease:
+            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
+            {
+                auto message = juce::MidiMessage::noteOff(1, KEY_TO_MIDI.at(event.value));
+                te::MidiInputDevice* dev = APP->engine_.getDeviceManager().getDefaultMidiInDevice();
+                dev->keyboardState.noteOff(1, KEY_TO_MIDI.at(event.value), 1.0);
+            }
+            break;
+        }
+
+        LOG_MSG("short circuited for midi input");
+        return;
+    }
+
     switch (screen_state_) 
     {
     case ScreenState::Timeline:
