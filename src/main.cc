@@ -50,49 +50,20 @@ int main()
             // {
             //     engine.getDeviceManager().createVirtualMidiDevice("yodie");
             // }
-            engine.getDeviceManager().createVirtualMidiDevice("yodie");
-
             edit.getTransport().ensureContextAllocated();
 
             int trackNum = 0;
             for (auto instance : edit.getAllInputDevices())
             {
-                auto device_type = instance->getInputDevice().getDeviceType();
-                if (device_type == te::InputDevice::waveDevice)
+                auto t = te::getAudioTracks(edit)[trackNum];
+                if (t != nullptr)
                 {
-                    auto t = te::getAudioTracks(edit)[trackNum];
-                    if (t != nullptr)
-                    {
-                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
-                        instance->setRecordingEnabled (*t, true);
+                    instance->setTargetTrack (*t, 0, true, nullptr);
+                    instance->setRecordingEnabled (*t, true);
 
-                        trackNum++;
-                    }
-                }
-                else if (device_type == te::InputDevice::physicalMidiDevice)
-                {
-                    auto t = te::getAudioTracks(edit)[trackNum];
-                    if (t != nullptr)
-                    {
-                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
-                        instance->setRecordingEnabled (*t, true);
-
-                        trackNum++;
-                    }
-                }
-                else if (device_type == te::InputDevice::virtualMidiDevice)
-                {
-                    auto t = te::getAudioTracks(edit)[trackNum];
-                    if (t != nullptr)
-                    {
-                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
-                        instance->setRecordingEnabled (*t, true);
-
-                        trackNum++;
-                    }
+                    // trackNum++; // can i not increment? i only have 1 track TODO don't forget this
                 }
             }
-            te::MidiInputDevice* dev = engine.getDeviceManager().getDefaultMidiInDevice();
 
             edit.restartPlayback();
         }
