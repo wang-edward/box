@@ -19,12 +19,6 @@ struct App {
         Normal,
         Insert,
     };
-    App(te::Engine &engine, te::Edit &edit);
-    void Render(Interface& interface);
-    void HandleEvent(const Event& event);
-
-    void SetCurrentTrack(size_t track_app);
-    void AddTrack();
 
     ScreenState screen_state_ = ScreenState::Timeline;
     Mode mode_ = Mode::Normal;
@@ -45,6 +39,14 @@ struct App {
         Color{0xdd, 0xe6, 0x63, 0xff},
         Color{0x7d, 0x54, 0x39, 0xff},
     };
+
+    // functions
+    App(te::Engine &engine, te::Edit &edit);
+    void Render(Interface& interface);
+    void HandleEvent(const Event& event);
+
+    void SetCurrentTrack(size_t track_app);
+    void AddTrack();
 };
 
 } // namespace box
