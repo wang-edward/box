@@ -20,6 +20,7 @@ int main()
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
     edit.ensureNumberOfAudioTracks(8);
+    edit.getTransport().ensureContextAllocated();
     box::Interface interface{};
 
     box::App app(engine, edit);
@@ -46,25 +47,24 @@ int main()
                 }
             }
 
-            // if (engine.getDeviceManager().getDefaultMidiInDevice() == nullptr)
-            // {
-            //     engine.getDeviceManager().createVirtualMidiDevice("yodie");
-            // }
-            edit.getTransport().ensureContextAllocated();
-
-            int trackNum = 0;
-            for (auto instance : edit.getAllInputDevices())
+            int track_idx = 0;
+            for (int i = 0; i < box::MAX_TRACKS; i++)
             {
-                auto t = te::getAudioTracks(edit)[trackNum];
-                if (t != nullptr)
+                for (auto instance : edit.getAllInputDevices())
                 {
-                    instance->setTargetTrack (*t, 0, true, nullptr);
-                    instance->setRecordingEnabled (*t, true);
-
-                    // trackNum++; // can i not increment? i only have 1 track TODO don't forget this
+                    auto device_type = instance->getInputDevice().getDeviceType();
+                    if (device_type == te::InputDevice::physicalMidiDevice ||
+                        device_type == te::InputDevice::virtualMidiDevice)
+                    {
+                        auto t = te::getAudioTracks(edit)[track_idx];
+                        if (t != nullptr)
+                        {
+                            instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
+                            instance->setRecordingEnabled (*t, true);
+                        }
+                    }
                 }
             }
-
             edit.restartPlayback();
         }
         auto &transport = edit.getTransport();
