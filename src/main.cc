@@ -15,53 +15,58 @@
 
 int main() 
 {
-    const juce::ScopedJuceInitialiser_GUI initialiser; // you need this otherwise the entire engine doesn't work??
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
     edit.ensureNumberOfAudioTracks(8);
+    edit.getTransport().ensureContextAllocated();
     box::Interface interface{};
 
-    box::App app(edit);
+    box::App app(engine, edit);
     box::APP = &app;
 
     try
     {
-        // try stuff
+        // arm
         {
             auto& dm = engine.getDeviceManager();
 
             for (int i = 0; i < dm.getNumWaveInDevices(); i++)
             {
-                if (auto wip = dm.getWaveInDevice (i))
+                if (auto wip = dm.getWaveInDevice(i))
                 {
-                    wip->setStereoPair (false);
-                    wip->setEndToEnd (true);
-                    wip->setEnabled (true);
+                    wip->setStereoPair(false);
+                    wip->setEndToEnd(true);
+                    wip->setEnabled(true);
+                }
+                else if (auto mip = dm.getMidiInDevice(i))
+                {
+                    mip->setEndToEndEnabled(true);
+                    mip->setEnabled(true);
                 }
             }
 
-            edit.getTransport().ensureContextAllocated();
-
-            int trackNum = 0;
-            for (auto instance : edit.getAllInputDevices())
+            int track_idx = 0;
+            for (size_t i = 0; i < box::MAX_TRACKS; i++)
             {
-                if (instance->getInputDevice().getDeviceType() == te::InputDevice::waveDevice)
+                for (auto instance : edit.getAllInputDevices())
                 {
-                    auto t = te::getAudioTracks(edit)[trackNum];
-                    if (t != nullptr)
+                    auto device_type = instance->getInputDevice().getDeviceType();
+                    if (device_type == te::InputDevice::physicalMidiDevice ||
+                        device_type == te::InputDevice::virtualMidiDevice)
                     {
-                        instance->setTargetTrack (*t, 0, true, nullptr);
-                        instance->setRecordingEnabled (*t, true);
-
-                        trackNum++;
+                        auto t = te::getAudioTracks(edit)[track_idx];
+                        if (t != nullptr)
+                        {
+                            instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
+                            instance->setRecordingEnabled(*t, true);
+                        }
                     }
                 }
             }
-
-            edit.restartPlayback();
         }
-        auto &transport = edit.getTransport();
+
         while (!interface.ShouldClose()) 
         {
             // poll and handle events
