@@ -80,6 +80,9 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
+                LOG_VAR(APP->tracks_[APP->current_track_]->track_.getClips().size());
+                LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->track_));
+                LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->track_));
                 break;
             case KEY_R:
                 {
@@ -88,7 +91,8 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_VAR(transport.isRecording());
                     if (transport.isRecording())
                     {
-                        transport.stop(true, false);
+                        transport.stop(false, false); // TODO should this discard?
+                        te::EditFileOperations (APP->edit_).save(true, true, false);
                     }
                     else
                     {
@@ -96,6 +100,16 @@ void Timeline:: HandleEvent(const Event &event)
                     }
                 }
                 break;
+            case KEY_T:
+                auto &transport = APP->edit_.getTransport();
+                if (transport.isPlaying())
+                {
+                    transport.stop(false, false); // TODO should this discard?
+                }
+                else
+                {
+                    transport.play(false);
+                }
             }
             break;
         }
