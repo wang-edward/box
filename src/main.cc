@@ -46,10 +46,11 @@ int main()
                 }
             }
 
-            if (engine.getDeviceManager().getDefaultMidiInDevice() == nullptr)
-            {
-                engine.getDeviceManager().createVirtualMidiDevice("Virtual");
-            }
+            // if (engine.getDeviceManager().getDefaultMidiInDevice() == nullptr)
+            // {
+            //     engine.getDeviceManager().createVirtualMidiDevice("yodie");
+            // }
+            engine.getDeviceManager().createVirtualMidiDevice("yodie");
 
             edit.getTransport().ensureContextAllocated();
 
@@ -69,6 +70,17 @@ int main()
                     }
                 }
                 else if (device_type == te::InputDevice::physicalMidiDevice)
+                {
+                    auto t = te::getAudioTracks(edit)[trackNum];
+                    if (t != nullptr)
+                    {
+                        instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
+                        instance->setRecordingEnabled (*t, true);
+
+                        trackNum++;
+                    }
+                }
+                else if (device_type == te::InputDevice::virtualMidiDevice)
                 {
                     auto t = te::getAudioTracks(edit)[trackNum];
                     if (t != nullptr)
