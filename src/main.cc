@@ -15,7 +15,7 @@
 
 int main() 
 {
-    const juce::ScopedJuceInitialiser_GUI initialiser; // you need this otherwise the entire engine doesn't work??
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
