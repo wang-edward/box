@@ -34,16 +34,16 @@ int main()
 
             for (int i = 0; i < dm.getNumWaveInDevices(); i++)
             {
-                if (auto wip = dm.getWaveInDevice (i))
+                if (auto wip = dm.getWaveInDevice(i))
                 {
-                    wip->setStereoPair (false);
-                    wip->setEndToEnd (true);
-                    wip->setEnabled (true);
+                    wip->setStereoPair(false);
+                    wip->setEndToEnd(true);
+                    wip->setEnabled(true);
                 }
-                else if (auto mip = dm.getMidiInDevice (i))
+                else if (auto mip = dm.getMidiInDevice(i))
                 {
-                    mip->setEndToEndEnabled (true);
-                    mip->setEnabled (true);
+                    mip->setEndToEndEnabled(true);
+                    mip->setEnabled(true);
                 }
             }
 
@@ -59,8 +59,8 @@ int main()
                         auto t = te::getAudioTracks(edit)[track_idx];
                         if (t != nullptr)
                         {
-                            instance->setTargetTrack (*t, 0, true, &edit.getUndoManager());
-                            instance->setRecordingEnabled (*t, true);
+                            instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
+                            instance->setRecordingEnabled(*t, true);
                         }
                     }
                 }
