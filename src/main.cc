@@ -28,7 +28,7 @@ int main()
 
     try
     {
-        // try stuff
+        // arm
         {
             auto& dm = engine.getDeviceManager();
 
@@ -48,7 +48,7 @@ int main()
             }
 
             int track_idx = 0;
-            for (int i = 0; i < box::MAX_TRACKS; i++)
+            for (size_t i = 0; i < box::MAX_TRACKS; i++)
             {
                 for (auto instance : edit.getAllInputDevices())
                 {
@@ -65,9 +65,8 @@ int main()
                     }
                 }
             }
-            edit.restartPlayback();
         }
-        auto &transport = edit.getTransport();
+
         while (!interface.ShouldClose()) 
         {
             // poll and handle events
