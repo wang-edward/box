@@ -12,6 +12,16 @@ static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, siz
     }
 }
 
+void print_tracks(App a)
+{
+    for (auto &t : a.tracks_)
+    {
+        // std::cout << "Wave Input Device: " << t->track_.getWaveInputDevice() << std::endl;
+        // WaveInputDevice& getWaveInputDevice() const noexcept        { jassert (waveInputDevice); return *waveInputDevice; }
+        // MidiInputDevice& getMidiInputDevice() const noexcept        { jassert (midiInputDevice); return *midiInputDevice; }
+    }
+}
+
 App:: App(te::Engine &engine, te::Edit &edit):
     engine_{engine},
     edit_{edit},
