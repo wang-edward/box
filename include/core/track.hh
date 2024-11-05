@@ -14,6 +14,15 @@ class Track {
         Plugin,
     };
 public:
+    static constexpr int MAX_PLUGINS = 8;
+    static constexpr int GRID_SIZE = 4;
+    std::vector<std::unique_ptr<Plugin>> plugins_;
+    int active_plugin_ = -1;
+    te::AudioTrack &track_;
+    ScreenState screen_state_ = ScreenState::Overview;
+
+
+
     Track(te::AudioTrack &track);
     ~Track();
 
@@ -25,12 +34,6 @@ public:
     void HandleEvent(const Event& event);
     void Render(Interface& Interface);
 
-    static constexpr int MAX_PLUGINS = 8;
-    static constexpr int GRID_SIZE = 4;
-    std::vector<std::unique_ptr<Plugin>> plugins_;
-    int active_plugin_ = -1;
-    te::AudioTrack &track_;
-    ScreenState screen_state_ = ScreenState::Overview;
 };
 
 } // namespace box
