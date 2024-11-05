@@ -1,6 +1,5 @@
 # doing?
-- figuring out midi recording
-
+- #11 print timeline view
 
 # Track::Plugin view
 - deleting plugins causes it to shrink down
@@ -23,25 +22,21 @@
 - Pots should be excluded from modal stuff. That way you can actually adjust the params while you are playing notes
 - some log scale for Norm
 
+# existential issues
+- does a modal daw even make sense :joy: :joy: :joy: you can't navigate menus while playing notes. but is that even the optimal workflow???
+
 # stuff im NOT SURE if i should do
 [ ] Use PluginConfig instead of Plugin
     - this holds data like the icon and the name and stuff
     - and then we can only have 
 
-# SHA
-- Rewrite Parameter to be better
-- has getNorm for CV
-
 # todo
 ## easy
-- make Plugin a struct and GetPlugin to plugin->base;
 - make const vectors arrays
 - figure out some way to better assert_tracks or whatever
     - like how do i handle when an array of things has len 0
 - handle tracks and base_tracks better
     - should be allocated at the start?
-- DrawCircleSector() for Knob
-
 
 ## long term
 - get rid of Interface, it doesn't really do anything
@@ -49,7 +44,6 @@
 - distinction between instrument and effect? like having seperate slots for types of plugins
 - better way to manage colorschemes - MAINCOLOR, ALT1, ALT2, etc.
 - better way to manage plugins - define stuff all in one place
-- timeline refactor - should Timeline == Manager?
 - store icon in static plugin, uses way too much memory for no reason
 
 # timeline
