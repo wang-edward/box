@@ -58,6 +58,11 @@ void Timeline:: print_timeline()
     const auto &track = APP->tracks_[APP->current_track_]->base_;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;
+    const auto &tempo = APP->edit_.tempoSequence;
+    const auto &transport = APP->edit_.getTransport();
+    const auto &curr_time_pos = transport.getPosition();
+
+    std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
 
     const auto clips = track.getClips();
     std::cout << "num clips: " << clips.size() << std::endl;
