@@ -66,9 +66,15 @@ void Timeline:: print_timeline()
         std::cout << "\t"<< "name: " << c->getName() << std::endl;
         std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
         const auto pos = c->getPosition();
-        std::cout << "\t\t" << "start time: " << pos.getStart().inSeconds() << std::endl;
-        std::cout << "\t\t" << "end time: " << pos.getEnd().inSeconds() << std::endl;
-        std::cout << "\t\t" << "length: " << pos.getLength().inSeconds() << std::endl;
+        auto edit_range = te::EditTimeRange{pos.time};
+        auto time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
+        auto beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
+        std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
+        std::cout << "\t\t" << "BEAT start: " << beat_range.getStart().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEAT end: " << beat_range.getEnd().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEAT length: " << beat_range.getLength().inBeats() << std::endl;
     }
 }
 
