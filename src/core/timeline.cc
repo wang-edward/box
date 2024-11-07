@@ -64,7 +64,12 @@ void Timeline:: print_timeline()
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TimePosition &curr_time_pos = transport.getPosition();
+    const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(curr_time_pos);
+
+
+    std::cout << "curr position: " << curr_time_pos.inSeconds() << std::endl;
     std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
+    std::cout << "time signature: " << time_sig.getStringTimeSig() << std::endl;
 
     const auto clips = track.getClips();
     std::cout << "num clips: " << clips.size() << std::endl;
