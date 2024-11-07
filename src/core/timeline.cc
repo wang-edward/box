@@ -60,10 +60,10 @@ void Timeline:: print_timeline()
     std::cout << "name: " << track.getName() << std::endl;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;
-    const auto &tempo = APP->edit_.tempoSequence;
-    const auto &transport = APP->edit_.getTransport();
-    const auto &curr_time_pos = transport.getPosition();
 
+    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+    const te::TransportControl &transport = APP->edit_.getTransport();
+    const te::TimePosition &curr_time_pos = transport.getPosition();
     std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
 
     const auto clips = track.getClips();
@@ -72,10 +72,10 @@ void Timeline:: print_timeline()
     {
         std::cout << "\t"<< "name: " << c->getName() << std::endl;
         std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
-        const auto pos = c->getPosition();
+        const te::ClipPosition pos = c->getPosition();
         auto edit_range = te::EditTimeRange{pos.time};
-        auto time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
-        auto beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
+        te::TimeRange time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
+        te::BeatRange beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
         std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
         std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
         std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
