@@ -101,14 +101,22 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_T:
-                auto &transport = APP->edit_.getTransport();
-                if (transport.isPlaying())
                 {
-                    transport.stop(false, false); // TODO should this discard?
+                    auto &transport = APP->edit_.getTransport();
+                    if (transport.isPlaying())
+                    {
+                        transport.stop(false, false); // TODO should this discard?
+                    }
+                    else
+                    {
+                        transport.play(false);
+                    }
                 }
-                else
+                break;
+            case KEY_S:
                 {
-                    transport.play(false);
+                    auto &transport = APP->edit_.getTransport();
+                    transport.setPosition(te::TimePosition::fromSeconds(0.f));
                 }
             }
             break;
