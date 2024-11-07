@@ -55,7 +55,9 @@ inline bool trackHasInput (te::AudioTrack& t, int position = 0)
 
 void Timeline:: print_timeline()
 {
+    std::cout << std::endl;
     const auto &track = APP->tracks_[APP->current_track_]->base_;
+    std::cout << "name: " << track.getName() << std::endl;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;
     const auto &tempo = APP->edit_.tempoSequence;
