@@ -53,6 +53,25 @@ inline bool trackHasInput (te::AudioTrack& t, int position = 0)
     return false;
 }
 
+void Timeline:: print_timeline()
+{
+    const auto &track = APP->tracks_[APP->current_track_]->base_;
+    std::cout << "isMuted: " << track.isMuted(false) << std::endl;
+    std::cout << "isSolo: " << track.isSolo(false) << std::endl;
+
+    const auto clips = track.getClips();
+    std::cout << "num clips: " << clips.size() << std::endl;
+    for (auto c : clips)
+    {
+        std::cout << "\t"<< "name: " << c->getName() << std::endl;
+        std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
+        const auto pos = c->getPosition();
+        std::cout << "\t\t" << "start time: " << pos.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t" << "end time: " << pos.getEnd().inSeconds() << std::endl;
+        std::cout << "\t\t" << "length: " << pos.getLength().inSeconds() << std::endl;
+    }
+}
+
 void Timeline:: HandleEvent(const Event &event) 
 {
     switch (screen_state_) 
@@ -83,6 +102,7 @@ void Timeline:: HandleEvent(const Event &event)
                 LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
                 LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
                 LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
+                print_timeline();
                 break;
             case KEY_R:
                 {
@@ -101,14 +121,22 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_T:
-                auto &transport = APP->edit_.getTransport();
-                if (transport.isPlaying())
                 {
-                    transport.stop(false, false); // TODO should this discard?
+                    auto &transport = APP->edit_.getTransport();
+                    if (transport.isPlaying())
+                    {
+                        transport.stop(false, false); // TODO should this discard?
+                    }
+                    else
+                    {
+                        transport.play(false);
+                    }
                 }
-                else
+                break;
+            case KEY_S:
                 {
-                    transport.play(false);
+                    auto &transport = APP->edit_.getTransport();
+                    transport.setPosition(te::TimePosition::fromSeconds(0.f));
                 }
             }
             break;
