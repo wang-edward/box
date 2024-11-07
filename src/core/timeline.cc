@@ -80,9 +80,9 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
-                LOG_VAR(APP->tracks_[APP->current_track_]->track_.getClips().size());
-                LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->track_));
-                LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->track_));
+                LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
+                LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
+                LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
                 break;
             case KEY_R:
                 {

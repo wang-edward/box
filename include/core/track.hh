@@ -18,12 +18,12 @@ public:
     static constexpr int GRID_SIZE = 4;
     std::vector<std::unique_ptr<Plugin>> plugins_;
     int active_plugin_ = -1;
-    te::AudioTrack &track_;
+    te::AudioTrack &base_;
     ScreenState screen_state_ = ScreenState::Overview;
 
 
 
-    Track(te::AudioTrack &track);
+    Track(te::AudioTrack &base);
     ~Track();
 
     void AddPlugin(std::unique_ptr<Plugin> plugin);
