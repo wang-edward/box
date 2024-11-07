@@ -67,7 +67,7 @@ void Timeline:: print_timeline()
         std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
         const auto pos = c->getPosition();
         std::cout << "\t\t" << "start time: " << pos.getStart().inSeconds() << std::endl;
-        std::cout << "\t\t" << "end time: " << pos.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t" << "end time: " << pos.getEnd().inSeconds() << std::endl;
         std::cout << "\t\t" << "length: " << pos.getLength().inSeconds() << std::endl;
     }
 }
