@@ -13,7 +13,7 @@ static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, 
     }
 }
 
-Track:: Track(te::AudioTrack &track): track_{track} 
+Track:: Track(te::AudioTrack &base): base_{base}
 {
 }
 
@@ -25,7 +25,7 @@ void Track:: AddPlugin(std::unique_ptr<Plugin> plugin)
 {
     if (active_plugin_ == -1) active_plugin_ = 0; // TODO better way to handle this
     int index = plugins_.size();
-    track_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
+    base_.pluginList.insertPlugin(plugin->GetPlugin(), index, nullptr);
     plugins_.push_back(std::move(plugin));
 }
 
@@ -87,7 +87,7 @@ void Track:: HandleEvent(const Event& event)
                     break;
                 case KEY_P:
                     {
-                        auto l = track_.pluginList.getPlugins();
+                        auto l = base_.pluginList.getPlugins();
                         for (auto p : l)
                         {
                             std::cout << p->getName() << ", ";
