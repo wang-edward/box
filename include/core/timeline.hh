@@ -11,11 +11,13 @@ struct Timeline {
         Overview,
     };
 
-    void Render(Interface& interface);
-    void HandleEvent(const Event& event);
-
     ScreenState screen_state_ = ScreenState::Overview;
 
+
+
+    void Render(Interface& interface);
+    void HandleEvent(const Event& event);
+    void print_timeline();
 };
 
 } // namespace box
