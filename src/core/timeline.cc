@@ -154,9 +154,25 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_S:
                 {
+                    LOG_MSG("move to origin");
                     auto &transport = APP->edit_.getTransport();
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
                 }
+                break;
+            case KEY_COMMA:
+                {
+                    LOG_MSG("move left");
+                    auto &transport = APP->edit_.getTransport();
+                    transport.setPosition(te::TimePosition::fromSeconds(transport.getCurrentPosition() - 2.f));
+                }
+                break;
+            case KEY_PERIOD:
+                {
+                    LOG_MSG("move right");
+                    auto &transport = APP->edit_.getTransport();
+                    transport.setPosition(te::TimePosition::fromSeconds(transport.getCurrentPosition() + 2.f));
+                }
+                break;
             }
             break;
         }

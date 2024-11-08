@@ -65,6 +65,8 @@ private:
         KEY_ENTER,
         KEY_TAB,
         KEY_BACKSPACE,
+        KEY_COMMA,
+        KEY_PERIOD,
         KEY_DELETE,
         KEY_RIGHT,
         KEY_LEFT,
