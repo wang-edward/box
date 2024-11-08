@@ -23,13 +23,58 @@ void Timeline:: Render(Interface &interface)
         DrawRectangleRec(Rectangle{x, y, width, height}, {0xff, 0xff, 0xff, 0x80});
     }
 
-    // render bar
+    // render pos
     {
         double pos = APP->edit_.getTransport().getPosition().inSeconds();
         auto text = std::to_string(pos);
         const int font_size = 10;
         int width = MeasureText(text.c_str(), font_size);
         DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
+    }
+
+    // render cursor
+    {
+        DrawLine(64, 0, 64, 128, WHITE);
+    }
+
+    // render clips
+    {
+        // render everything in -4, +4 beats
+
+        constexpr double RADIUS = 4.0;
+        constexpr double WIDTH = RADIUS * 2;
+
+        const te::TransportControl &transport = APP->edit_.getTransport();
+        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+        const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
+        auto left = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
+        auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+        for (const auto &t : APP->tracks_)
+        {
+            for (const auto &c : t->base_.getClips())
+            {
+                const te::ClipPosition c_pos = c->getPosition();
+                auto c_er = te::EditTimeRange{c_pos.time};
+                te::BeatRange t_br = te::toBeats(c_er, tempo);
+
+                auto left_dist = t_br.getStart().inBeats() - left.inBeats();
+                auto right_dist = right.inBeats() - t_br.getEnd().inBeats();
+
+                auto left_pct = left_dist / WIDTH;
+                auto right_pct = right_dist / WIDTH;
+
+                auto left_px = left_pct * 128;
+                auto right_px = 128 - right_pct * 128;
+
+                DrawRectangle(left_px, 32, right_px, 24, RED);
+
+                // print_timeline();
+                // LOG_VAR(left_dist);
+                // LOG_VAR(right_dist);
+
+                // TODO if (t_br.getStart() < right || t_br.getEnd() > left)
+            }
+        }
     }
 }
 
