@@ -64,10 +64,11 @@ void Timeline:: print_timeline()
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TimePosition &curr_time_pos = transport.getPosition();
+    const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
     const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(curr_time_pos);
 
-
-    std::cout << "curr position: " << curr_time_pos.inSeconds() << std::endl;
+    std::cout << "TIME curr position: " << curr_time_pos.inSeconds() << std::endl;
+    std::cout << "BEATS curr position: " << curr_beat_pos.inBeats() << std::endl;
     std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
     std::cout << "time signature: " << time_sig.getStringTimeSig() << std::endl;
 
@@ -84,9 +85,9 @@ void Timeline:: print_timeline()
         std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
         std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
         std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
-        std::cout << "\t\t" << "BEAT start: " << beat_range.getStart().inBeats() << std::endl;
-        std::cout << "\t\t" << "BEAT end: " << beat_range.getEnd().inBeats() << std::endl;
-        std::cout << "\t\t" << "BEAT length: " << beat_range.getLength().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
     }
 }
 
