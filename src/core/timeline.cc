@@ -55,9 +55,22 @@ inline bool trackHasInput (te::AudioTrack& t, int position = 0)
 
 void Timeline:: print_timeline()
 {
+    std::cout << std::endl;
     const auto &track = APP->tracks_[APP->current_track_]->base_;
+    std::cout << "name: " << track.getName() << std::endl;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;
+
+    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+    const te::TransportControl &transport = APP->edit_.getTransport();
+    const te::TimePosition &curr_time_pos = transport.getPosition();
+    const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
+    const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(curr_time_pos);
+
+    std::cout << "TIME curr position: " << curr_time_pos.inSeconds() << std::endl;
+    std::cout << "BEATS curr position: " << curr_beat_pos.inBeats() << std::endl;
+    std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
+    std::cout << "time signature: " << time_sig.getStringTimeSig() << std::endl;
 
     const auto clips = track.getClips();
     std::cout << "num clips: " << clips.size() << std::endl;
@@ -65,10 +78,16 @@ void Timeline:: print_timeline()
     {
         std::cout << "\t"<< "name: " << c->getName() << std::endl;
         std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
-        const auto pos = c->getPosition();
-        std::cout << "\t\t" << "start time: " << pos.getStart().inSeconds() << std::endl;
-        std::cout << "\t\t" << "end time: " << pos.getEnd().inSeconds() << std::endl;
-        std::cout << "\t\t" << "length: " << pos.getLength().inSeconds() << std::endl;
+        const te::ClipPosition pos = c->getPosition();
+        auto edit_range = te::EditTimeRange{pos.time};
+        te::TimeRange time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
+        te::BeatRange beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
+        std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
+        std::cout << "\t\t" << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
     }
 }
 
