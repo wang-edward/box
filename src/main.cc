@@ -16,6 +16,7 @@
 int main() 
 {
     const juce::ScopedJuceInitialiser_GUI initialiser; // need this
+    SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
     te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
