@@ -49,8 +49,11 @@ void Timeline:: Render(Interface &interface)
         const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
         auto left = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
         auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+        int cnt = 0;
         for (const auto &t : APP->tracks_)
         {
+            // TODO make this work with scroll
+            int y = (24 * cnt) + 32;
             for (const auto &c : t->base_.getClips())
             {
                 const te::ClipPosition c_pos = c->getPosition();
@@ -66,7 +69,7 @@ void Timeline:: Render(Interface &interface)
                 auto left_px = left_pct * 128;
                 auto right_px = 128 - right_pct * 128;
 
-                DrawRectangle(left_px, 32, right_px, 24, RED);
+                DrawRectangle(left_px, y, right_px, 24, RED);
 
                 // print_timeline();
                 // LOG_VAR(left_dist);
@@ -74,6 +77,7 @@ void Timeline:: Render(Interface &interface)
 
                 // TODO if (t_br.getStart() < right || t_br.getEnd() > left)
             }
+            cnt++;
         }
     }
 }
