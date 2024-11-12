@@ -218,6 +218,14 @@ void Timeline:: HandleEvent(const Event &event)
                     transport.setPosition(te::TimePosition::fromSeconds(transport.getCurrentPosition() + 2.f));
                 }
                 break;
+            case KEY_N:
+                APP->ArmMidi(APP->current_track_);
+                LOG_MSG("ARM MIDI");
+                break;
+            case KEY_M:
+                APP->UnarmMidi(APP->current_track_);
+                LOG_MSG("UNARM MIDI");
+                break;
             }
             break;
         }

@@ -48,24 +48,24 @@ int main()
                 }
             }
 
-            int track_idx = 0;
-            for (size_t i = 0; i < box::MAX_TRACKS; i++)
-            {
-                for (auto instance : edit.getAllInputDevices())
-                {
-                    auto device_type = instance->getInputDevice().getDeviceType();
-                    if (device_type == te::InputDevice::physicalMidiDevice ||
-                        device_type == te::InputDevice::virtualMidiDevice)
-                    {
-                        auto t = te::getAudioTracks(edit)[track_idx];
-                        if (t != nullptr)
-                        {
-                            instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
-                            instance->setRecordingEnabled(*t, true);
-                        }
-                    }
-                }
-            }
+            // int track_idx = 0;
+            // for (size_t i = 0; i < box::MAX_TRACKS; i++)
+            // {
+            //     for (auto instance : edit.getAllInputDevices())
+            //     {
+            //         auto device_type = instance->getInputDevice().getDeviceType();
+            //         if (device_type == te::InputDevice::physicalMidiDevice ||
+            //             device_type == te::InputDevice::virtualMidiDevice)
+            //         {
+            //             auto t = te::getAudioTracks(edit)[track_idx];
+            //             if (t != nullptr)
+            //             {
+            //                 instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
+            //                 instance->setRecordingEnabled(*t, true);
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         while (!interface.ShouldClose()) 

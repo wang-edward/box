@@ -44,6 +44,43 @@ void App:: SetCurrentTrack(size_t track_index)
         current_track_ = track_index;
     }
 }
+void App:: ArmMidi(size_t index)
+{
+    assert(0 <= index && index < tracks_.size());
+    for (auto instance : edit_.getAllInputDevices())
+    {
+        auto device_type = instance->getInputDevice().getDeviceType();
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
+        {
+            auto t = te::getAudioTracks(edit_)[index];
+            if (t != nullptr)
+            {
+                instance->setTargetTrack(*t, 0, true, &edit_.getUndoManager());
+                // instance->setRecordingEnabled(*t, true);
+            }
+        }
+    }
+}
+
+void App:: UnarmMidi(size_t index)
+{
+    assert(0 <= index && index < tracks_.size());
+    for (auto instance : edit_.getAllInputDevices())
+    {
+        auto device_type = instance->getInputDevice().getDeviceType();
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
+        {
+            auto t = te::getAudioTracks(edit_)[index];
+            if (t != nullptr)
+            {
+                instance->clearFromTracks(&edit_.getUndoManager());
+            }
+        }
+    }
+
+}
 
 void App:: Render(Interface& interface) 
 {
@@ -111,8 +148,6 @@ void App:: HandleEvent(const Event& event)
             }
             break;
         }
-
-        LOG_MSG("short circuited for midi input");
         return;
     }
 

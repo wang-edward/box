@@ -47,6 +47,8 @@ struct App {
 
     void SetCurrentTrack(size_t track_app);
     void AddTrack();
+    void ArmMidi(size_t index);
+    void UnarmMidi(size_t index);
 };
 
 } // namespace box
