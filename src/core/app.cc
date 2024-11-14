@@ -53,12 +53,18 @@ void App:: ArmMidi(size_t index)
         if (device_type == te::InputDevice::physicalMidiDevice ||
             device_type == te::InputDevice::virtualMidiDevice)
         {
+            box::LOG_MSG("ARM name: " + instance->getInputDevice().getName().toStdString());
+            if (device_type == te::InputDevice::physicalMidiDevice)
+                box::LOG_MSG("app physical");
+            if (device_type == te::InputDevice::virtualMidiDevice)
+                box::LOG_MSG("app virtual");
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
             {
                 instance->setTargetTrack(*t, 0, true, &edit_.getUndoManager());
-                // instance->setRecordingEnabled(*t, true);
+                instance->setRecordingEnabled(*t, true);
             }
+            LOG_MSG("size: " + std::to_string(instance->getTargetTracks().size()));
         }
     }
 }
@@ -77,9 +83,14 @@ void App:: UnarmMidi(size_t index)
             {
                 instance->clearFromTracks(&edit_.getUndoManager());
             }
+            box::LOG_MSG("DISARM name: " + instance->getInputDevice().getName().toStdString());
+            if (device_type == te::InputDevice::physicalMidiDevice)
+                box::LOG_MSG("app physical");
+            if (device_type == te::InputDevice::virtualMidiDevice)
+                box::LOG_MSG("app virtual");
+            LOG_MSG("size: " + std::to_string(instance->getTargetTracks().size()));
         }
     }
-
 }
 
 void App:: Render(Interface& interface) 

@@ -219,12 +219,14 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_N:
+                LOG_VAR(APP->current_track_);
                 APP->ArmMidi(APP->current_track_);
                 LOG_MSG("ARM MIDI");
                 break;
             case KEY_M:
+                LOG_VAR(APP->current_track_);
                 APP->UnarmMidi(APP->current_track_);
-                LOG_MSG("UNARM MIDI");
+                LOG_MSG("DISARM MIDI");
                 break;
             }
             break;

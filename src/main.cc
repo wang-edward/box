@@ -48,7 +48,6 @@ int main()
                 }
             }
 
-            // int track_idx = 0;
             // for (size_t i = 0; i < box::MAX_TRACKS; i++)
             // {
             //     for (auto instance : edit.getAllInputDevices())
@@ -57,7 +56,14 @@ int main()
             //         if (device_type == te::InputDevice::physicalMidiDevice ||
             //             device_type == te::InputDevice::virtualMidiDevice)
             //         {
-            //             auto t = te::getAudioTracks(edit)[track_idx];
+            //             box::LOG_MSG("index: " + std::to_string(i));
+            //             box::LOG_MSG("name: " + instance->getInputDevice().getName().toStdString());
+            //             if (device_type == te::InputDevice::physicalMidiDevice)
+            //                 box::LOG_MSG("main physical ");
+            //             if (device_type == te::InputDevice::virtualMidiDevice)
+            //                 box::LOG_MSG("main virtual");
+
+            //             auto t = te::getAudioTracks(edit)[i];
             //             if (t != nullptr)
             //             {
             //                 instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
