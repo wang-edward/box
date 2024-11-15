@@ -1,5 +1,6 @@
 #include <random>
 #include <iostream>
+#include <filesystem>
 
 #include <juce_events/juce_events.h>
 
@@ -19,7 +20,12 @@ int main()
     SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
-    te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
+    // std::unique_ptr<Edit> createEmptyEdit (Engine&, const juce::File&);
+    std::filesystem::path curr_path = std::filesystem::absolute(__FILE__);
+    juce::File my_file {juce::String{curr_path.string()}};
+
+    std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
+    te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
     box::Interface interface{};
@@ -38,12 +44,12 @@ int main()
                 if (auto wip = dm.getWaveInDevice(i))
                 {
                     wip->setStereoPair(false);
-                    wip->setEndToEnd(true);
+                    // wip->setEndToEnd(true); // TODO update ?
                     wip->setEnabled(true);
                 }
                 else if (auto mip = dm.getMidiInDevice(i))
                 {
-                    mip->setEndToEndEnabled(true);
+                    // mip->setEndToEndEnabled(true); // TODO update ?
                     mip->setEnabled(true);
                 }
             }
