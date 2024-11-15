@@ -151,10 +151,20 @@ void Timeline:: HandleEvent(const Event &event)
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
             case KEY_J:
-                APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
+                {
+                    size_t old_track = APP->current_track_;
+                    APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
+                    APP->UnarmMidi(old_track);
+                    APP->ArmMidi(APP->current_track_);
+                }
                 break;
             case KEY_K:
-                APP->current_track_ = clamp_decrement(APP->current_track_);
+                {
+                    size_t old_track = APP->current_track_;
+                    APP->current_track_ = clamp_decrement(APP->current_track_);
+                    APP->UnarmMidi(old_track);
+                    APP->ArmMidi(APP->current_track_);
+                }
                 break;
             case KEY_O: // add track
                 if (APP->tracks_.size() < MAX_TRACKS) 

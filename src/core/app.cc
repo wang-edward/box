@@ -30,6 +30,7 @@ App:: App(te::Engine &engine, te::Edit &edit):
 {
     AddTrack(); // ensure there's always at least 1
     LOG_VAR(tracks_.size());
+    ArmMidi(current_track_); // turn on midi for it
 }
 
 void App:: AddTrack()
@@ -61,7 +62,7 @@ void App:: ArmMidi(size_t index)
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
             {
-                [[ maybe_unused ]] auto res = instance->setTarget (t->itemID, true, &APP->edit_.getUndoManager(), 0);
+                [[ maybe_unused ]] auto res = instance->setTarget (t->itemID, true, &edit_.getUndoManager(), 0);
                 instance->setRecordingEnabled (t->itemID, true);
             }
         }
@@ -144,7 +145,7 @@ void App:: HandleEvent(const Event& event)
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
                 auto message = juce::MidiMessage::noteOn(1, KEY_TO_MIDI.at(event.value), 1.0f);
-                te::MidiInputDevice* dev = APP->engine_.getDeviceManager().getDefaultMidiInDevice();
+                te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOn(1, KEY_TO_MIDI.at(event.value), 1.0);
             }
             break;
@@ -152,7 +153,7 @@ void App:: HandleEvent(const Event& event)
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
                 auto message = juce::MidiMessage::noteOff(1, KEY_TO_MIDI.at(event.value));
-                te::MidiInputDevice* dev = APP->engine_.getDeviceManager().getDefaultMidiInDevice();
+                te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOff(1, KEY_TO_MIDI.at(event.value), 1.0);
             }
             break;
