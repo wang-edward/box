@@ -1,5 +1,6 @@
 #include <random>
 #include <iostream>
+#include <filesystem>
 
 #include <juce_events/juce_events.h>
 
@@ -19,7 +20,12 @@ int main()
     SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
-    te::Edit edit{engine, te::createEmptyEdit(engine), te::Edit::forEditing, nullptr, 0};
+    // std::unique_ptr<Edit> createEmptyEdit (Engine&, const juce::File&);
+    std::filesystem::path curr_path = std::filesystem::absolute(__FILE__);
+    juce::File my_file {juce::String{curr_path.string()}};
+
+    std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
+    te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
     box::Interface interface{};
@@ -38,34 +44,40 @@ int main()
                 if (auto wip = dm.getWaveInDevice(i))
                 {
                     wip->setStereoPair(false);
-                    wip->setEndToEnd(true);
+                    // wip->setEndToEnd(true); // TODO update ?
                     wip->setEnabled(true);
                 }
                 else if (auto mip = dm.getMidiInDevice(i))
                 {
-                    mip->setEndToEndEnabled(true);
+                    // mip->setEndToEndEnabled(true); // TODO update ?
                     mip->setEnabled(true);
                 }
             }
 
-            int track_idx = 0;
-            for (size_t i = 0; i < box::MAX_TRACKS; i++)
-            {
-                for (auto instance : edit.getAllInputDevices())
-                {
-                    auto device_type = instance->getInputDevice().getDeviceType();
-                    if (device_type == te::InputDevice::physicalMidiDevice ||
-                        device_type == te::InputDevice::virtualMidiDevice)
-                    {
-                        auto t = te::getAudioTracks(edit)[track_idx];
-                        if (t != nullptr)
-                        {
-                            instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
-                            instance->setRecordingEnabled(*t, true);
-                        }
-                    }
-                }
-            }
+            // for (size_t i = 0; i < box::MAX_TRACKS; i++)
+            // {
+            //     for (auto instance : edit.getAllInputDevices())
+            //     {
+            //         auto device_type = instance->getInputDevice().getDeviceType();
+            //         if (device_type == te::InputDevice::physicalMidiDevice ||
+            //             device_type == te::InputDevice::virtualMidiDevice)
+            //         {
+            //             box::LOG_MSG("index: " + std::to_string(i));
+            //             box::LOG_MSG("name: " + instance->getInputDevice().getName().toStdString());
+            //             if (device_type == te::InputDevice::physicalMidiDevice)
+            //                 box::LOG_MSG("main physical ");
+            //             if (device_type == te::InputDevice::virtualMidiDevice)
+            //                 box::LOG_MSG("main virtual");
+
+            //             auto t = te::getAudioTracks(edit)[i];
+            //             if (t != nullptr)
+            //             {
+            //                 instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
+            //                 instance->setRecordingEnabled(*t, true);
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         while (!interface.ShouldClose()) 

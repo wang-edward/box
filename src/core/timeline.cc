@@ -78,25 +78,26 @@ void Timeline:: Render(Interface &interface)
     }
 }
 
-inline bool isTrackArmed (te::AudioTrack& t, int position = 0)
-{
-    auto& edit = t.edit;
-    for (auto instance : edit.getAllInputDevices())
-        if (instance->isOnTargetTrack (t, position))
-            return instance->isRecordingEnabled (t);
+// TODO update?
+// inline bool isTrackArmed (te::AudioTrack& t, int position = 0)
+// {
+//     auto& edit = t.edit;
+//     for (auto instance : edit.getAllInputDevices())
+//         if (instance->isOnTargetTrack (t, position))
+//             return instance->isRecordingEnabled (t);
 
-    return false;
-}
+//     return false;
+// }
 
-inline bool trackHasInput (te::AudioTrack& t, int position = 0)
-{
-    auto& edit = t.edit;
-    for (auto instance : edit.getAllInputDevices())
-        if (instance->isOnTargetTrack (t, position))
-            return true;
+// inline bool trackHasInput (te::AudioTrack& t, int position = 0)
+// {
+//     auto& edit = t.edit;
+//     for (auto instance : edit.getAllInputDevices())
+//         if (instance->isOnTargetTrack (t, position))
+//             return true;
 
-    return false;
-}
+//     return false;
+// }
 
 void Timeline:: print_timeline()
 {
@@ -162,16 +163,17 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_P:
-                LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
-                LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
-                LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
-                LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
+                // TODO update?
+                // LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
+                // LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
+                // LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
+                // LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
                 print_timeline();
                 break;
             case KEY_R:
                 {
                     auto &transport = APP->edit_.getTransport();
-                    LOG_VAR(transport.getCurrentPosition());
+                    LOG_VAR(transport.getPosition().inSeconds());
                     LOG_VAR(transport.isRecording());
                     if (transport.isRecording())
                     {
@@ -208,15 +210,25 @@ void Timeline:: HandleEvent(const Event &event)
                 {
                     LOG_MSG("move left");
                     auto &transport = APP->edit_.getTransport();
-                    transport.setPosition(te::TimePosition::fromSeconds(transport.getCurrentPosition() - 2.f));
+                    transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() - 2.f));
                 }
                 break;
             case KEY_PERIOD:
                 {
                     LOG_MSG("move right");
                     auto &transport = APP->edit_.getTransport();
-                    transport.setPosition(te::TimePosition::fromSeconds(transport.getCurrentPosition() + 2.f));
+                    transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() + 2.f));
                 }
+                break;
+            case KEY_N:
+                LOG_VAR(APP->current_track_);
+                APP->ArmMidi(APP->current_track_);
+                LOG_MSG("ARM MIDI");
+                break;
+            case KEY_M:
+                LOG_VAR(APP->current_track_);
+                APP->UnarmMidi(APP->current_track_);
+                LOG_MSG("DISARM MIDI");
                 break;
             }
             break;

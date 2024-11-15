@@ -44,6 +44,52 @@ void App:: SetCurrentTrack(size_t track_index)
         current_track_ = track_index;
     }
 }
+void App:: ArmMidi(size_t index)
+{
+    assert(0 <= index && index < tracks_.size());
+    for (auto instance : edit_.getAllInputDevices())
+    {
+        auto device_type = instance->getInputDevice().getDeviceType();
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
+        {
+            box::LOG_MSG("ARM name: " + instance->getInputDevice().getName().toStdString());
+            if (device_type == te::InputDevice::physicalMidiDevice)
+                box::LOG_MSG("app physical");
+            if (device_type == te::InputDevice::virtualMidiDevice)
+                box::LOG_MSG("app virtual");
+            auto t = te::getAudioTracks(edit_)[index];
+            if (t != nullptr)
+            {
+                [[ maybe_unused ]] auto res = instance->setTarget (t->itemID, true, &APP->edit_.getUndoManager(), 0);
+                instance->setRecordingEnabled (t->itemID, true);
+            }
+        }
+    }
+}
+
+void App:: UnarmMidi(size_t index)
+{
+    assert(0 <= index && index < tracks_.size());
+    for (auto instance : edit_.getAllInputDevices())
+    {
+        auto device_type = instance->getInputDevice().getDeviceType();
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
+        {
+            auto t = te::getAudioTracks(edit_)[index];
+            if (t != nullptr)
+            {
+                instance->removeTarget(t->itemID, &edit_.getUndoManager());
+            }
+            box::LOG_MSG("DISARM name: " + instance->getInputDevice().getName().toStdString());
+            if (device_type == te::InputDevice::physicalMidiDevice)
+              box::LOG_MSG("app physical");
+            if (device_type == te::InputDevice::virtualMidiDevice)
+              box::LOG_MSG("app virtual");
+        }
+    }
+}
 
 void App:: Render(Interface& interface) 
 {
@@ -111,8 +157,6 @@ void App:: HandleEvent(const Event& event)
             }
             break;
         }
-
-        LOG_MSG("short circuited for midi input");
         return;
     }
 
