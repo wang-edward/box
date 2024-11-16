@@ -3,8 +3,6 @@
 #include "core/track.hh"
 #include "core/plugin_selector.hh"
 #include "core/timeline.hh"
-#include "plugin/chorus.hh"
-#include "plugin/four_osc.hh"
 
 namespace box {
 
