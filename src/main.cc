@@ -53,31 +53,6 @@ int main()
                     mip->setEnabled(true);
                 }
             }
-
-            // for (size_t i = 0; i < box::MAX_TRACKS; i++)
-            // {
-            //     for (auto instance : edit.getAllInputDevices())
-            //     {
-            //         auto device_type = instance->getInputDevice().getDeviceType();
-            //         if (device_type == te::InputDevice::physicalMidiDevice ||
-            //             device_type == te::InputDevice::virtualMidiDevice)
-            //         {
-            //             box::LOG_MSG("index: " + std::to_string(i));
-            //             box::LOG_MSG("name: " + instance->getInputDevice().getName().toStdString());
-            //             if (device_type == te::InputDevice::physicalMidiDevice)
-            //                 box::LOG_MSG("main physical ");
-            //             if (device_type == te::InputDevice::virtualMidiDevice)
-            //                 box::LOG_MSG("main virtual");
-
-            //             auto t = te::getAudioTracks(edit)[i];
-            //             if (t != nullptr)
-            //             {
-            //                 instance->setTargetTrack(*t, 0, true, &edit.getUndoManager());
-            //                 instance->setRecordingEnabled(*t, true);
-            //             }
-            //         }
-            //     }
-            // }
         }
 
         while (!interface.ShouldClose()) 
