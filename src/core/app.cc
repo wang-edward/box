@@ -51,8 +51,8 @@ void App:: ArmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        if (device_type == te::InputDevice::physicalMidiDevice ||
-            device_type == te::InputDevice::virtualMidiDevice)
+        // if (device_type == te::InputDevice::physicalMidiDevice ||
+        if (device_type == te::InputDevice::virtualMidiDevice)
         {
             box::LOG_MSG("ARM name: " + instance->getInputDevice().getName().toStdString());
             if (device_type == te::InputDevice::physicalMidiDevice)
@@ -75,8 +75,8 @@ void App:: UnarmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        if (device_type == te::InputDevice::physicalMidiDevice ||
-            device_type == te::InputDevice::virtualMidiDevice)
+        // if (device_type == te::InputDevice::physicalMidiDevice ||
+        if (device_type == te::InputDevice::virtualMidiDevice)
         {
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
@@ -142,6 +142,7 @@ void App:: HandleEvent(const Event& event)
         switch (event.type)
         {
         case EventType::KeyPress:
+            LOG_VAR(event.value);
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
                 auto message = juce::MidiMessage::noteOn(1, KEY_TO_MIDI.at(event.value), 1.0f);
