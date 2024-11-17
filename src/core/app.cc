@@ -51,8 +51,8 @@ void App:: ArmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        // if (device_type == te::InputDevice::physicalMidiDevice ||
-        if (device_type == te::InputDevice::virtualMidiDevice)
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
         {
             box::LOG_MSG("ARM name: " + instance->getInputDevice().getName().toStdString());
             if (device_type == te::InputDevice::physicalMidiDevice)
@@ -75,8 +75,8 @@ void App:: UnarmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        // if (device_type == te::InputDevice::physicalMidiDevice ||
-        if (device_type == te::InputDevice::virtualMidiDevice)
+        if (device_type == te::InputDevice::physicalMidiDevice ||
+            device_type == te::InputDevice::virtualMidiDevice)
         {
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
