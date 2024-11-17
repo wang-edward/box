@@ -3,10 +3,12 @@
 #include "core/plugin.hh"
 #include "component/knob.hh"
 
-namespace box {
+namespace box
+{
 
 
-class Chorus : public Plugin {
+class Chorus : public Plugin
+{
 public:
     Chorus(te::Plugin *p);
     void Render(Interface &interface) override;
@@ -21,7 +23,7 @@ private:
     Knob<float> knob_speed_;
     Knob<float> knob_mix_;
 
-    juce::CachedValue<float> depthMs, width, mixProportion, speedHz;
+    // juce::CachedValue<float> depthMs, width, mixProportion, speedHz; // TODO delete?
 };
 
 

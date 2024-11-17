@@ -1,6 +1,10 @@
 #include "core/plugin_selector.hh"
 #include "core/app.hh"
 
+#include "plugin/chorus.hh"
+#include "plugin/four_osc.hh"
+#include "plugin/compressor.hh"
+
 namespace box {
 
 const std::vector<std::string> PluginSelector:: PLUGIN_NAMES = {
@@ -75,6 +79,11 @@ void PluginSelector:: HandleEvent(const Event &event)
             {
                 p = std::make_unique<FourOsc>(base);
             }
+            else if (name == te::CompressorPlugin::xmlTypeName)
+            {
+                p = std::make_unique<Compressor>(base);
+            }
+
             APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));
             break;
         }

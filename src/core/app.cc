@@ -142,6 +142,7 @@ void App:: HandleEvent(const Event& event)
         switch (event.type)
         {
         case EventType::KeyPress:
+            LOG_VAR(event.value);
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
                 auto message = juce::MidiMessage::noteOn(1, KEY_TO_MIDI.at(event.value), 1.0f);
