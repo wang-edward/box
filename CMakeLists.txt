@@ -23,60 +23,62 @@ include_directories(external/googletest/googletest/include)
 
 # Collect all .cc files from src directory
 file(GLOB_RECURSE SRC_FILES src/*.cc)
+list(REMOVE_ITEM SRC_FILES ${CMAKE_SOURCE_DIR}/src/main.cc)
 
-
+# boxlib
 add_library(BoxLib
     STATIC
-    ${SRC_FILES}
-)
-
+    ${SRC_FILES})
+target_include_directories(BoxLib PRIVATE external/tracktion_engine/modules)
+target_include_directories(BoxLib PRIVATE external/tracktion_engine/modules/juce)
 target_link_libraries(BoxLib
     PRIVATE
         raylib
         tracktion::tracktion_engine
         juce::juce_core
-        ${OPENGL_LIBRARIES}
-        ${GLFW_LIBRARIES}
-        ${GLEW_LIBRARIES}
     PUBLIC
         juce::juce_recommended_config_flags
-        juce::juce_recommended_warning_flags
-)
+        juce::juce_recommended_warning_flags)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  target_link_libraries(Box PRIVATE "-latomic")
+    target_link_libraries(BoxLib PRIVATE "-latomic")
 endif()
 
-
+# box
 juce_add_console_app(Box
     PRODUCT_NAME "Box test")
-
 target_sources(Box
-    src/main.cc
-)
-
-target_compile_definitions(Box
     PRIVATE
-        JUCE_WEB_BROWSER=0
-        JUCE_USE_CURL=0)
-
-target_link_libraries(Box 
-    PRIVATE BoxLib)
+        src/main.cc)
+target_compile_definitions(Box PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_include_directories(Box PRIVATE external/tracktion_engine/modules)
+target_include_directories(Box PRIVATE external/tracktion_engine/modules/juce)
+# target_link_libraries(Box PRIVATE BoxLib)
+target_link_libraries(Box
+    PRIVATE
+        BoxLib
+        raylib
+        tracktion::tracktion_engine
+        juce::juce_core
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
 
 file(COPY ${CMAKE_SOURCE_DIR}/shader DESTINATION ${CMAKE_BINARY_DIR}/Box_artefacts)
 
-# test
+# boxtest
 add_executable(BoxTests
-    test/test.cc
-)
-
-# Link the test executable with Google Test and the main application
+    test/test.cc)
+target_include_directories(BoxTests PRIVATE external/tracktion_engine/modules)
+target_include_directories(BoxTests PRIVATE external/tracktion_engine/modules/juce)
 target_link_libraries(BoxTests 
     PRIVATE 
         BoxLib
         gtest 
-        gtest_main)
-target_include_directories(BoxTests
-    PRIVATE
-        include
-)
+        gtest_main
+        raylib
+        tracktion::tracktion_engine
+        juce::juce_core
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
