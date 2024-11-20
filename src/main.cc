@@ -2,8 +2,6 @@
 #include <iostream>
 #include <filesystem>
 
-#include <juce_events/juce_events.h>
-
 #include "core/util.hh"
 #include "core/interface.hh"
 #include "core/track.hh"
