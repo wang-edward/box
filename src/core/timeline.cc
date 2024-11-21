@@ -49,6 +49,7 @@ void Timeline:: Render(Interface &interface)
         const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
         auto left = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
         auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+        size_t cnt = 0;
         for (const auto &t : APP->tracks_)
         {
             for (const auto &c : t->base_.getClips())
@@ -66,7 +67,7 @@ void Timeline:: Render(Interface &interface)
                 auto left_px = left_pct * 128;
                 auto right_px = 128 - right_pct * 128;
 
-                DrawRectangle(left_px, 32, right_px, 24, RED);
+                DrawRectangle(left_px, (cnt * 24) + 32, right_px, 24, RED);
 
                 // print_timeline();
                 // LOG_VAR(left_dist);
@@ -74,6 +75,7 @@ void Timeline:: Render(Interface &interface)
 
                 // TODO if (t_br.getStart() < right || t_br.getEnd() > left)
             }
+            cnt += 1;
         }
     }
 }
