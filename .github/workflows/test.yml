@@ -4,8 +4,8 @@ name: test
 
 on:
   # don't run on push to main cuz i do that a lot
-  # push:
-  #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
