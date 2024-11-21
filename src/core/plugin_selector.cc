@@ -4,6 +4,7 @@
 #include "plugin/chorus.hh"
 #include "plugin/four_osc.hh"
 #include "plugin/compressor.hh"
+#include "plugin/delay.hh"
 
 namespace box {
 
@@ -82,6 +83,10 @@ void PluginSelector:: HandleEvent(const Event &event)
             else if (name == te::CompressorPlugin::xmlTypeName)
             {
                 p = std::make_unique<Compressor>(base);
+            }
+            else if (name == te::DelayPlugin::xmlTypeName)
+            {
+                p = std::make_unique<Delay>(base);
             }
 
             APP->tracks_[APP->current_track_]-> AddPlugin(std::move(p));
