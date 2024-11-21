@@ -1,13 +1,9 @@
-#include <random>
 #include <iostream>
 #include <filesystem>
 
 #include "core/util.hh"
 #include "core/interface.hh"
-#include "core/track.hh"
 #include "core/app.hh"
-#include "plugin/four_osc.hh"
-#include "plugin/chorus.hh"
 
 #include "raylib.h"
 
@@ -18,7 +14,6 @@ int main()
     SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
-    // std::unique_ptr<Edit> createEmptyEdit (Engine&, const juce::File&);
     std::filesystem::path curr_path = std::filesystem::current_path();
     juce::File my_file {juce::String{curr_path.string() + "/tmp.box"}};
 
