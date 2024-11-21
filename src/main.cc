@@ -19,10 +19,12 @@ int main()
 
     te::Engine engine{"Tracktion Hello World"};
     // std::unique_ptr<Edit> createEmptyEdit (Engine&, const juce::File&);
-    std::filesystem::path curr_path = std::filesystem::absolute(__FILE__);
-    juce::File my_file {juce::String{curr_path.string()}};
+    std::filesystem::path curr_path = std::filesystem::current_path();
+    juce::File my_file {juce::String{curr_path.string() + "/tmp.box"}};
 
-    std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
+    std::unique_ptr<te::Edit> my_edit = loadEditFromFile(engine, my_file, te::Edit::EditRole::forEditing);
+
+    // std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
