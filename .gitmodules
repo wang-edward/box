@@ -4,3 +4,6 @@
 [submodule "external/raylib"]
 	path = external/raylib
 	url = https://github.com/raysan5/raylib.git
+[submodule "external/googletest"]
+    path = external/googletest
+    url = https://github.com/google/googletest
