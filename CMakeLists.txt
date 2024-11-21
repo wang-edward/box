@@ -55,6 +55,7 @@ target_link_libraries(Box
         BoxLib)
 
 # boxtest
+enable_testing()
 add_executable(BoxTests
     test/test.cc)
 target_link_libraries(BoxTests 
@@ -62,3 +63,7 @@ target_link_libraries(BoxTests
         BoxLib
         gtest 
         gtest_main)
+
+# Register tests with ctest
+add_test(NAME BoxTests COMMAND BoxTests)
+# set_tests_properties(BoxTests PROPERTIES CONFIGURATIONS Debug Release)
