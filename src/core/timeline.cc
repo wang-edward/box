@@ -49,6 +49,7 @@ void Timeline:: Render(Interface &interface)
         const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
         auto left = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
         auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+
         size_t cnt = 0;
         for (const auto &t : APP->tracks_)
         {
@@ -58,22 +59,21 @@ void Timeline:: Render(Interface &interface)
                 auto c_er = te::EditTimeRange{c_pos.time};
                 te::BeatRange t_br = te::toBeats(c_er, tempo);
 
-                auto left_dist = t_br.getStart().inBeats() - left.inBeats();
-                auto right_dist = right.inBeats() - t_br.getEnd().inBeats();
+                // Determine overlap with visible range
+                auto visible_start = std::max(left.inBeats(), t_br.getStart().inBeats());
+                auto visible_end = std::min(right.inBeats(), t_br.getEnd().inBeats());
 
-                auto left_pct = left_dist / WIDTH;
-                auto right_pct = right_dist / WIDTH;
+                if (visible_start < visible_end) // Clip is visible
+                {
+                    double start_pct = (visible_start - left.inBeats()) / WIDTH;
+                    double end_pct = (visible_end - left.inBeats()) / WIDTH;
 
-                auto left_px = left_pct * 128;
-                auto right_px = 128 - right_pct * 128;
+                    float left_px = static_cast<float>(start_pct * 128);
+                    float right_px = static_cast<float>(end_pct * 128);
+                    float width = right_px - left_px;
 
-                DrawRectangle(left_px, (cnt * 24) + 32, right_px, 24, RED);
-
-                // print_timeline();
-                // LOG_VAR(left_dist);
-                // LOG_VAR(right_dist);
-
-                // TODO if (t_br.getStart() < right || t_br.getEnd() > left)
+                    DrawRectangle(left_px, (cnt * 24) + 32, width, 24, RED);
+                }
             }
             cnt += 1;
         }
