@@ -50,6 +50,11 @@ const char *Delay:: GetIconPath() const
     return icon_path_;
 }
 
+const char *Delay::GetName() const
+{
+    return name_;
+}
+
 void Delay::Render(Interface &interface)
 {
     knob_feedback_.Render(interface);

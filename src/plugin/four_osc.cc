@@ -40,6 +40,11 @@ const char *FourOsc:: GetIconPath() const
     return icon_path_;
 }
 
+const char *FourOsc::GetName() const
+{
+    return name_;
+}
+
 void FourOsc:: Render(Interface &interface)
 {
     for (int y = 0; y < Interface::HEIGHT; ++y)

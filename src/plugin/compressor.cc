@@ -58,6 +58,10 @@ const char *Compressor:: GetIconPath() const
     return icon_path_;
 }
 
+const char *Compressor::GetName() const
+{
+    return name_;
+}
 
 void Compressor::Render(Interface &interface)
 {
