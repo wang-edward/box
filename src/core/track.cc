@@ -154,8 +154,10 @@ void Track:: Render(Interface& interface)
                 auto x = static_cast<float>((i % 4) * 32 + 16);
                 auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
                 DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
-                // TODO draw proper name
-                DrawTextPro(GetFontDefault(), plugins_[i]->GetName(), Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+
+                constexpr int font_size = 10;
+                int width = MeasureText(plugins_[i]->GetName(), font_size);
+                DrawText(plugins_[i]->GetName(), (x - width/2), y + 6, font_size, WHITE);
 
                 if (i == active_plugin_) 
                 {
