@@ -39,9 +39,9 @@ void Timeline:: Render(Interface &interface)
 
     // render clips
     {
-        // render everything in -4, +4 beats
+        // render everything in -8, +8 beats
 
-        constexpr double RADIUS = 4.0;
+        constexpr double RADIUS = 8.0;
         constexpr double WIDTH = RADIUS * 2;
 
         const te::TransportControl &transport = APP->edit_.getTransport();
