@@ -51,7 +51,7 @@ target_sources(Box
         src/main.cc)
 target_compile_definitions(Box
     PRIVATE
-        JUCE_WEB_BROWSER=TRUE
+        JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0)
 target_link_libraries(Box
     PRIVATE
