@@ -10,7 +10,7 @@ struct Compressor : public Plugin
 {
     static Texture2D icon_;
     static constexpr const char *icon_path_ = "assets/star_16x16.png";
-    static constexpr const char *name_ = "compressor";
+    static constexpr const char *name_ = "cmpr";
 
     te::CompressorPlugin *base_plugin_;
     Knob<float> knob_threshold_;

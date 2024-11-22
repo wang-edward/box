@@ -11,7 +11,7 @@ struct Chorus : public Plugin
 {
     static Texture2D icon_;
     static constexpr const char *icon_path_ = "assets/star_16x16.png";
-    static constexpr const char *name_ = "chorus";
+    static constexpr const char *name_ = "chrs";
 
     te::ChorusPlugin *base_plugin_;
     Knob<float> knob_depth_;
