@@ -3,6 +3,8 @@
 
 namespace box {
 
+Texture2D Delay::icon_;  // Define the static member
+
 Delay::Delay(te::Plugin *p)
     : Plugin(p), base_plugin_{static_cast<te::DelayPlugin *>(p)},
     knob_feedback_{
@@ -30,9 +32,22 @@ Delay::Delay(te::Plugin *p)
         "speed"
     }
 {
-    Image icon = LoadImage("assets/star_16x16.png");
-    icon_ = LoadTextureFromImage(icon);
-    UnloadImage(icon);
+    EnsureTextureLoaded();
+}
+
+Delay:: ~Delay()
+{
+    UnloadTexture(icon_);
+}
+
+Texture2D &Delay:: GetIcon() const
+{
+    return icon_;
+}
+
+const char *Delay:: GetIconPath() const
+{
+    return icon_path_;
 }
 
 void Delay::Render(Interface &interface)
@@ -78,11 +93,6 @@ void Delay::HandleEvent(const Event &event)
     case EventType::KeyRelease:
         break;
     }
-}
-
-Texture2D Delay:: GetIcon() const
-{
-    return icon_;
 }
 
 } // namespace box

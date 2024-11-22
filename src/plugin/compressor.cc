@@ -3,6 +3,8 @@
 
 namespace box {
 
+Texture2D Compressor::icon_;  // Define the static member
+
 Compressor::Compressor(te::Plugin *p)
     : Plugin(p), base_plugin_{static_cast<te::CompressorPlugin *>(p)},
     knob_threshold_{
@@ -38,10 +40,24 @@ Compressor::Compressor(te::Plugin *p)
         "release"
     }
 {
-    Image icon = LoadImage("assets/star_16x16.png");
-    icon_ = LoadTextureFromImage(icon);
-    UnloadImage(icon);
+    EnsureTextureLoaded();
 }
+
+Compressor:: ~Compressor()
+{
+    UnloadTexture(icon_);
+}
+
+Texture2D &Compressor:: GetIcon() const
+{
+    return icon_;
+}
+
+const char *Compressor:: GetIconPath() const
+{
+    return icon_path_;
+}
+
 
 void Compressor::Render(Interface &interface)
 {
@@ -95,11 +111,6 @@ void Compressor::HandleEvent(const Event &event)
     case EventType::KeyRelease:
         break;
     }
-}
-
-Texture2D Compressor:: GetIcon() const
-{
-    return icon_;
 }
 
 } // namespace box

@@ -3,6 +3,8 @@
 
 namespace box {
 
+Texture2D Chorus::icon_;  // Define the static member
+
 Chorus::Chorus(te::Plugin *p)
     : Plugin(p), base_plugin_{static_cast<te::ChorusPlugin *>(p)},
     knob_depth_{
@@ -38,9 +40,22 @@ Chorus::Chorus(te::Plugin *p)
         "mix"
     }
 {
-    Image icon = LoadImage("assets/star_16x16.png");
-    icon_ = LoadTextureFromImage(icon);
-    UnloadImage(icon);
+    EnsureTextureLoaded();
+}
+
+Chorus:: ~Chorus()
+{
+    UnloadTexture(icon_);
+}
+
+Texture2D &Chorus:: GetIcon() const
+{
+    return icon_;
+}
+
+const char *Chorus::GetIconPath() const
+{
+    return icon_path_;
 }
 
 void Chorus::Render(Interface &interface)
@@ -95,11 +110,6 @@ void Chorus::HandleEvent(const Event &event)
     case EventType::KeyRelease:
         break;
     }
-}
-
-Texture2D Chorus:: GetIcon() const
-{
-    return icon_;
 }
 
 } // namespace box
