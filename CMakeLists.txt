@@ -49,7 +49,10 @@ juce_add_console_app(Box
 target_sources(Box
     PRIVATE
         src/main.cc)
-target_compile_definitions(Box PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_compile_definitions(Box
+    PRIVATE
+        JUCE_WEB_BROWSER=TRUE
+        JUCE_USE_CURL=0)
 target_link_libraries(Box
     PRIVATE
         BoxLib)
