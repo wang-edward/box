@@ -11,7 +11,7 @@ void Timeline:: Render(Interface &interface)
         float y = (24 * i) + 32;
         float width = 128;
         float height = 24;
-        DrawRectangleRec(Rectangle{x, y, width, height}, APP->colors_[i]);
+        DrawRectangleRec(Rectangle{x, y, width, height}, LIGHTGRAY);
     }
 
     // render active track
@@ -20,7 +20,7 @@ void Timeline:: Render(Interface &interface)
         float y = (24 * APP->current_track_) + 32;
         float width = 128;
         float height = 24;
-        DrawRectangleRec(Rectangle{x, y, width, height}, {0xff, 0xff, 0xff, 0x80});
+        DrawRectangleLines(x, y, width, height, RED);
     }
 
     // render pos
