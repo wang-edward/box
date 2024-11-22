@@ -2,6 +2,8 @@
 
 namespace box {
 
+Texture2D FourOsc::icon_;  // Define the static member
+
 FourOsc:: FourOsc(te::Plugin *p): 
     Plugin(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
     // knob_master_level_{32, 64, 16, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
@@ -15,10 +17,7 @@ FourOsc:: FourOsc(te::Plugin *p):
         "volume"
     }
 {
-    Image four = LoadImage("assets/four_16x16.png");
-    icon_ = LoadTextureFromImage(four);
-    UnloadImage(four);
-
+    EnsureTextureLoaded();
     // TODO for testing effects
     for (int i = 0; i < base_plugin_->oscParams.size(); i++)
     {
@@ -29,6 +28,16 @@ FourOsc:: FourOsc(te::Plugin *p):
 FourOsc:: ~FourOsc()
 {
     UnloadTexture(icon_);
+}
+
+Texture2D &FourOsc:: GetIcon() const
+{
+    return icon_;
+}
+
+const char *FourOsc:: GetIconPath() const
+{
+    return icon_path_;
 }
 
 void FourOsc:: Render(Interface &interface)
@@ -66,11 +75,6 @@ void FourOsc:: HandleEvent(const Event &event)
     case EventType::KeyRelease:
         break;
     }
-}
-
-Texture2D FourOsc:: GetIcon() const
-{
-    return icon_;
 }
 
 } // namespace box
