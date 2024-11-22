@@ -45,13 +45,15 @@ endif()
 
 # box
 juce_add_console_app(Box
-    PRODUCT_NAME "Box")
+    PRODUCT_NAME "Box"
+    NEEDS_WEB_BROWSER TRUE
+    )
 target_sources(Box
     PRIVATE
         src/main.cc)
 target_compile_definitions(Box
     PRIVATE
-        JUCE_WEB_BROWSER=0
+        JUCE_WEB_BROWSER=1
         JUCE_USE_CURL=0)
 target_link_libraries(Box
     PRIVATE
