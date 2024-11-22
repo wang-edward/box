@@ -155,7 +155,7 @@ void Track:: Render(Interface& interface)
                 auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
                 DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
                 // TODO draw proper name
-                DrawTextPro(GetFontDefault(), "plugin", Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
+                DrawTextPro(GetFontDefault(), plugins_[i]->GetName(), Vector2{x, y}, Vector2{11, -4,}, 0.0f, 10.0f, 1.0f, WHITE);
 
                 if (i == active_plugin_) 
                 {
