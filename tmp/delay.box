@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<EDIT appVersion="Unknown" projectID="0/1ba547c" creationTime="1732225260829"
+      lastSignificantChange="19350ada80d" modifiedBy="edward wang">
+  <TRANSPORT position="9.514666666666667"/>
+  <PITCHSEQUENCE>
+    <PITCH startBeat="0.0" pitch="60"/>
+  </PITCHSEQUENCE>
+  <TEMPOSEQUENCE>
+    <TEMPO startBeat="0.0" bpm="120.0" curve="1.0"/>
+    <TIMESIG numerator="4" denominator="4" startBeat="0.0"/>
+  </TEMPOSEQUENCE>
+  <VIDEO/>
+  <CLICKTRACK level="0.6000000238418579"/>
+  <MASTERVOLUME>
+    <PLUGIN type="volume" volume="0.6376281380653381" id="1001" enabled="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+  </MASTERVOLUME>
+  <RACKS/>
+  <MASTERPLUGINS/>
+  <INPUTDEVICES>
+    <INPUTDEVICE deviceID="wavein_d7bd293b" name="Input 1"/>
+    <INPUTDEVICE deviceID="all_midi_in" name="All MIDI Ins">
+      <INPUTDEVICEDESTINATION targetID="1010" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+    <INPUTDEVICE deviceID="vmidiin_7f01b6eb" name="Virtual">
+      <INPUTDEVICEDESTINATION targetID="1010" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+    <INPUTDEVICE deviceID="vmidiin_6dd15aa" name="yodie">
+      <INPUTDEVICEDESTINATION targetID="1010" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+  </INPUTDEVICES>
+  <TRACKCOMPS/>
+  <SCENES/>
+  <ARRANGERTRACK name="Arranger" id="1006"/>
+  <CHORDTRACK name="Chord" id="1008"/>
+  <MARKERTRACK id="1002" name="Marker"/>
+  <TEMPOTRACK name="Global" id="1007">
+    <MODIFIERS/>
+  </TEMPOTRACK>
+  <MASTERTRACK name="Master" id="1009">
+    <MODIFIERS/>
+  </MASTERTRACK>
+  <TRACK id="1003">
+    <MODIFIERS/>
+    <CLIPSLOTS/>
+    <MIDICLIP name="Track 1 Recording 1" start="0.0" length="7.36" offset="0.0"
+              id="1034" sync="0" colour="ff55ff00" currentTake="0" speed="1.0">
+      <QUANTISATION/>
+      <GROOVE/>
+      <SEQUENCE ver="1" channelNumber="1">
+        <NOTE p="60" b="1.196375" l="0.9658749999999998" v="127" c="0"/>
+        <NOTE p="62" b="2.563666666666667" l="0.2985416666666665" v="127" c="0"/>
+        <NOTE p="64" b="3.196083333333333" l="0.3327500000000003" v="127" c="0"/>
+        <NOTE p="65" b="3.828875" l="0.2669166666666669" v="127" c="0"/>
+        <NOTE p="67" b="4.363125" l="0.9650416666666661" v="127" c="0"/>
+        <NOTE p="64" b="6.229875" l="0.2985416666666669" v="127" c="0"/>
+        <NOTE p="67" b="6.863375" l="0.3321250000000004" v="127" c="0"/>
+        <NOTE p="72" b="7.663416666666667" l="0.8994583333333335" v="127" c="0"/>
+        <NOTE p="71" b="9.163" l="0.2659583333333337" v="127" c="0"/>
+        <NOTE p="72" b="9.763500000000001" l="0.2652083333333319" v="127" c="0"/>
+        <NOTE p="71" b="10.32916666666667" l="0.2329583333333325" v="127" c="0"/>
+        <NOTE p="67" b="10.92975" l="0.7321666666666662" v="127" c="0"/>
+        <NOTE p="64" b="11.99604166666667" l="0.9329166666666673" v="127" c="0"/>
+      </SEQUENCE>
+    </MIDICLIP>
+    <PLUGIN type="4osc" windowLocked="1" id="1031" enabled="1" waveShape1="2"
+            waveShape2="2" waveShape3="2" waveShape4="2" masterLevel="-15.91035747528076">
+      <MODIFIERASSIGNMENTS/>
+      <MODMATRIX/>
+    </PLUGIN>
+    <PLUGIN type="delay" windowLocked="1" id="1032" enabled="1" feedback="-3.75"
+            mix="0.675000011920929">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="volume" id="1004" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1005" enabled="1"/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+  </TRACK>
+  <TRACK id="1010">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="4osc" windowLocked="1" id="1035" enabled="1" waveShape1="2"
+            waveShape2="2" waveShape3="2" waveShape4="2">
+      <MODIFIERASSIGNMENTS/>
+      <MODMATRIX/>
+    </PLUGIN>
+    <PLUGIN type="volume" id="1011" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1012" enabled="1"/>
+    <MIDICLIP name="Track 2 Recording 1" start="0.0" length="9.525333333333334"
+              offset="0.0" id="1036" sync="0" colour="ff00ff00" currentTake="0"
+              speed="1.0">
+      <QUANTISATION/>
+      <GROOVE/>
+      <SEQUENCE ver="1" channelNumber="1">
+        <NOTE p="72" b="2.139166666666667" l="0.1992500000000001" v="127" c="0"/>
+        <NOTE p="72" b="2.739208333333333" l="0.1655416666666665" v="127" c="0"/>
+        <NOTE p="72" b="3.84" l="0.1313750000000002" v="127" c="0"/>
+        <NOTE p="72" b="4.172291666666666" l="0.1664166666666667" v="127" c="0"/>
+        <NOTE p="72" b="4.8395" l="0.1319583333333334" v="127" c="0"/>
+        <NOTE p="72" b="5.438708333333333" l="0.1996666666666664" v="127" c="0"/>
+        <NOTE p="72" b="6.472125" l="0.09987499999999994" v="127" c="0"/>
+        <NOTE p="71" b="6.805916666666667" l="0.09887500000000049" v="127"
+              c="0"/>
+        <NOTE p="71" b="7.4725" l="0.09966666666666679" v="127" c="0"/>
+        <NOTE p="71" b="8.173375" l="0.1985833333333336" v="127" c="0"/>
+        <NOTE p="71" b="9.138166666666667" l="0.1665416666666673" v="127" c="0"/>
+        <NOTE p="71" b="9.505166666666666" l="0.1327083333333334" v="127" c="0"/>
+        <NOTE p="71" b="10.172875" l="0.1995416666666667" v="127" c="0"/>
+        <NOTE p="71" b="10.90691666666667" l="0.1645833333333329" v="127" c="0"/>
+        <NOTE p="71" b="11.939625" l="0.1323333333333334" v="127" c="0"/>
+        <NOTE p="72" b="12.27170833333333" l="0.1666666666666679" v="127" c="0"/>
+        <NOTE p="72" b="12.93908333333333" l="0.1990833333333342" v="127" c="0"/>
+        <NOTE p="72" b="13.60641666666667" l="0.2330833333333331" v="127" c="0"/>
+      </SEQUENCE>
+    </MIDICLIP>
+  </TRACK>
+  <TRACK id="1013">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1014" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1015" enabled="1"/>
+  </TRACK>
+  <TRACK id="1016">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1017" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1018" enabled="1"/>
+  </TRACK>
+  <TRACK id="1019">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1020" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1021" enabled="1"/>
+  </TRACK>
+  <TRACK id="1022">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1023" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1024" enabled="1"/>
+  </TRACK>
+  <TRACK id="1025">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1026" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1027" enabled="1"/>
+  </TRACK>
+  <TRACK id="1028">
+    <MODIFIERS/>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+    <CLIPSLOTS/>
+    <PLUGIN type="volume" id="1029" enabled="1" remapOnTempoChange="1">
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1030" enabled="1"/>
+  </TRACK>
+</EDIT>
