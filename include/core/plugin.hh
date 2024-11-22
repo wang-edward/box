@@ -17,6 +17,7 @@ public:
 
     virtual Texture2D &GetIcon() const = 0;
     virtual const char *GetIconPath() const = 0;
+    virtual const char *GetName() const = 0;
     virtual void Render(Interface &interface) = 0;
     virtual void HandleEvent(const Event &event) = 0;
 };

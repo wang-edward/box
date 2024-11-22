@@ -58,6 +58,11 @@ const char *Chorus::GetIconPath() const
     return icon_path_;
 }
 
+const char *Chorus::GetName() const
+{
+    return name_;
+}
+
 void Chorus::Render(Interface &interface)
 {
     knob_depth_.Render(interface);

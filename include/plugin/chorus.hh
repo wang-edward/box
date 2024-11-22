@@ -11,6 +11,7 @@ struct Chorus : public Plugin
 {
     static Texture2D icon_;
     static constexpr const char *icon_path_ = "assets/star_16x16.png";
+    static constexpr const char *name_ = "chorus";
 
     te::ChorusPlugin *base_plugin_;
     Knob<float> knob_depth_;
@@ -25,6 +26,7 @@ public:
 
     Texture2D &GetIcon() const override;
     const char *GetIconPath() const override;
+    const char *GetName() const override;
     void Render(Interface &interface) override;
     void HandleEvent(const Event& event) override;
 };
