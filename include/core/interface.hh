@@ -68,6 +68,8 @@ private:
         KEY_COMMA,
         KEY_PERIOD,
         KEY_DELETE,
+        KEY_MINUS,
+        KEY_EQUAL,
         KEY_RIGHT,
         KEY_LEFT,
         KEY_DOWN,
