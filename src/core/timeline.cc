@@ -41,8 +41,8 @@ void Timeline:: Render(Interface &interface)
     {
         // render everything in -8, +8 beats
 
-        constexpr double RADIUS = 8.0;
-        constexpr double WIDTH = RADIUS * 2;
+        const double RADIUS = radius_;
+        const double WIDTH = radius_ * 2;
 
         const te::TransportControl &transport = APP->edit_.getTransport();
         const te::TempoSequence &tempo = APP->edit_.tempoSequence;
@@ -176,11 +176,9 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 // TODO update?
-                // LOG_VAR(APP->edit_.getTransport().getCurrentPosition());
-                // LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
-                // LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
-                // LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
                 print_timeline();
+                LOG_VAR(APP->tracks_.size() - scroll_offset_);
+                LOG_VAR(std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS));
                 break;
             case KEY_R:
                 {
@@ -232,15 +230,11 @@ void Timeline:: HandleEvent(const Event &event)
                     transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() + 2.f));
                 }
                 break;
-            case KEY_N:
-                LOG_VAR(APP->current_track_);
-                APP->ArmMidi(APP->current_track_);
-                LOG_MSG("ARM MIDI");
+            case KEY_MINUS:
+                radius_ *= 2;
                 break;
-            case KEY_M:
-                LOG_VAR(APP->current_track_);
-                APP->UnarmMidi(APP->current_track_);
-                LOG_MSG("DISARM MIDI");
+            case KEY_EQUAL:
+                radius_ /= 2;
                 break;
             }
             break;
