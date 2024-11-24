@@ -6,6 +6,19 @@ namespace box {
 void Timeline:: Render(Interface &interface) 
 {
     const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
+    const size_t visible_active_index = APP->current_track_ - scroll_offset_;
+    const double RADIUS = radius_;
+    const double WIDTH = radius_ * 2;
+    const double pos = APP->edit_.getTransport().getPosition().inSeconds();
+
+    const te::TransportControl &transport = APP->edit_.getTransport();
+    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+    const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
+
+    const auto left_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
+    const auto right_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+
+    // draw track backgrounds
     for (size_t i = 0; i < num_visible_tracks_; i++)
     {
         float x = 0;
@@ -16,7 +29,6 @@ void Timeline:: Render(Interface &interface)
     }
 
     // render active track
-    size_t visible_active_index = APP->current_track_ - scroll_offset_;
     if (visible_active_index < num_visible_tracks_)
     {
         float x = 0;
@@ -28,35 +40,38 @@ void Timeline:: Render(Interface &interface)
 
     // render pos
     {
-        double pos = APP->edit_.getTransport().getPosition().inSeconds();
         auto text = std::to_string(pos);
         const int font_size = 10;
         int width = MeasureText(text.c_str(), font_size);
         DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
     }
 
-    // render cursor
+    // render bar lines
     {
-        DrawLine(64, 0, 64, 128, WHITE);
+
+        // Time signature at current position
+
+        const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
+        double beats_per_bar = time_sig.numerator; // Number of beats in a bar
+        double beat_length = 1.0 / time_sig.denominator; // Length of a beat in terms of whole notes
+
+        // Start rendering bar lines from the leftmost visible beat
+        double first_bar_start = std::floor(left_edge.inBeats() / beats_per_bar) * beats_per_bar;
+
+        for (double bar_start = first_bar_start; bar_start < right_edge.inBeats(); bar_start += beats_per_bar)
+        {
+            double bar_position_pct = (bar_start - left_edge.inBeats()) / WIDTH;
+            float x = static_cast<float>(bar_position_pct * 128);
+            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY); // Full-height bar line
+        }
     }
 
     // render clips
     {
-        // render everything in -8, +8 beats
-
-        const double RADIUS = radius_;
-        const double WIDTH = radius_ * 2;
-
-        const te::TransportControl &transport = APP->edit_.getTransport();
-        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-        const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
-        auto left = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
-        auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
-
-        size_t cnt = 0;
-        for (size_t i = scroll_offset_; i < num_visible_tracks_; i++)
+        for (size_t i = 0; i < num_visible_tracks_; i++)
         {
-            const auto &t = APP->tracks_[i];
+            const size_t track_idx = i + scroll_offset_;
+            const auto &t = APP->tracks_[track_idx];
             for (const auto &c : t->base_.getClips())
             {
                 const te::ClipPosition c_pos = c->getPosition();
@@ -64,24 +79,29 @@ void Timeline:: Render(Interface &interface)
                 te::BeatRange t_br = te::toBeats(c_er, tempo);
 
                 // Determine overlap with visible range
-                auto visible_start = std::max(left.inBeats(), t_br.getStart().inBeats());
-                auto visible_end = std::min(right.inBeats(), t_br.getEnd().inBeats());
+                auto visible_start = std::max(left_edge.inBeats(), t_br.getStart().inBeats());
+                auto visible_end = std::min(right_edge.inBeats(), t_br.getEnd().inBeats());
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    double start_pct = (visible_start - left.inBeats()) / WIDTH;
-                    double end_pct = (visible_end - left.inBeats()) / WIDTH;
+                    double start_pct = (visible_start - left_edge.inBeats()) / WIDTH;
+                    double end_pct = (visible_end - left_edge.inBeats()) / WIDTH;
 
                     float left_px = static_cast<float>(start_pct * 128);
                     float right_px = static_cast<float>(end_pct * 128);
                     float width = right_px - left_px;
 
-                    DrawRectangle(left_px, (cnt * 24) + 32, width, 24, RED);
+                    DrawRectangle(left_px, (i * 24) + 32, width, 24, RED);
                 }
             }
-            cnt += 1;
         }
     }
+
+    // render cursor
+    {
+        DrawLine(64, 0, 64, 128, WHITE);
+    }
+
 }
 
 // TODO update?
@@ -123,6 +143,8 @@ void Timeline:: print_timeline()
     std::cout << "BEATS curr position: " << curr_beat_pos.inBeats() << std::endl;
     std::cout << "bpm: " << tempo.getBpmAt(curr_time_pos) << std::endl;
     std::cout << "time signature: " << time_sig.getStringTimeSig() << std::endl;
+    std::cout << "time signature numerator: " << time_sig.numerator << std::endl;
+    std::cout << "time signature denominator: " << time_sig.denominator << std::endl;
 
     const auto clips = track.getClips();
     std::cout << "num clips: " << clips.size() << std::endl;
@@ -184,7 +206,7 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_VAR(scroll_offset_);
                     if (APP->current_track_ < scroll_offset_)
                     {
-                        // scroll_offset_ = APP->current_track_;
+                        scroll_offset_ = clamp_decrement(scroll_offset_);
                     }
                 }
                 break;
