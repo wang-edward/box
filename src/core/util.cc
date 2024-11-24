@@ -10,6 +10,11 @@ size_t clamp_decrement(size_t x)
     else return x - 1;
 }
 
+size_t clamp_increment(size_t x, size_t max)
+{
+    return std::min(x + 1, clamp_decrement(max));
+}
+
 LogLevel string_to_loglevel(const std::string& s) 
 {
     if (s == "OFF") return LogLevel::Off;

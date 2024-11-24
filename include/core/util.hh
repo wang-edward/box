@@ -15,9 +15,10 @@ namespace box {
 struct App;
 extern App *APP;
 
-constexpr size_t MAX_TRACKS = 4;
+constexpr size_t MAX_TRACKS = 8;
 
 size_t clamp_decrement(size_t x);
+size_t clamp_increment(size_t x, size_t max);
 
 enum class LogLevel {Off, Debug, Warn, Err};
 LogLevel string_to_loglevel(const std::string& s);
