@@ -160,7 +160,7 @@ void Timeline:: HandleEvent(const Event &event)
                 {
                     const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
                     size_t old_track = APP->current_track_;
-                    APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
+                    APP->current_track_ = clamp_increment(APP->current_track_, APP->tracks_.size());
                     APP->UnarmMidi(old_track);
                     APP->ArmMidi(APP->current_track_);
                     // update scroll
@@ -169,7 +169,7 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_VAR(APP->current_track_  - scroll_offset_);
                     if (APP->current_track_ - scroll_offset_ >= 4)
                     {
-                        scroll_offset_ = std::min(scroll_offset_ + 1, clamp_decrement(APP->tracks_.size()));
+                        scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
                     }
                 }
                 break;
@@ -192,7 +192,7 @@ void Timeline:: HandleEvent(const Event &event)
                 scroll_offset_ = clamp_decrement(scroll_offset_);
                 break;
             case KEY_DOWN:
-                scroll_offset_ = std::min(scroll_offset_ + 1, clamp_decrement(APP->tracks_.size()));
+                scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
                 break;
             case KEY_O: // add track
                 if (APP->tracks_.size() < MAX_TRACKS) 
@@ -207,10 +207,6 @@ void Timeline:: HandleEvent(const Event &event)
                 // LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
                 // LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
                 // print_timeline();
-                LOG_VAR(
-                    std::min(
-                        APP->tracks_.size() - scroll_offset_,
-                        MAX_TRACKS));
                 break;
             case KEY_R:
                 {
