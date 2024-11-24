@@ -5,8 +5,16 @@ namespace box {
 
 void Timeline:: Render(Interface &interface) 
 {
-    const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
-    const size_t visible_active_index = APP->current_track_ - scroll_offset_;
+    /*
+    terminology:
+    - row = the relative index of a track.
+      - so the top rectangle is always row 0, no matter what track it is
+    - track
+      - the actual "track"
+    */
+
+    const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
+    const size_t curr_row = APP->current_track_ - scroll_offset_;
     const double RADIUS = radius_;
     const double WIDTH = radius_ * 2;
     const double pos = APP->edit_.getTransport().getPosition().inSeconds();
@@ -19,7 +27,7 @@ void Timeline:: Render(Interface &interface)
     const auto right_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
 
     // draw track backgrounds
-    for (size_t i = 0; i < num_visible_tracks_; i++)
+    for (size_t i = 0; i < num_rows; i++)
     {
         float x = 0;
         float y = (24 * i) + 32;
@@ -29,10 +37,10 @@ void Timeline:: Render(Interface &interface)
     }
 
     // render active track
-    if (visible_active_index < num_visible_tracks_)
+    if (curr_row < num_rows)
     {
         float x = 0;
-        float y = (24 * visible_active_index) + 32;
+        float y = (24 * curr_row) + 32;
         float width = 128;
         float height = 24;
         DrawRectangleLines(x, y, width, height, RED);
@@ -66,9 +74,24 @@ void Timeline:: Render(Interface &interface)
         }
     }
 
+    // render current live clip (if recording)
+    if (transport.isRecording())
+    {
+        const te::BeatPosition start_time = tempo.toBeats(transport.getTimeWhenStarted());
+        if (left_edge < start_time)
+        {
+            double left_pct = (start_time.inBeats() - left_edge.inBeats()) / WIDTH;
+            double left_px = (left_pct * 128);
+            DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
+        }
+        else {
+            DrawRectangle(0, (curr_row * 24) + 32, (64 - 0), 24, RED); // 64 - 0 means full half bar
+        }
+    }
+
     // render clips
     {
-        for (size_t i = 0; i < num_visible_tracks_; i++)
+        for (size_t i = 0; i < num_rows; i++)
         {
             const size_t track_idx = i + scroll_offset_;
             const auto &t = APP->tracks_[track_idx];
@@ -91,7 +114,7 @@ void Timeline:: Render(Interface &interface)
                     float right_px = static_cast<float>(end_pct * 128);
                     float width = right_px - left_px;
 
-                    DrawRectangle(left_px, (i * 24) + 32, width, 24, RED);
+                    DrawRectangle(left_px, (i * 24) + 32, width, 24, PINK);
                 }
             }
         }
@@ -180,7 +203,7 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_J:
                 {
-                    const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
+                    const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
                     size_t old_track = APP->current_track_;
                     APP->current_track_ = clamp_increment(APP->current_track_, APP->tracks_.size());
                     APP->UnarmMidi(old_track);
