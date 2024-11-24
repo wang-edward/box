@@ -5,7 +5,8 @@ namespace box {
 
 void Timeline:: Render(Interface &interface) 
 {
-    for (size_t i = 0; i < APP->tracks_.size(); i++) 
+    const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
+    for (size_t i = 0; i < num_visible_tracks_; i++)
     {
         float x = 0;
         float y = (24 * i) + 32;
@@ -15,9 +16,11 @@ void Timeline:: Render(Interface &interface)
     }
 
     // render active track
+    size_t visible_active_index = APP->current_track_ - scroll_offset_;
+    if (visible_active_index < num_visible_tracks_)
     {
         float x = 0;
-        float y = (24 * APP->current_track_) + 32;
+        float y = (24 * visible_active_index) + 32;
         float width = 128;
         float height = 24;
         DrawRectangleLines(x, y, width, height, RED);
@@ -51,8 +54,9 @@ void Timeline:: Render(Interface &interface)
         auto right = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
 
         size_t cnt = 0;
-        for (const auto &t : APP->tracks_)
+        for (size_t i = scroll_offset_; i < num_visible_tracks_; i++)
         {
+            const auto &t = APP->tracks_[i];
             for (const auto &c : t->base_.getClips())
             {
                 const te::ClipPosition c_pos = c->getPosition();
@@ -154,10 +158,19 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_J:
                 {
+                    const size_t num_visible_tracks_ = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
                     size_t old_track = APP->current_track_;
                     APP->current_track_ = std::min(APP->current_track_ + 1, clamp_decrement(APP->tracks_.size()));
                     APP->UnarmMidi(old_track);
                     APP->ArmMidi(APP->current_track_);
+                    // update scroll
+                    LOG_VAR(APP->current_track_);
+                    LOG_VAR(scroll_offset_);
+                    LOG_VAR(APP->current_track_  - scroll_offset_);
+                    if (APP->current_track_ - scroll_offset_ >= 4)
+                    {
+                        scroll_offset_ = std::min(scroll_offset_ + 1, clamp_decrement(APP->tracks_.size()));
+                    }
                 }
                 break;
             case KEY_K:
@@ -166,7 +179,20 @@ void Timeline:: HandleEvent(const Event &event)
                     APP->current_track_ = clamp_decrement(APP->current_track_);
                     APP->UnarmMidi(old_track);
                     APP->ArmMidi(APP->current_track_);
+                    // update scroll
+                    LOG_VAR(APP->current_track_);
+                    LOG_VAR(scroll_offset_);
+                    if (APP->current_track_ < scroll_offset_)
+                    {
+                        // scroll_offset_ = APP->current_track_;
+                    }
                 }
+                break;
+            case KEY_UP:
+                scroll_offset_ = clamp_decrement(scroll_offset_);
+                break;
+            case KEY_DOWN:
+                scroll_offset_ = std::min(scroll_offset_ + 1, clamp_decrement(APP->tracks_.size()));
                 break;
             case KEY_O: // add track
                 if (APP->tracks_.size() < MAX_TRACKS) 
@@ -180,7 +206,11 @@ void Timeline:: HandleEvent(const Event &event)
                 // LOG_VAR(APP->tracks_[APP->current_track_]->base_.getClips().size());
                 // LOG_VAR(isTrackArmed(APP->tracks_[APP->current_track_]->base_));
                 // LOG_VAR(trackHasInput(APP->tracks_[APP->current_track_]->base_));
-                print_timeline();
+                // print_timeline();
+                LOG_VAR(
+                    std::min(
+                        APP->tracks_.size() - scroll_offset_,
+                        MAX_TRACKS));
                 break;
             case KEY_R:
                 {
