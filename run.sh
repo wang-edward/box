@@ -4,7 +4,7 @@ OS="$(uname)"
 
 if [[ "$OS" == "Darwin" ]]; then
     # macOS
-    BIN_PATH="./build/Box_artefacts/Box"
+    BIN_PATH="./build/Box_artefacts/Debug/Box"
 elif [[ "$OS" == "Linux" ]]; then
     BIN_PATH="./build/Box_artefacts/Debug/Box"
 else
@@ -12,7 +12,7 @@ else
     exit 1
 fi
 
-cmake -B build
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
 
 if [[ $? == 0 ]]; then
     make -C build -j6
