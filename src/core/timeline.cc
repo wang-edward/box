@@ -138,11 +138,6 @@ void Timeline:: Render(Interface &interface)
         float right_px = static_cast<float>(right_pct * 128);
         float width = right_px - left_px;
 
-        LOG_VAR(left_pct);
-        LOG_VAR(right_pct);
-        LOG_VAR(width);
-        LOG_MSG("");
-
         DrawRectangle(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
     }
 
