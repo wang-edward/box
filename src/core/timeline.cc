@@ -3,6 +3,13 @@
 
 namespace box {
 
+Timeline:: Timeline()
+{
+    cursor_ = {
+        te::BeatPosition::fromBeats(0.0),
+        te::BeatPosition::fromBeats(bar_width_)};
+}
+
 void Timeline:: Render(Interface &interface) 
 {
     /*
