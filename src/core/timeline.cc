@@ -30,8 +30,8 @@ void Timeline:: Render(Interface &interface)
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
     const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
 
-    const auto left_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
-    const auto right_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+    const auto screen_left_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
+    const auto screen_right_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
 
     // draw track backgrounds
     for (size_t i = 0; i < num_rows; i++)
@@ -71,11 +71,11 @@ void Timeline:: Render(Interface &interface)
         double beat_length = 1.0 / time_sig.denominator; // Length of a beat in terms of whole notes
 
         // Start rendering bar lines from the leftmost visible beat
-        double first_bar_start = std::floor(left_edge.inBeats() / beats_per_bar) * beats_per_bar;
+        double first_bar_start = std::floor(screen_left_edge.inBeats() / beats_per_bar) * beats_per_bar;
 
-        for (double bar_start = first_bar_start; bar_start < right_edge.inBeats(); bar_start += beats_per_bar)
+        for (double bar_start = first_bar_start; bar_start < screen_right_edge.inBeats(); bar_start += beats_per_bar)
         {
-            double bar_position_pct = (bar_start - left_edge.inBeats()) / WIDTH;
+            double bar_position_pct = (bar_start - screen_left_edge.inBeats()) / WIDTH;
             float x = static_cast<float>(bar_position_pct * 128);
             DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY); // Full-height bar line
         }
@@ -85,9 +85,9 @@ void Timeline:: Render(Interface &interface)
     if (transport.isRecording())
     {
         const te::BeatPosition start_time = tempo.toBeats(transport.getTimeWhenStarted());
-        if (left_edge < start_time)
+        if (screen_left_edge < start_time)
         {
-            double left_pct = (start_time.inBeats() - left_edge.inBeats()) / WIDTH;
+            double left_pct = (start_time.inBeats() - screen_left_edge.inBeats()) / WIDTH;
             double left_px = (left_pct * 128);
             DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
         }
@@ -109,13 +109,13 @@ void Timeline:: Render(Interface &interface)
                 te::BeatRange t_br = te::toBeats(c_er, tempo);
 
                 // Determine overlap with visible range
-                auto visible_start = std::max(left_edge.inBeats(), t_br.getStart().inBeats());
-                auto visible_end = std::min(right_edge.inBeats(), t_br.getEnd().inBeats());
+                auto visible_start = std::max(screen_left_edge.inBeats(), t_br.getStart().inBeats());
+                auto visible_end = std::min(screen_right_edge.inBeats(), t_br.getEnd().inBeats());
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    double start_pct = (visible_start - left_edge.inBeats()) / WIDTH;
-                    double end_pct = (visible_end - left_edge.inBeats()) / WIDTH;
+                    double start_pct = (visible_start - screen_left_edge.inBeats()) / WIDTH;
+                    double end_pct = (visible_end - screen_left_edge.inBeats()) / WIDTH;
 
                     float left_px = static_cast<float>(start_pct * 128);
                     float right_px = static_cast<float>(end_pct * 128);
