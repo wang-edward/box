@@ -217,6 +217,7 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_ENTER:
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
+            // TODO this code is stupid fix it
             case KEY_H:
                 cursor_ = te::BeatRange{
                     te::BeatPosition::fromBeats(
