@@ -65,7 +65,6 @@ void Timeline:: Render(Interface &interface)
     {
 
         // Time signature at current position
-
         const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
         double beats_per_bar = time_sig.numerator; // Number of beats in a bar
         double beat_length = 1.0 / time_sig.denominator; // Length of a beat in terms of whole notes
@@ -129,7 +128,22 @@ void Timeline:: Render(Interface &interface)
 
     // render cursor
     {
-        DrawLine(64, 0, 64, 128, WHITE);
+        const te::BeatPosition cursor_left_edge = cursor_.getStart();
+        const te::BeatPosition cursor_right_edge = cursor_.getEnd();
+
+        double left_pct = (cursor_left_edge.inBeats() - screen_left_edge.inBeats()) / WIDTH;
+        double right_pct = (cursor_right_edge.inBeats() - screen_left_edge.inBeats()) / WIDTH;
+
+        float left_px = static_cast<float>(left_pct * 128);
+        float right_px = static_cast<float>(right_pct * 128);
+        float width = right_px - left_px;
+
+        LOG_VAR(left_pct);
+        LOG_VAR(right_pct);
+        LOG_VAR(width);
+        LOG_MSG("");
+
+        DrawRectangle(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
     }
 
 }
