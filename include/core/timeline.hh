@@ -12,8 +12,8 @@ struct Timeline {
     };
 
     te::BeatRange cursor_;
-    double bar_width_ = 4.0; // Assuming a 4/4 time signature by default
-    double step_size_ = 4.0; // Move cursor by 1 beat
+    double bar_width_ = 4.0; // Assuming a 4/4 time signature by default TODO update with time signature changes
+    double step_size_ = 4.0; // Move cursor by 4 beat (1 bar)
     double radius_ = 8.0;
     ScreenState screen_state_ = ScreenState::Overview;
     size_t scroll_offset_ = 0;
