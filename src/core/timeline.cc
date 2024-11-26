@@ -222,6 +222,22 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_ENTER:
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
+            case KEY_H:
+                cursor_ = te::BeatRange{
+                    te::BeatPosition::fromBeats(
+                        cursor_.getStart().inBeats() - step_size_),
+                    te::BeatPosition::fromBeats(
+                        cursor_.getEnd().inBeats() - step_size_)};
+                LOG_VAR(cursor_.getStart().inBeats());
+                break;
+            case KEY_L:
+                cursor_ = te::BeatRange{
+                    te::BeatPosition::fromBeats(
+                        cursor_.getStart().inBeats() + step_size_),
+                    te::BeatPosition::fromBeats(
+                        cursor_.getEnd().inBeats() + step_size_)};
+                LOG_VAR(cursor_.getStart().inBeats());
+                break;
             case KEY_J:
                 {
                     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
