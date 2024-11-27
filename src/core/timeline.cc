@@ -72,17 +72,14 @@ void Timeline:: Render(Interface &interface)
 
     // render bar lines
     {
-        const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
-        float beats_per_bar = time_sig.numerator;
-
-        float first_bar_start = std::floor(screen.left_edge / beats_per_bar) * beats_per_bar;
+        float first_bar_start = std::floor(screen.left_edge / bar_width_) * bar_width_;
 
         for (float bar_start = first_bar_start; 
             bar_start < screen.right_edge; 
-            bar_start += beats_per_bar)
+            bar_start += bar_width_)
         {
             float bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
-            float x = static_cast<float>(bar_position_pct * 128);
+            int x = static_cast<int>(bar_position_pct * 128);
             DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
         }
     }
