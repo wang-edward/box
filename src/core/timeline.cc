@@ -20,21 +20,19 @@ void Timeline:: Render(Interface &interface)
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
     const size_t curr_row = APP->current_track_ - scroll_offset_;
-    const double RADIUS = radius_;
-    const double WIDTH = radius_ * 2;
+    const float RADIUS = radius_;
+    const float WIDTH = radius_ * 2;
 
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
 
     const Position curr_pos = {
-            APP->edit_.getTransport().getPosition().inSeconds(),
-            te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats()
-        };
+        static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
+        static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats())};
 
     const BeatRange screen = {
-            curr_pos.beats - RADIUS,
-            curr_pos.beats + RADIUS,
-        };
+        curr_pos.beats - RADIUS,
+        curr_pos.beats + RADIUS};
 
     // draw track backgrounds
     for (size_t i = 0; i < num_rows; i++)
@@ -67,15 +65,15 @@ void Timeline:: Render(Interface &interface)
     // render bar lines
     {
         const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
-        double beats_per_bar = time_sig.numerator;
+        float beats_per_bar = time_sig.numerator;
 
-        double first_bar_start = std::floor(screen.left_edge / beats_per_bar) * beats_per_bar;
+        float first_bar_start = std::floor(screen.left_edge / beats_per_bar) * beats_per_bar;
 
-        for (double bar_start = first_bar_start; 
+        for (float bar_start = first_bar_start; 
             bar_start < screen.right_edge; 
             bar_start += beats_per_bar)
         {
-            double bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
+            float bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
             float x = static_cast<float>(bar_position_pct * 128);
             DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
         }
@@ -84,11 +82,11 @@ void Timeline:: Render(Interface &interface)
     // render current live clip (if recording)
     if (transport.isRecording())
     {
-        const double start_time = tempo.toBeats(transport.getTimeWhenStarted()).inBeats();
+        const float start_time = tempo.toBeats(transport.getTimeWhenStarted()).inBeats();
         if (screen.left_edge < start_time)
         {
-            double left_pct = (start_time - screen.left_edge) / WIDTH;
-            double left_px = (left_pct * 128);
+            float left_pct = (start_time - screen.left_edge) / WIDTH;
+            float left_px = (left_pct * 128);
             DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
         }
         else {
@@ -106,16 +104,18 @@ void Timeline:: Render(Interface &interface)
             {
                 const te::ClipPosition c_pos = c->getPosition();
                 te::BeatRange t_br = te::toBeats(c_pos.time, tempo);
-                BeatRange clip = {t_br.getStart().inBeats(), t_br.getEnd().inBeats()};
+                BeatRange clip = {
+                    static_cast<float>(t_br.getStart().inBeats()), 
+                    static_cast<float>(t_br.getEnd().inBeats())};
 
                 // Determine overlap with visible range
-                const double visible_start = std::max(screen.left_edge, clip.left_edge);
-                const double visible_end = std::min(screen.right_edge, clip.right_edge);
+                const float visible_start = std::max(screen.left_edge, clip.left_edge);
+                const float visible_end = std::min(screen.right_edge, clip.right_edge);
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    double start_pct = (visible_start - screen.left_edge) / WIDTH;
-                    double end_pct = (visible_end - screen.left_edge) / WIDTH;
+                    float start_pct = (visible_start - screen.left_edge) / WIDTH;
+                    float end_pct = (visible_end - screen.left_edge) / WIDTH;
 
                     float left_px = static_cast<float>(start_pct * 128);
                     float right_px = static_cast<float>(end_pct * 128);
@@ -129,8 +129,8 @@ void Timeline:: Render(Interface &interface)
 
     // render cursor
     {
-        double left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
-        double right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
+        float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
+        float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
 
         float left_px = static_cast<float>(left_pct * 128);
         float right_px = static_cast<float>(right_pct * 128);
