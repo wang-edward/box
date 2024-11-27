@@ -144,6 +144,16 @@ void Timeline:: Render(Interface &interface)
         DrawRectangle(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
     }
 
+    // render playhead
+    {
+        if (screen.left_edge < curr_pos.beats &&
+            curr_pos.beats < screen.right_edge)
+        {
+            const float left_pct = (curr_pos.beats - screen.left_edge) / WIDTH;
+            const int left_px = static_cast<int>(left_pct * 128);
+            DrawLine(left_px, 32, left_px, 128, WHITE);
+        }
+    }
 }
 
 // TODO update?
