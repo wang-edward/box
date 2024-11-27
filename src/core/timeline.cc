@@ -141,7 +141,7 @@ void Timeline:: Render(Interface &interface)
         const int right_px = static_cast<int>(right_pct * 128);
         const int width = right_px - left_px;
 
-        DrawRectangle(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
+        DrawRectangleLines(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
     }
 
     // render playhead
