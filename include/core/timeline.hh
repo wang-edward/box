@@ -11,6 +11,11 @@ struct Timeline {
         Overview,
     };
 
+    enum class PlayheadMode {
+        Detached,
+        Locked,
+    };
+
     struct BeatRange {
         float left_edge;
         float right_edge;
@@ -21,11 +26,14 @@ struct Timeline {
         float beats;
     };
 
-    BeatRange cursor_;
     float bar_width_ = 4.0; // Assuming a 4/4 time signature by default TODO update with time signature changes
     float step_size_ = 4.0; // Move cursor by 4 beat (1 bar)
     float radius_ = 8.0;
+    BeatRange cursor_ = {0.0, bar_width_};
+    BeatRange frame_ = {-radius_, radius_};
+
     ScreenState screen_state_ = ScreenState::Overview;
+    PlayheadMode playhead_mode_  = PlayheadMode::Detached;
     size_t scroll_offset_ = 0;
 
     Timeline();
