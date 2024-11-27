@@ -226,10 +226,20 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_H:
                 cursor_.left_edge -= step_size_;
                 cursor_.right_edge -= step_size_;
+                if (cursor_.left_edge < frame_.left_edge)
+                {
+                    frame_.left_edge = cursor_.left_edge;
+                    frame_.right_edge = cursor_.left_edge + (radius_ * 2);
+                }
                 break;
             case KEY_L:
                 cursor_.left_edge += step_size_;
                 cursor_.right_edge += step_size_;
+                if (cursor_.right_edge > frame_.right_edge)
+                {
+                    frame_.left_edge = cursor_.right_edge - (radius_ * 2);
+                    frame_.right_edge = cursor_.right_edge;
+                }
                 break;
             case KEY_J:
                 {
