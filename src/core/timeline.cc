@@ -350,9 +350,13 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_MINUS:
                 radius_ *= 2;
+                frame_.left_edge *= 2;
+                frame_.right_edge *= 2;
                 break;
             case KEY_EQUAL:
                 radius_ /= 2;
+                frame_.left_edge /= 2;
+                frame_.right_edge /= 2;
                 break;
             }
             break;
