@@ -46,8 +46,8 @@ void Timeline:: Render(Interface &interface)
         DrawRectangleRec(Rectangle{x, y, width, height}, LIGHTGRAY);
     }
 
-    // render active track TODO assert instead
-    if (curr_row < num_rows)
+    // render active track
+    assert(curr_row < num_rows);
     {
         float x = 0;
         float y = (24 * curr_row) + 32;
@@ -66,20 +66,18 @@ void Timeline:: Render(Interface &interface)
 
     // render bar lines
     {
-
-        // Time signature at current position
         const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
-        double beats_per_bar = time_sig.numerator; // Number of beats in a bar
-        double beat_length = 1.0 / time_sig.denominator; // Length of a beat in terms of whole notes
+        double beats_per_bar = time_sig.numerator;
 
-        // Start rendering bar lines from the leftmost visible beat
         double first_bar_start = std::floor(screen.left_edge / beats_per_bar) * beats_per_bar;
 
-        for (double bar_start = first_bar_start; bar_start < screen.right_edge; bar_start += beats_per_bar)
+        for (double bar_start = first_bar_start; 
+            bar_start < screen.right_edge; 
+            bar_start += beats_per_bar)
         {
             double bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
             float x = static_cast<float>(bar_position_pct * 128);
-            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY); // Full-height bar line
+            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
         }
     }
 
@@ -217,7 +215,6 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_ENTER:
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
-            // TODO this code is stupid fix it
             case KEY_H:
                 cursor_.left_edge -= step_size_;
                 cursor_.right_edge -= step_size_;
