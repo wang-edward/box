@@ -30,7 +30,7 @@ struct Timeline {
     float step_size_ = 4.0; // Move cursor by 4 beat (1 bar)
     float radius_ = 8.0;
     BeatRange cursor_ = {0.0, bar_width_};
-    BeatRange frame_ = {0.0, radius_};
+    BeatRange frame_ = {-radius_, radius_};
 
     ScreenState screen_state_ = ScreenState::Overview;
     PlayheadMode playhead_mode_  = PlayheadMode::Detached;
