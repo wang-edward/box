@@ -5,7 +5,6 @@ namespace box {
 
 Timeline:: Timeline()
 {
-    cursor_ = {0.0, bar_width_};
 }
 
 void Timeline:: Render(Interface &interface) 
@@ -30,9 +29,18 @@ void Timeline:: Render(Interface &interface)
         static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
         static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats())};
 
-    const BeatRange screen = {
+    BeatRange screen = {
         curr_pos.beats - RADIUS,
         curr_pos.beats + RADIUS};
+
+    if (playhead_mode_ == PlayheadMode::Detached)
+    {
+        screen = frame_;
+    } else if (playhead_mode_ == PlayheadMode::Locked)
+    {
+        screen.left_edge = curr_pos.beats - RADIUS;
+        screen.right_edge = curr_pos.beats + RADIUS;
+    }
 
     // draw track backgrounds
     for (size_t i = 0; i < num_rows; i++)
