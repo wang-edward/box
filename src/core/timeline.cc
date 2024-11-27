@@ -5,9 +5,7 @@ namespace box {
 
 Timeline:: Timeline()
 {
-    cursor_ = {
-        te::BeatPosition::fromBeats(0.0),
-        te::BeatPosition::fromBeats(bar_width_)};
+    cursor_ = {0.0, bar_width_};
 }
 
 void Timeline:: Render(Interface &interface) 
@@ -22,16 +20,19 @@ void Timeline:: Render(Interface &interface)
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
     const size_t curr_row = APP->current_track_ - scroll_offset_;
-    const double RADIUS = radius_;
-    const double WIDTH = radius_ * 2;
-    const double pos = APP->edit_.getTransport().getPosition().inSeconds();
+    const float RADIUS = radius_;
+    const float WIDTH = radius_ * 2;
 
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-    const te::BeatPosition &curr_beat_pos = te::toBeats(te::EditTime{transport.getPosition()}, tempo);
 
-    const auto screen_left_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() - RADIUS);
-    const auto screen_right_edge = te::BeatPosition::fromBeats(curr_beat_pos.inBeats() + RADIUS);
+    const Position curr_pos = {
+        static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
+        static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats())};
+
+    const BeatRange screen = {
+        curr_pos.beats - RADIUS,
+        curr_pos.beats + RADIUS};
 
     // draw track backgrounds
     for (size_t i = 0; i < num_rows; i++)
@@ -44,7 +45,7 @@ void Timeline:: Render(Interface &interface)
     }
 
     // render active track
-    if (curr_row < num_rows)
+    assert(curr_row < num_rows);
     {
         float x = 0;
         float y = (24 * curr_row) + 32;
@@ -55,7 +56,7 @@ void Timeline:: Render(Interface &interface)
 
     // render pos
     {
-        auto text = std::to_string(pos);
+        auto text = std::to_string(curr_pos.secs);
         const int font_size = 10;
         int width = MeasureText(text.c_str(), font_size);
         DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
@@ -63,31 +64,29 @@ void Timeline:: Render(Interface &interface)
 
     // render bar lines
     {
-
-        // Time signature at current position
         const te::TimeSigSetting &time_sig = tempo.getTimeSigAt(transport.getPosition());
-        double beats_per_bar = time_sig.numerator; // Number of beats in a bar
-        double beat_length = 1.0 / time_sig.denominator; // Length of a beat in terms of whole notes
+        float beats_per_bar = time_sig.numerator;
 
-        // Start rendering bar lines from the leftmost visible beat
-        double first_bar_start = std::floor(screen_left_edge.inBeats() / beats_per_bar) * beats_per_bar;
+        float first_bar_start = std::floor(screen.left_edge / beats_per_bar) * beats_per_bar;
 
-        for (double bar_start = first_bar_start; bar_start < screen_right_edge.inBeats(); bar_start += beats_per_bar)
+        for (float bar_start = first_bar_start; 
+            bar_start < screen.right_edge; 
+            bar_start += beats_per_bar)
         {
-            double bar_position_pct = (bar_start - screen_left_edge.inBeats()) / WIDTH;
+            float bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
             float x = static_cast<float>(bar_position_pct * 128);
-            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY); // Full-height bar line
+            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
         }
     }
 
     // render current live clip (if recording)
     if (transport.isRecording())
     {
-        const te::BeatPosition start_time = tempo.toBeats(transport.getTimeWhenStarted());
-        if (screen_left_edge < start_time)
+        const float start_time = tempo.toBeats(transport.getTimeWhenStarted()).inBeats();
+        if (screen.left_edge < start_time)
         {
-            double left_pct = (start_time.inBeats() - screen_left_edge.inBeats()) / WIDTH;
-            double left_px = (left_pct * 128);
+            float left_pct = (start_time - screen.left_edge) / WIDTH;
+            float left_px = (left_pct * 128);
             DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
         }
         else {
@@ -104,17 +103,19 @@ void Timeline:: Render(Interface &interface)
             for (const auto &c : t->base_.getClips())
             {
                 const te::ClipPosition c_pos = c->getPosition();
-                auto c_er = te::EditTimeRange{c_pos.time};
-                te::BeatRange t_br = te::toBeats(c_er, tempo);
+                te::BeatRange t_br = te::toBeats(c_pos.time, tempo);
+                BeatRange clip = {
+                    static_cast<float>(t_br.getStart().inBeats()), 
+                    static_cast<float>(t_br.getEnd().inBeats())};
 
                 // Determine overlap with visible range
-                auto visible_start = std::max(screen_left_edge.inBeats(), t_br.getStart().inBeats());
-                auto visible_end = std::min(screen_right_edge.inBeats(), t_br.getEnd().inBeats());
+                const float visible_start = std::max(screen.left_edge, clip.left_edge);
+                const float visible_end = std::min(screen.right_edge, clip.right_edge);
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    double start_pct = (visible_start - screen_left_edge.inBeats()) / WIDTH;
-                    double end_pct = (visible_end - screen_left_edge.inBeats()) / WIDTH;
+                    float start_pct = (visible_start - screen.left_edge) / WIDTH;
+                    float end_pct = (visible_end - screen.left_edge) / WIDTH;
 
                     float left_px = static_cast<float>(start_pct * 128);
                     float right_px = static_cast<float>(end_pct * 128);
@@ -128,11 +129,8 @@ void Timeline:: Render(Interface &interface)
 
     // render cursor
     {
-        const te::BeatPosition cursor_left_edge = cursor_.getStart();
-        const te::BeatPosition cursor_right_edge = cursor_.getEnd();
-
-        double left_pct = (cursor_left_edge.inBeats() - screen_left_edge.inBeats()) / WIDTH;
-        double right_pct = (cursor_right_edge.inBeats() - screen_left_edge.inBeats()) / WIDTH;
+        float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
+        float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
 
         float left_px = static_cast<float>(left_pct * 128);
         float right_px = static_cast<float>(right_pct * 128);
@@ -217,22 +215,13 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_ENTER:
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
-            // TODO this code is stupid fix it
             case KEY_H:
-                cursor_ = te::BeatRange{
-                    te::BeatPosition::fromBeats(
-                        cursor_.getStart().inBeats() - step_size_),
-                    te::BeatPosition::fromBeats(
-                        cursor_.getEnd().inBeats() - step_size_)};
-                LOG_VAR(cursor_.getStart().inBeats());
+                cursor_.left_edge -= step_size_;
+                cursor_.right_edge -= step_size_;
                 break;
             case KEY_L:
-                cursor_ = te::BeatRange{
-                    te::BeatPosition::fromBeats(
-                        cursor_.getStart().inBeats() + step_size_),
-                    te::BeatPosition::fromBeats(
-                        cursor_.getEnd().inBeats() + step_size_)};
-                LOG_VAR(cursor_.getStart().inBeats());
+                cursor_.left_edge += step_size_;
+                cursor_.right_edge += step_size_;
                 break;
             case KEY_J:
                 {
