@@ -125,11 +125,11 @@ void Timeline:: Render(Interface &interface)
                     float start_pct = (visible_start - screen.left_edge) / WIDTH;
                     float end_pct = (visible_end - screen.left_edge) / WIDTH;
 
-                    float left_px = static_cast<float>(start_pct * 128);
-                    float right_px = static_cast<float>(end_pct * 128);
-                    float width = right_px - left_px;
+                    const int left_px = static_cast<int>(start_pct * 128);
+                    const int right_px = static_cast<int>(end_pct * 128);
+                    int clip_width = right_px - left_px;
 
-                    DrawRectangle(left_px, (i * 24) + 32, width, 24, PINK);
+                    DrawRectangle(left_px, (i * 24) + 32, clip_width, 24, PINK);
                 }
             }
         }
@@ -137,12 +137,12 @@ void Timeline:: Render(Interface &interface)
 
     // render cursor
     {
-        float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
-        float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
+        const float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
+        const float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
 
-        float left_px = static_cast<float>(left_pct * 128);
-        float right_px = static_cast<float>(right_pct * 128);
-        float width = right_px - left_px;
+        const int left_px = static_cast<int>(left_pct * 128);
+        const int right_px = static_cast<int>(right_pct * 128);
+        const int width = right_px - left_px;
 
         DrawRectangle(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
     }
