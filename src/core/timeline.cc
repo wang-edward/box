@@ -307,10 +307,12 @@ void Timeline:: HandleEvent(const Event &event)
                     {
                         transport.stop(false, false); // TODO should this discard?
                         te::EditFileOperations (APP->edit_).save(true, true, false);
+                        playhead_mode_ = PlayheadMode::Detached;
                     }
                     else
                     {
                         transport.record(false);
+                        playhead_mode_ = PlayheadMode::Locked;
                     }
                 }
                 break;
@@ -320,10 +322,12 @@ void Timeline:: HandleEvent(const Event &event)
                     if (transport.isPlaying())
                     {
                         transport.stop(false, false); // TODO should this discard?
+                        playhead_mode_ = PlayheadMode::Detached;
                     }
                     else
                     {
                         transport.play(false);
+                        playhead_mode_ = PlayheadMode::Locked;
                     }
                 }
                 break;
