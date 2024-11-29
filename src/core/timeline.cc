@@ -249,6 +249,7 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_J:
+                if (!APP->edit_.getTransport().isRecording())
                 {
                     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
                     size_t old_track = APP->current_track_;
@@ -266,6 +267,7 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_K:
+                if (!APP->edit_.getTransport().isRecording())
                 {
                     size_t old_track = APP->current_track_;
                     APP->current_track_ = clamp_decrement(APP->current_track_);
