@@ -313,6 +313,11 @@ void Timeline:: HandleEvent(const Event &event)
                     {
                         transport.record(false);
                         playhead_mode_ = PlayheadMode::Locked;
+                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                        const float curr_pos = static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats());
+                        cursor_.left_edge = static_cast<float>(
+                            static_cast<int>(curr_pos / bar_width_));
+
                     }
                 }
                 break;
