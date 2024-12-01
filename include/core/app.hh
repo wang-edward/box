@@ -45,6 +45,9 @@ struct App {
 
     void SetCurrentTrack(size_t track_app);
     void AddTrack();
+    void ChangeArmMidi(size_t new_index);
+
+private:
     void ArmMidi(size_t index);
     void UnarmMidi(size_t index);
 };

@@ -82,6 +82,12 @@ void App:: UnarmMidi(size_t index)
     }
 }
 
+void App:: ChangeArmMidi(size_t new_index)
+{
+    UnarmMidi(current_track_);
+    ArmMidi(new_index);
+}
+
 void App:: Render(Interface& interface) 
 {
     assert_tracks(tracks_, current_track_, "render");
