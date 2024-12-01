@@ -16,6 +16,7 @@ void Timeline:: Render(Interface &interface)
     - track
       - the actual "track"
     */
+    assert(is_close(frame_.radius, radius_));
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
     const size_t curr_row = APP->current_track_ - scroll_offset_;

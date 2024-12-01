@@ -25,11 +25,10 @@ struct Timeline {
 
     struct BeatFrame {
         float center;
-        float &radius;
+        float radius;
         float LeftEdge() {return center - radius;}
         float RightEdge() {return center + radius;}
         BeatFrame(float c, float &r): center{c}, radius{r} {}
-        BeatFrame operator=(const BeatFrame &other) {return BeatFrame{other.center, other.radius};}
     };
 
     struct Position {
