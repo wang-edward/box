@@ -27,19 +27,13 @@ void Timeline:: Render(Interface &interface)
 
     const Position curr_pos = {
         static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
-        static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats())};
+        static_cast<float>(tempo.toBeats(transport.getPosition()).inBeats())};
 
-    BeatRange screen = {
-        curr_pos.beats - RADIUS,
-        curr_pos.beats + RADIUS};
+    BeatFrame screen{curr_pos.beats, radius_};
 
     if (playhead_mode_ == PlayheadMode::Detached)
     {
         screen = frame_;
-    } else if (playhead_mode_ == PlayheadMode::Locked)
-    {
-        screen.left_edge = curr_pos.beats - RADIUS;
-        screen.right_edge = curr_pos.beats + RADIUS;
     }
 
     // draw track backgrounds
@@ -72,13 +66,13 @@ void Timeline:: Render(Interface &interface)
 
     // render bar lines
     {
-        float first_bar_start = std::floor(screen.left_edge / bar_width_) * bar_width_;
+        float first_bar_start = std::floor(screen.LeftEdge() / bar_width_) * bar_width_;
 
         for (float bar_start = first_bar_start; 
-            bar_start < screen.right_edge; 
+            bar_start < screen.RightEdge();
             bar_start += bar_width_)
         {
-            float bar_position_pct = (bar_start - screen.left_edge) / WIDTH;
+            float bar_position_pct = (bar_start - screen.LeftEdge()) / WIDTH;
             int x = static_cast<int>(bar_position_pct * 128);
             DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
         }
@@ -88,9 +82,9 @@ void Timeline:: Render(Interface &interface)
     if (transport.isRecording())
     {
         const float start_time = tempo.toBeats(transport.getTimeWhenStarted()).inBeats();
-        if (screen.left_edge < start_time)
+        if (screen.LeftEdge() < start_time)
         {
-            float left_pct = (start_time - screen.left_edge) / WIDTH;
+            float left_pct = (start_time - screen.LeftEdge()) / WIDTH;
             float left_px = (left_pct * 128);
             DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
         }
@@ -109,18 +103,18 @@ void Timeline:: Render(Interface &interface)
             {
                 const te::ClipPosition c_pos = c->getPosition();
                 te::BeatRange t_br = te::toBeats(c_pos.time, tempo);
-                BeatRange clip = {
+                BeatWindow clip = {
                     static_cast<float>(t_br.getStart().inBeats()), 
-                    static_cast<float>(t_br.getEnd().inBeats())};
+                    static_cast<float>(t_br.getLength().inBeats())};
 
                 // Determine overlap with visible range
-                const float visible_start = std::max(screen.left_edge, clip.left_edge);
-                const float visible_end = std::min(screen.right_edge, clip.right_edge);
+                const float visible_start = std::max(screen.LeftEdge(), clip.LeftEdge());
+                const float visible_end = std::min(screen.RightEdge(), clip.RightEdge());
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    float start_pct = (visible_start - screen.left_edge) / WIDTH;
-                    float end_pct = (visible_end - screen.left_edge) / WIDTH;
+                    float start_pct = (visible_start - screen.LeftEdge()) / WIDTH;
+                    float end_pct = (visible_end - screen.LeftEdge()) / WIDTH;
 
                     const int left_px = static_cast<int>(start_pct * 128);
                     const int right_px = static_cast<int>(end_pct * 128);
@@ -135,8 +129,8 @@ void Timeline:: Render(Interface &interface)
     // render cursor
     if (!transport.isRecording() && !transport.isPlaying())
     {
-        const float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
-        const float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
+        const float left_pct = (cursor_.LeftEdge() - screen.LeftEdge()) / WIDTH;
+        const float right_pct = (cursor_.RightEdge() - screen.LeftEdge()) / WIDTH;
 
         const int left_px = static_cast<int>(left_pct * 128);
         const int right_px = static_cast<int>(right_pct * 128);
@@ -147,10 +141,10 @@ void Timeline:: Render(Interface &interface)
 
     // render playhead
     {
-        if (screen.left_edge < curr_pos.beats &&
-            curr_pos.beats < screen.right_edge)
+        if (screen.LeftEdge() < curr_pos.beats &&
+            curr_pos.beats < screen.RightEdge())
         {
-            const float left_pct = (curr_pos.beats - screen.left_edge) / WIDTH;
+            const float left_pct = (curr_pos.beats - screen.LeftEdge()) / WIDTH;
             const int left_px = static_cast<int>(left_pct * 128);
             DrawLine(left_px, 32, left_px, 128, WHITE);
         }
@@ -232,21 +226,19 @@ void Timeline:: HandleEvent(const Event &event)
                 APP->screen_state_ = App::ScreenState::Track;
                 break;
             case KEY_H:
-                cursor_.left_edge -= step_size_;
-                cursor_.right_edge -= step_size_;
-                if (cursor_.left_edge < frame_.left_edge)
+                cursor_.start -= step_size_;
+                if (cursor_.LeftEdge() < frame_.LeftEdge())
                 {
-                    frame_.left_edge = cursor_.left_edge;
-                    frame_.right_edge = cursor_.left_edge + (radius_ * 2);
+                    const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
+                    frame_.center -= diff;
                 }
                 break;
             case KEY_L:
-                cursor_.left_edge += step_size_;
-                cursor_.right_edge += step_size_;
-                if (cursor_.right_edge > frame_.right_edge)
+                cursor_.start += step_size_;
+                if (cursor_.RightEdge() > frame_.RightEdge())
                 {
-                    frame_.left_edge = cursor_.right_edge - (radius_ * 2);
-                    frame_.right_edge = cursor_.right_edge;
+                    const float diff = frame_.RightEdge() - cursor_.RightEdge();
+                    frame_.center += diff;
                 }
                 break;
             case KEY_J:
@@ -294,6 +286,10 @@ void Timeline:: HandleEvent(const Event &event)
                         transport.stop(false, false); // TODO should this discard?
                         te::EditFileOperations (APP->edit_).save(true, true, false);
                         playhead_mode_ = PlayheadMode::Detached;
+
+                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
+                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        assert_multiple(cursor_.start, bar_width_);
                     }
                     else
                     {
@@ -309,6 +305,10 @@ void Timeline:: HandleEvent(const Event &event)
                     {
                         transport.stop(false, false); // TODO should this discard?
                         playhead_mode_ = PlayheadMode::Detached;
+
+                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
+                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        assert_multiple(cursor_.start, bar_width_);
                     }
                     else
                     {
@@ -340,13 +340,9 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_MINUS:
                 radius_ *= 2;
-                frame_.left_edge *= 2;
-                frame_.right_edge *= 2;
                 break;
             case KEY_EQUAL:
                 radius_ /= 2;
-                frame_.left_edge /= 2;
-                frame_.right_edge /= 2;
                 break;
             }
             break;
