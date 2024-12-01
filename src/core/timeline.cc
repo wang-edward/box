@@ -19,7 +19,7 @@ void Timeline:: Render(Interface &interface)
     assert(is_close(frame_.radius, radius_));
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
-    const size_t curr_row = APP->current_track_ - scroll_offset_;
+    const size_t curr_row = APP->GetCurrTrack() - scroll_offset_;
     const float WIDTH = radius_ * 2;
 
     const te::TransportControl &transport = APP->edit_.getTransport();
@@ -175,7 +175,7 @@ void Timeline:: Render(Interface &interface)
 void Timeline:: print_timeline()
 {
     std::cout << std::endl;
-    const auto &track = APP->tracks_[APP->current_track_]->base_;
+    const auto &track = APP->tracks_[APP->GetCurrTrack()]->base_;
     std::cout << "name: " << track.getName() << std::endl;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;
@@ -246,8 +246,9 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_J:
                 if (!APP->edit_.getTransport().isRecording())
                 {
-                    APP->ChangeArmMidi(clamp_increment(APP->current_track_, APP->tracks_.size()));
-                    if (APP->current_track_ - scroll_offset_ >= MAX_ROWS)
+                    APP->SetCurrTrack(
+                        clamp_increment(APP->GetCurrTrack(), APP->tracks_.size()));
+                    if (APP->GetCurrTrack() - scroll_offset_ >= MAX_ROWS)
                     {
                         scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
                     }
@@ -256,8 +257,8 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_K:
                 if (!APP->edit_.getTransport().isRecording())
                 {
-                    APP->ChangeArmMidi(clamp_decrement(APP->current_track_));
-                    if (APP->current_track_ < scroll_offset_)
+                    APP->SetCurrTrack(clamp_decrement(APP->GetCurrTrack()));
+                    if (APP->GetCurrTrack() < scroll_offset_)
                     {
                         scroll_offset_ = clamp_decrement(scroll_offset_);
                     }

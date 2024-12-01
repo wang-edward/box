@@ -38,13 +38,26 @@ void App:: AddTrack()
     tracks_.push_back(std::make_unique<Track>(*base_tracks_[tracks_.size()]));
 }
 
-void App:: SetCurrentTrack(size_t track_index) 
+size_t App:: GetCurrTrack()
 {
+    return current_track_;
+}
+void App:: SetCurrTrack(size_t track_index)
+{
+    size_t old = current_track_;
     if (track_index >= 0 && track_index < MAX_TRACKS) 
     {
         current_track_ = track_index;
     }
+    else
+    {
+        throw std::runtime_error{"SetCurrTrack() out of range: "};
+    }
+
+    UnarmMidi(old);
+    ArmMidi(current_track_);
 }
+
 void App:: ArmMidi(size_t index)
 {
     assert(0 <= index && index < tracks_.size());
@@ -63,7 +76,6 @@ void App:: ArmMidi(size_t index)
         }
     }
 }
-
 void App:: UnarmMidi(size_t index)
 {
     assert(0 <= index && index < tracks_.size());
@@ -80,12 +92,6 @@ void App:: UnarmMidi(size_t index)
             }
         }
     }
-}
-
-void App:: ChangeArmMidi(size_t new_index)
-{
-    UnarmMidi(current_track_);
-    ArmMidi(new_index);
 }
 
 void App:: Render(Interface& interface) 
