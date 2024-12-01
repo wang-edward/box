@@ -50,6 +50,7 @@ struct Timeline {
 
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
+private:
     void print_timeline();
 };
 

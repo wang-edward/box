@@ -291,8 +291,11 @@ void Timeline:: HandleEvent(const Event &event)
                         te::EditFileOperations (APP->edit_).save(true, true, false);
                         playhead_mode_ = PlayheadMode::Detached;
 
+                        {
                         const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        cursor_.start = std::floor(curr_pos/bar_width_) * bar_width_;
+                        frame_.center = curr_pos;
+                        }
                         assert_multiple(cursor_.start, bar_width_);
                     }
                     else
@@ -310,8 +313,11 @@ void Timeline:: HandleEvent(const Event &event)
                         transport.stop(false, false); // TODO should this discard?
                         playhead_mode_ = PlayheadMode::Detached;
 
+                        {
                         const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        cursor_.start = std::floor(curr_pos/bar_width_) * bar_width_;
+                        frame_.center = curr_pos;
+                        }
                         assert_multiple(cursor_.start, bar_width_);
                     }
                     else
@@ -327,6 +333,7 @@ void Timeline:: HandleEvent(const Event &event)
                     auto &transport = APP->edit_.getTransport();
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
                     cursor_.start = 0;
+                    frame_.center = 0;
                 }
                 break;
             case KEY_COMMA:
