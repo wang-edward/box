@@ -27,7 +27,7 @@ void Timeline:: Render(Interface &interface)
 
     const Position curr_pos = {
         static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
-        static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats())};
+        static_cast<float>(tempo.toBeats(transport.getPosition()).inBeats())};
 
     BeatRange screen = {
         curr_pos.beats - RADIUS,
@@ -308,16 +308,17 @@ void Timeline:: HandleEvent(const Event &event)
                         transport.stop(false, false); // TODO should this discard?
                         te::EditFileOperations (APP->edit_).save(true, true, false);
                         playhead_mode_ = PlayheadMode::Detached;
+
+
+                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                        const float curr_pos = tempo.toBeats(transport.getPosition()).inBeats();
+                        cursor_.left_edge = static_cast<int>(curr_pos / bar_width_);
+                        cursor_.right_edge = cursor_.left_edge + bar_width_;
                     }
                     else
                     {
                         transport.record(false);
                         playhead_mode_ = PlayheadMode::Locked;
-                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                        const float curr_pos = static_cast<float>(te::toBeats(te::EditTime{transport.getPosition()}, tempo).inBeats());
-                        cursor_.left_edge = static_cast<float>(
-                            static_cast<int>(curr_pos / bar_width_));
-
                     }
                 }
                 break;
@@ -328,6 +329,13 @@ void Timeline:: HandleEvent(const Event &event)
                     {
                         transport.stop(false, false); // TODO should this discard?
                         playhead_mode_ = PlayheadMode::Detached;
+
+                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                        const float curr_pos = tempo.toBeats(transport.getPosition()).inBeats();
+                        cursor_.left_edge = static_cast<int>(curr_pos / bar_width_);
+                        LOG_VAR(curr_pos);
+                        LOG_VAR(cursor_.left_edge);
+                        cursor_.right_edge = cursor_.left_edge + bar_width_;
                     }
                     else
                     {
