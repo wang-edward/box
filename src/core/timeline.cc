@@ -133,6 +133,7 @@ void Timeline:: Render(Interface &interface)
     }
 
     // render cursor
+    if (!transport.isRecording() && !transport.isPlaying())
     {
         const float left_pct = (cursor_.left_edge - screen.left_edge) / WIDTH;
         const float right_pct = (cursor_.right_edge - screen.left_edge) / WIDTH;
