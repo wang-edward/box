@@ -20,7 +20,6 @@ void Timeline:: Render(Interface &interface)
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
     const size_t curr_row = APP->current_track_ - scroll_offset_;
-    const float RADIUS = radius_;
     const float WIDTH = radius_ * 2;
 
     const te::TransportControl &transport = APP->edit_.getTransport();
@@ -228,6 +227,7 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_H:
                 cursor_.start -= step_size_;
+                LOG_VAR(cursor_.LeftEdge() < frame_.LeftEdge());
                 if (cursor_.LeftEdge() < frame_.LeftEdge())
                 {
                     const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
@@ -236,9 +236,10 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_L:
                 cursor_.start += step_size_;
+                LOG_VAR(cursor_.RightEdge() > frame_.RightEdge());
                 if (cursor_.RightEdge() > frame_.RightEdge())
                 {
-                    const float diff = frame_.RightEdge() - cursor_.RightEdge();
+                    const float diff = cursor_.RightEdge() - frame_.RightEdge();
                     frame_.center += diff;
                 }
                 break;
@@ -276,7 +277,7 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 print_timeline();
-                LOG_VAR(playhead_mode_);
+                LOG_VAR(frame_.center);
                 break;
             case KEY_R:
                 {
