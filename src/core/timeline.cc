@@ -328,6 +328,7 @@ void Timeline:: HandleEvent(const Event &event)
                     auto &transport = APP->edit_.getTransport();
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
                     cursor_.start = 0;
+                    frame_.center = 0;
                 }
                 break;
             case KEY_COMMA:
