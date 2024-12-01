@@ -220,10 +220,6 @@ void Timeline:: print_timeline()
 
 void Timeline:: HandleEvent(const Event &event) 
 {
-    const te::TransportControl &transport = APP->edit_.getTransport();
-    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-
-
     switch (screen_state_) 
     {
     case ScreenState::Overview:
@@ -254,7 +250,7 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_J:
-                if (!transport.isRecording())
+                if (!APP->edit_.getTransport().isRecording())
                 {
                     APP->ChangeArmMidi(clamp_increment(APP->current_track_, APP->tracks_.size()));
                     if (APP->current_track_ - scroll_offset_ >= MAX_ROWS)
@@ -264,7 +260,7 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_K:
-                if (!transport.isRecording())
+                if (!APP->edit_.getTransport().isRecording())
                 {
                     APP->ChangeArmMidi(clamp_decrement(APP->current_track_));
                     if (APP->current_track_ < scroll_offset_)
@@ -286,10 +282,7 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_P:
-                // TODO update?
                 print_timeline();
-                LOG_VAR(APP->tracks_.size() - scroll_offset_);
-                LOG_VAR(std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS));
                 break;
             case KEY_R:
                 {
