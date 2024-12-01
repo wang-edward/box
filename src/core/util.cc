@@ -10,6 +10,11 @@ void assert_multiple(float a, float b)
     assert(std::fabs(std::fmod(a, b)) < epsilon && "a is not a multiple of b");
 }
 
+bool is_close(float a, float b)
+{
+    return std::abs(a - b) < 1e-6;
+}
+
 size_t clamp_decrement(size_t x) 
 {
     if (x == 0) return 0;

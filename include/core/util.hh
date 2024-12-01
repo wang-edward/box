@@ -19,6 +19,7 @@ constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
 
 void assert_multiple(float a, float b);
+bool is_close(float a, float b);
 
 size_t clamp_decrement(size_t x);
 size_t clamp_increment(size_t x, size_t max);
