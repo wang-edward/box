@@ -212,6 +212,12 @@ void Timeline:: print_timeline()
     }
 }
 
+void Timeline:: align_cursorframe(float x)
+{
+    cursor_.start = x;
+    frame_.center = x;
+}
+
 void Timeline:: HandleEvent(const Event &event) 
 {
     switch (screen_state_) 
@@ -292,8 +298,7 @@ void Timeline:: HandleEvent(const Event &event)
                         playhead_mode_ = PlayheadMode::Detached;
 
                         const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
-                        frame_.center = curr_pos;
+                        align_cursorframe(std::floor(curr_pos/bar_width_) * bar_width_);
                         assert_multiple(cursor_.start, bar_width_);
                     }
                     else
@@ -312,8 +317,7 @@ void Timeline:: HandleEvent(const Event &event)
                         playhead_mode_ = PlayheadMode::Detached;
 
                         const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
-                        frame_.center = curr_pos;
+                        align_cursorframe(std::floor(curr_pos/bar_width_) * bar_width_);
                         assert_multiple(cursor_.start, bar_width_);
                     }
                     else
@@ -328,8 +332,7 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_MSG("move to origin");
                     auto &transport = APP->edit_.getTransport();
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
-                    cursor_.start = 0;
-                    frame_.center = 0;
+                    align_cursorframe(0);
                 }
                 break;
             case KEY_COMMA:

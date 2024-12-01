@@ -50,6 +50,8 @@ struct Timeline {
 
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
+private:
+    void align_cursorframe(float x);
     void print_timeline();
 };
 
