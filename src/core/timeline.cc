@@ -220,6 +220,10 @@ void Timeline:: print_timeline()
 
 void Timeline:: HandleEvent(const Event &event) 
 {
+    const te::TransportControl &transport = APP->edit_.getTransport();
+    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+
+
     switch (screen_state_) 
     {
     case ScreenState::Overview:
@@ -250,33 +254,19 @@ void Timeline:: HandleEvent(const Event &event)
                 }
                 break;
             case KEY_J:
-                if (!APP->edit_.getTransport().isRecording())
+                if (!transport.isRecording())
                 {
-                    const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
-                    size_t old_track = APP->current_track_;
-                    APP->current_track_ = clamp_increment(APP->current_track_, APP->tracks_.size());
-                    APP->UnarmMidi(old_track);
-                    APP->ArmMidi(APP->current_track_);
-                    // update scroll
-                    LOG_VAR(APP->current_track_);
-                    LOG_VAR(scroll_offset_);
-                    LOG_VAR(APP->current_track_  - scroll_offset_);
-                    if (APP->current_track_ - scroll_offset_ >= 4)
+                    APP->ChangeArmMidi(clamp_increment(APP->current_track_, APP->tracks_.size()));
+                    if (APP->current_track_ - scroll_offset_ >= MAX_ROWS)
                     {
                         scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
                     }
                 }
                 break;
             case KEY_K:
-                if (!APP->edit_.getTransport().isRecording())
+                if (!transport.isRecording())
                 {
-                    size_t old_track = APP->current_track_;
-                    APP->current_track_ = clamp_decrement(APP->current_track_);
-                    APP->UnarmMidi(old_track);
-                    APP->ArmMidi(APP->current_track_);
-                    // update scroll
-                    LOG_VAR(APP->current_track_);
-                    LOG_VAR(scroll_offset_);
+                    APP->ChangeArmMidi(clamp_decrement(APP->current_track_));
                     if (APP->current_track_ < scroll_offset_)
                     {
                         scroll_offset_ = clamp_decrement(scroll_offset_);
