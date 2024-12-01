@@ -36,3 +36,6 @@ build
 .cache
 .vscode
 Testing/
+
+# temp
+tmp.box
