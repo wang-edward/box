@@ -4,6 +4,12 @@ namespace box {
 
 App* APP = nullptr;  // Define the global APP variable
 
+void assert_multiple(float a, float b)
+{
+    const float epsilon = 1e-6; // Small tolerance for floating-point precision
+    assert(std::fabs(std::fmod(a, b)) < epsilon && "a is not a multiple of b");
+}
+
 size_t clamp_decrement(size_t x) 
 {
     if (x == 0) return 0;
