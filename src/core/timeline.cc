@@ -336,6 +336,15 @@ void Timeline:: HandleEvent(const Event &event)
                     frame_.center = 0;
                 }
                 break;
+            case KEY_Z:
+                {
+                    LOG_MSG("align cursor and playhead");
+                    LOG_VAR(cursor_.start);
+                    auto &transport = APP->edit_.getTransport();
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.start)));
+                }
+                break;
             case KEY_COMMA:
                 {
                     LOG_MSG("move left");
