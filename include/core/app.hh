@@ -24,7 +24,6 @@ struct App {
     te::Engine &engine_ ;
     te::Edit &edit_ ;
 
-    size_t current_track_;
     std::vector<std::unique_ptr<Track>> tracks_;
     juce::Array<te::AudioTrack*> base_tracks_;
 
@@ -43,11 +42,13 @@ struct App {
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
-    void SetCurrentTrack(size_t track_app);
+    size_t GetCurrTrack();
+    void SetCurrTrack(size_t track_index);
     void AddTrack();
     void ChangeArmMidi(size_t new_index);
 
 private:
+    size_t current_track_;
     void ArmMidi(size_t index);
     void UnarmMidi(size_t index);
 };
