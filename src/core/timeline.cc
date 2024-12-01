@@ -275,6 +275,7 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_P:
                 print_timeline();
+                LOG_VAR(playhead_mode_);
                 break;
             case KEY_R:
                 {
@@ -322,6 +323,7 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_MSG("move to origin");
                     auto &transport = APP->edit_.getTransport();
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
+                    cursor_.start = 0;
                 }
                 break;
             case KEY_COMMA:
