@@ -5,6 +5,24 @@ namespace box {
 
 Timeline:: Timeline()
 {
+    {
+        Image tmp_l = LoadImage(METRONOME_PATH_L);
+        metronome_l_ = LoadTextureFromImage(tmp_l);
+        UnloadImage(tmp_l);
+        Image tmp_r = LoadImage(METRONOME_PATH_R);
+        metronome_r_ = LoadTextureFromImage(tmp_r);
+        UnloadImage(tmp_r);
+        Image tmp_off = LoadImage(METRONOME_PATH_OFF);
+        metronome_off_ = LoadTextureFromImage(tmp_off);
+        UnloadImage(tmp_off);
+    }
+}
+
+Timeline:: ~Timeline()
+{
+    UnloadTexture(metronome_l_);
+    UnloadTexture(metronome_r_);
+    UnloadTexture(metronome_off_);
 }
 
 void Timeline:: Render(Interface &interface) 
@@ -62,6 +80,27 @@ void Timeline:: Render(Interface &interface)
         const int font_size = 10;
         int width = MeasureText(text.c_str(), font_size);
         DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
+    }
+
+    // render metronome
+    {
+        if (APP->edit_.clickTrackEnabled == true)
+        {
+            const int beat = static_cast<int>(curr_pos.beats);
+            if (beat % 2 == 0)
+            {
+                DrawTexture(metronome_l_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+            }
+            else
+            {
+                DrawTexture(metronome_r_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+
+            }
+        }
+        else
+        {
+            DrawTexture(metronome_off_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+        }
     }
 
     // render bar lines
@@ -279,6 +318,10 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_P:
                 print_timeline();
                 LOG_VAR(frame_.center);
+                break;
+            case KEY_C:
+                // toggle metronome
+                APP->edit_.clickTrackEnabled = !APP->edit_.clickTrackEnabled;
                 break;
             case KEY_R:
                 {
