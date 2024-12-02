@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+# add_compile_options(-g)
 project(BOX VERSION 0.0.1)
 
 if (APPLE)
@@ -18,7 +19,11 @@ add_subdirectory(external/tracktion_engine/modules)
 add_subdirectory(external/raylib)
 add_subdirectory(external/googletest)
 include_directories(include)
-include_directories(external/googletest/googletest/include)
+include_directories(SYSTEM
+    external/tracktion_engine/modules
+    external/tracktion_engine/modules/juce
+    external/raylib
+    external/googletest/googletest/include)
 
 # sources (without main.cc)
 file(GLOB_RECURSE SRC_FILES src/*.cc)
@@ -30,8 +35,8 @@ add_library(BoxLib
     ${SRC_FILES})
 target_include_directories(BoxLib 
     PUBLIC
-    external/tracktion_engine/modules
-    external/tracktion_engine/modules/juce)
+        external/tracktion_engine/modules
+        external/tracktion_engine/modules/juce)
 target_link_libraries(BoxLib
     PUBLIC
         raylib
@@ -39,6 +44,8 @@ target_link_libraries(BoxLib
         juce::juce_core
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
+target_compile_options(BoxLib
+    PRIVATE -Werror=implicit-fallthrough)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(BoxLib PUBLIC "-latomic")
 endif()
