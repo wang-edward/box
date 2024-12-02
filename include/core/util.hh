@@ -17,6 +17,8 @@ extern App *APP;
 
 constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
+constexpr size_t ICON_RADIUS = 8;
+constexpr size_t ICON_WIDTH = 16;
 
 void assert_multiple(float a, float b);
 bool is_close(float a, float b);

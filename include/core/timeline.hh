@@ -46,7 +46,15 @@ struct Timeline {
     PlayheadMode playhead_mode_  = PlayheadMode::Detached;
     size_t scroll_offset_ = 0;
 
+    static constexpr const char *METRONOME_PATH_L = "assets/metronome_l.png";
+    static constexpr const char *METRONOME_PATH_R = "assets/metronome_r.png";
+    static constexpr const char *METRONOME_PATH_OFF = "assets/metronome_off.png";
+    Texture2D metronome_l_;
+    Texture2D metronome_r_;
+    Texture2D metronome_off_;
+
     Timeline();
+    ~Timeline();
 
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
