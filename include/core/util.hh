@@ -57,13 +57,19 @@ struct Event {
 
 const std::unordered_map<int, int> KEY_TO_MIDI = {
     {KEY_A, 60},  // C4
+    {KEY_W, 61},  // C#4
     {KEY_S, 62},  // D4
+    {KEY_E, 63},  // D#4
     {KEY_D, 64},  // E4
     {KEY_F, 65},  // F4
+    {KEY_T, 66},  // F#4
     {KEY_G, 67},  // G4
+    {KEY_Y, 68},  // G#4
     {KEY_H, 69},  // A4
+    {KEY_U, 70},  // A#4
     {KEY_J, 71},  // B4
     {KEY_K, 72},  // C5
+    {KEY_O, 73},  // C#5
     {KEY_L, 74}   // D5
 };
 
