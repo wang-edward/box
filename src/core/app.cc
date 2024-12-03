@@ -156,18 +156,25 @@ void App:: HandleEvent(const Event& event)
                 break;
             }
 
-            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
+            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()
+                && active_notes_.find(event.value) == active_notes_.end())
             {
                 int note = (12 * key_offset_) + KEY_TO_MIDI.at(event.value);
+
+                active_notes_[event.value] = note;
                 auto message = juce::MidiMessage::noteOn(1, note, 1.0f);
                 te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOn(1, note, 1.0);
             }
             break;
         case EventType::KeyRelease:
-            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
+
+            if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end()
+                && active_notes_.find(event.value) != active_notes_.end())
             {
-                int note = (12 * key_offset_) + KEY_TO_MIDI.at(event.value);
+                int note = active_notes_[event.value];
+
+                active_notes_.erase(event.value);
                 auto message = juce::MidiMessage::noteOff(1, note);
                 te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOff(1, note, 1.0);
