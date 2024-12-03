@@ -69,19 +69,25 @@ void Interface:: PostRender()
 // but for the purpose of being an emulator this is fine.
 bool Interface:: PollEvent(Event& event) 
 {
-    for (auto key : keys_) 
-    {
-        if (IsKeyPressed(key)) 
+    for (auto &[key, is_pressed] : keys_) {
+        if (IsKeyDown(key))
         {
-            event.type = EventType::KeyPress;
-            event.value = key;
-            return true;
-        } 
-        else if (IsKeyReleased(key)) 
-        {
-            event.type = EventType::KeyRelease;
-            event.value = key;
-            return true;
+            if (is_pressed == false)
+            {
+                is_pressed = !is_pressed;
+                event.type = EventType::KeyPress;
+                event.value = key;
+                return true;
+            }
+        }
+        if (IsKeyUp(key)) {
+            if (is_pressed == true)
+            {
+                is_pressed = !is_pressed;
+                event.type = EventType::KeyRelease;
+                event.value = key;
+                return true;
+            }
         }
     }
     
