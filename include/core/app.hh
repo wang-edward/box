@@ -20,6 +20,7 @@ struct App {
 
     ScreenState screen_state_ = ScreenState::Timeline;
     Mode mode_ = Mode::Normal;
+    int key_offset_ = 0;
 
     te::Engine &engine_ ;
     te::Edit &edit_ ;

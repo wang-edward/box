@@ -145,19 +145,32 @@ void App:: HandleEvent(const Event& event)
         {
         case EventType::KeyPress:
             LOG_VAR(event.value);
+            if (event.value == KEY_UP)
+            {
+                APP->key_offset_ += 1;
+                break;
+            }
+            if (event.value == KEY_DOWN)
+            {
+                APP->key_offset_ -= 1;
+                break;
+            }
+
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
-                auto message = juce::MidiMessage::noteOn(1, KEY_TO_MIDI.at(event.value), 1.0f);
+                int note = (12 * key_offset_) + KEY_TO_MIDI.at(event.value);
+                auto message = juce::MidiMessage::noteOn(1, note, 1.0f);
                 te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
-                dev->keyboardState.noteOn(1, KEY_TO_MIDI.at(event.value), 1.0);
+                dev->keyboardState.noteOn(1, note, 1.0);
             }
             break;
         case EventType::KeyRelease:
             if (KEY_TO_MIDI.find(event.value) != KEY_TO_MIDI.end())
             {
-                auto message = juce::MidiMessage::noteOff(1, KEY_TO_MIDI.at(event.value));
+                int note = (12 * key_offset_) + KEY_TO_MIDI.at(event.value);
+                auto message = juce::MidiMessage::noteOff(1, note);
                 te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
-                dev->keyboardState.noteOff(1, KEY_TO_MIDI.at(event.value), 1.0);
+                dev->keyboardState.noteOff(1, note, 1.0);
             }
             break;
         }
