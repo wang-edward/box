@@ -17,6 +17,7 @@ extern App *APP;
 
 constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
+extern Font FONT;
 constexpr int DEFAULT_FONT_SIZE = 10;
 constexpr int ICON_RADIUS = 8;
 constexpr int ICON_WIDTH = 16;
@@ -24,7 +25,7 @@ constexpr int ROW_HEIGHT = 28;
 constexpr int ROW_WIDTH = 128;
 constexpr int HEADER_HEIGHT = 16;
 constexpr int HEADER_WIDTH = 128;
-constexpr int HEADER_FONT_SIZE = 10;
+constexpr int HEADER_FONT_SIZE = 11;
 constexpr int SCREEN_HEIGHT = 128;
 constexpr int SCREEN_WIDTH = 128;
 constexpr int SCREEN_HALF = 64;
