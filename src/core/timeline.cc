@@ -85,16 +85,16 @@ void Timeline:: Render(Interface &interface)
             const int beat = static_cast<int>(curr_pos.beats);
             if (beat % 2 == 0)
             {
-                DrawTexture(metronome_l_, HEADER_HEIGHT/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_l_, HEADER_HEIGHT/2 - ICON_RADIUS, SCREEN_EIGHTH - ICON_RADIUS, WHITE);
             }
             else
             {
-                DrawTexture(metronome_r_, HEADER_HEIGHT/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_r_, HEADER_HEIGHT/2 - ICON_RADIUS, SCREEN_EIGHTH - ICON_RADIUS, WHITE);
             }
         }
         else
         {
-            DrawTexture(metronome_off_, HEADER_HEIGHT/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+            DrawTexture(metronome_off_, HEADER_HEIGHT/2 - ICON_RADIUS, SCREEN_EIGHTH - ICON_RADIUS, WHITE);
         }
     }
 

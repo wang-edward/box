@@ -28,6 +28,7 @@ constexpr int SCREEN_HEIGHT = 128;
 constexpr int SCREEN_WIDTH = 128;
 constexpr int SCREEN_HALF = 64;
 constexpr int SCREEN_QUARTER = 32;
+constexpr int SCREEN_EIGHTH = 16;
 // TODO replace HEIGHT and WIDTH with SCREEN_{}
 
 void assert_multiple(float a, float b);
