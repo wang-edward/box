@@ -38,7 +38,6 @@ void Timeline:: Render(Interface &interface)
 
     const size_t num_rows = std::min(APP->tracks_.size() - scroll_offset_, MAX_TRACKS);
     const size_t curr_row = APP->GetCurrTrack() - scroll_offset_;
-    const float WIDTH = radius_ * 2;
 
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
@@ -54,32 +53,29 @@ void Timeline:: Render(Interface &interface)
         screen = frame_;
     }
 
+    assert(is_close(screen.radius, radius_));
+
     // draw track backgrounds
     for (size_t i = 0; i < num_rows; i++)
     {
         float x = 0;
-        float y = (24 * i) + 32;
-        float width = 128;
-        float height = 24;
-        DrawRectangleRec(Rectangle{x, y, width, height}, LIGHTGRAY);
+        float y = (ROW_HEIGHT * i) + HEADER_HEIGHT;
+        DrawRectangleRec(Rectangle{x, y, ROW_WIDTH, ROW_HEIGHT}, LIGHTGRAY);
     }
 
     // render active track
     assert(curr_row < num_rows);
     {
         float x = 0;
-        float y = (24 * curr_row) + 32;
-        float width = 128;
-        float height = 24;
-        DrawRectangleLines(x, y, width, height, RED);
+        float y = (ROW_HEIGHT * curr_row) + HEADER_HEIGHT;
+        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, RED);
     }
 
     // render pos
     {
         auto text = std::to_string(curr_pos.secs);
-        const int font_size = 10;
-        int width = MeasureText(text.c_str(), font_size);
-        DrawText(text.c_str(), (64 - width/2), 16, 10, WHITE);
+        int text_width = MeasureText(text.c_str(), HEADER_FONT_SIZE);
+        DrawText(text.c_str(), (SCREEN_HALF - text_width/2), HEADER_HEIGHT / 2, HEADER_FONT_SIZE, WHITE);
     }
 
     // render metronome
@@ -89,17 +85,17 @@ void Timeline:: Render(Interface &interface)
             const int beat = static_cast<int>(curr_pos.beats);
             if (beat % 2 == 0)
             {
-                DrawTexture(metronome_l_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_l_, HEADER_HEIGHT - ICON_RADIUS, HEADER_HEIGHT - ICON_RADIUS, WHITE);
             }
             else
             {
-                DrawTexture(metronome_r_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_r_, HEADER_HEIGHT - ICON_RADIUS, HEADER_HEIGHT - ICON_RADIUS, WHITE);
 
             }
         }
         else
         {
-            DrawTexture(metronome_off_, 16 - ICON_RADIUS, 16 - ICON_RADIUS, WHITE);
+            DrawTexture(metronome_off_, HEADER_HEIGHT - ICON_RADIUS, HEADER_HEIGHT - ICON_RADIUS, WHITE);
         }
     }
 
@@ -111,9 +107,9 @@ void Timeline:: Render(Interface &interface)
             bar_start < screen.RightEdge();
             bar_start += bar_width_)
         {
-            float bar_position_pct = (bar_start - screen.LeftEdge()) / WIDTH;
-            int x = static_cast<int>(bar_position_pct * 128);
-            DrawLine(x, 32, x, 32 + (24 * 4), DARKGRAY);
+            float bar_position_pct = (bar_start - screen.LeftEdge()) / screen.Width();
+            int x = static_cast<int>(bar_position_pct * SCREEN_WIDTH);
+            DrawLine(x, SCREEN_QUARTER, x, SCREEN_QUARTER + (ROW_HEIGHT * MAX_ROWS), DARKGRAY);
         }
     }
 
@@ -123,12 +119,12 @@ void Timeline:: Render(Interface &interface)
         const float start_time = tempo.toBeats(transport.getTimeWhenStarted()).inBeats();
         if (screen.LeftEdge() < start_time)
         {
-            float left_pct = (start_time - screen.LeftEdge()) / WIDTH;
-            float left_px = (left_pct * 128);
-            DrawRectangle(left_px, (curr_row * 24) + 32, (64 - left_px), 24, RED);
+            float left_pct = (start_time - screen.LeftEdge()) / screen.Width();
+            float left_px = (left_pct * SCREEN_WIDTH);
+            DrawRectangle(left_px, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, (SCREEN_HALF - left_px), ROW_HEIGHT, RED);
         }
         else {
-            DrawRectangle(0, (curr_row * 24) + 32, (64 - 0), 24, RED); // 64 - 0 means full half bar
+            DrawRectangle(0, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, (SCREEN_HALF - 0), ROW_HEIGHT, RED); // 64 - 0 means full half bar
         }
     }
 
@@ -152,14 +148,14 @@ void Timeline:: Render(Interface &interface)
 
                 if (visible_start < visible_end) // Clip is visible
                 {
-                    float start_pct = (visible_start - screen.LeftEdge()) / WIDTH;
-                    float end_pct = (visible_end - screen.LeftEdge()) / WIDTH;
+                    float start_pct = (visible_start - screen.LeftEdge()) / screen.Width();
+                    float end_pct = (visible_end - screen.LeftEdge()) / screen.Width();
 
-                    const int left_px = static_cast<int>(start_pct * 128);
-                    const int right_px = static_cast<int>(end_pct * 128);
+                    const int left_px = static_cast<int>(start_pct * SCREEN_WIDTH);
+                    const int right_px = static_cast<int>(end_pct * SCREEN_WIDTH);
                     int clip_width = right_px - left_px;
 
-                    DrawRectangle(left_px, (i * 24) + 32, clip_width, 24, PINK);
+                    DrawRectangle(left_px, (i * ROW_HEIGHT) + HEADER_HEIGHT, clip_width, ROW_HEIGHT, PINK);
                 }
             }
         }
@@ -168,14 +164,14 @@ void Timeline:: Render(Interface &interface)
     // render cursor
     if (!transport.isRecording() && !transport.isPlaying())
     {
-        const float left_pct = (cursor_.LeftEdge() - screen.LeftEdge()) / WIDTH;
-        const float right_pct = (cursor_.RightEdge() - screen.LeftEdge()) / WIDTH;
+        const float left_pct = (cursor_.LeftEdge() - screen.LeftEdge()) / screen.Width();
+        const float right_pct = (cursor_.RightEdge() - screen.LeftEdge()) / screen.Width();
 
-        const int left_px = static_cast<int>(left_pct * 128);
-        const int right_px = static_cast<int>(right_pct * 128);
+        const int left_px = static_cast<int>(left_pct * SCREEN_WIDTH);
+        const int right_px = static_cast<int>(right_pct * SCREEN_WIDTH);
         const int width = right_px - left_px;
 
-        DrawRectangleLines(left_px, (curr_row * 24) + 32, width, 24, ORANGE);
+        DrawRectangleLines(left_px, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, width, ROW_HEIGHT, ORANGE);
     }
 
     // render playhead
@@ -183,9 +179,9 @@ void Timeline:: Render(Interface &interface)
         if (screen.LeftEdge() < curr_pos.beats &&
             curr_pos.beats < screen.RightEdge())
         {
-            const float left_pct = (curr_pos.beats - screen.LeftEdge()) / WIDTH;
-            const int left_px = static_cast<int>(left_pct * 128);
-            DrawLine(left_px, 32, left_px, 128, WHITE);
+            const float left_pct = (curr_pos.beats - screen.LeftEdge()) / screen.Width();
+            const int left_px = static_cast<int>(left_pct * SCREEN_WIDTH);
+            DrawLine(left_px, HEADER_HEIGHT, left_px, SCREEN_HEIGHT, WHITE);
         }
     }
 }
