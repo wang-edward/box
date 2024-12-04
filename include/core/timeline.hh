@@ -28,6 +28,7 @@ struct Timeline {
         float radius;
         float LeftEdge() {return center - radius;}
         float RightEdge() {return center + radius;}
+        float Width() {return radius * 2;}
         BeatFrame(float c, float &r): center{c}, radius{r} {}
     };
 
