@@ -23,6 +23,11 @@ constexpr int ROW_HEIGHT = 24;
 constexpr int ROW_WIDTH = 128;
 constexpr int HEADER_HEIGHT = 32;
 constexpr int HEADER_WIDTH = 128;
+constexpr int HEADER_FONT_SIZE = 10;
+constexpr int SCREEN_HEIGHT = 128;
+constexpr int SCREEN_WIDTH = 128;
+constexpr int SCREEN_RADIUS = 64;
+// TODO replace HEIGHT and WIDTH with SCREEN_{}
 
 void assert_multiple(float a, float b);
 bool is_close(float a, float b);
