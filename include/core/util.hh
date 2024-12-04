@@ -19,9 +19,9 @@ constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
 constexpr int ICON_RADIUS = 8;
 constexpr int ICON_WIDTH = 16;
-constexpr int ROW_HEIGHT = 28;
+constexpr int ROW_HEIGHT = 24;
 constexpr int ROW_WIDTH = 128;
-constexpr int HEADER_HEIGHT = 16;
+constexpr int HEADER_HEIGHT = 32;
 constexpr int HEADER_WIDTH = 128;
 
 void assert_multiple(float a, float b);
