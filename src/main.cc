@@ -26,6 +26,12 @@ int main()
     box::App app(engine, edit);
     box::APP = &app;
 
+    box::FONT = LoadFont("assets/font/departure_mono.otf");
+    if (box::FONT.texture.id == 0)
+    {
+        throw std::runtime_error{"Failed to load font.\n"};
+    }
+
     try
     {
         // arm

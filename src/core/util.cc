@@ -3,6 +3,7 @@
 namespace box {
 
 App* APP = nullptr;  // Define the global APP variable
+Font FONT; // Define the extern Font variable here
 
 void assert_multiple(float a, float b)
 {
