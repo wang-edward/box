@@ -17,8 +17,20 @@ extern App *APP;
 
 constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
-constexpr size_t ICON_RADIUS = 8;
-constexpr size_t ICON_WIDTH = 16;
+constexpr int DEFAULT_FONT_SIZE = 10;
+constexpr int ICON_RADIUS = 8;
+constexpr int ICON_WIDTH = 16;
+constexpr int ROW_HEIGHT = 28;
+constexpr int ROW_WIDTH = 128;
+constexpr int HEADER_HEIGHT = 16;
+constexpr int HEADER_WIDTH = 128;
+constexpr int HEADER_FONT_SIZE = 10;
+constexpr int SCREEN_HEIGHT = 128;
+constexpr int SCREEN_WIDTH = 128;
+constexpr int SCREEN_HALF = 64;
+constexpr int SCREEN_QUARTER = 32;
+constexpr int SCREEN_EIGHTH = 16;
+// TODO replace HEIGHT and WIDTH with SCREEN_{}
 
 void assert_multiple(float a, float b);
 bool is_close(float a, float b);
