@@ -26,10 +26,14 @@ int main()
     box::App app(engine, edit);
     box::APP = &app;
 
-    box::FONT = LoadFont("assets/font/departure_mono.otf");
-    if (box::FONT.texture.id == 0)
+    // Font
     {
-        throw std::runtime_error{"Failed to load font.\n"};
+        box::FONT = LoadFontEx("assets/font/departure_mono.otf", 33, nullptr, 0);
+        if (box::FONT.texture.id == 0)
+        {
+            throw std::runtime_error{"Failed to load font.\n"};
+        }
+        SetTextureFilter(box::FONT.texture, TEXTURE_FILTER_POINT);
     }
 
     try

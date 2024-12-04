@@ -26,6 +26,7 @@ constexpr int ROW_WIDTH = 128;
 constexpr int HEADER_HEIGHT = 16;
 constexpr int HEADER_WIDTH = 128;
 constexpr int HEADER_FONT_SIZE = 11;
+constexpr float HEADER_FONT_SPACING = 1;
 constexpr int SCREEN_HEIGHT = 128;
 constexpr int SCREEN_WIDTH = 128;
 constexpr int SCREEN_HALF = 64;
