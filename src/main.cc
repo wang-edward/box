@@ -28,12 +28,13 @@ int main()
 
     // Font
     {
-        box::FONT = LoadFontEx("assets/font/departure_mono.otf", 33, nullptr, 0);
+        // box::FONT = LoadFontEx("assets/font/departure_mono.otf", 33, nullptr, 0);
+        box::FONT = LoadFont("assets/font/departure_mono.fnt");
         if (box::FONT.texture.id == 0)
         {
             throw std::runtime_error{"Failed to load font.\n"};
         }
-        SetTextureFilter(box::FONT.texture, TEXTURE_FILTER_POINT);
+        // SetTextureFilter(box::FONT.texture, TEXTURE_FILTER_POINT);
     }
 
     try
