@@ -73,10 +73,17 @@ void Timeline:: Render(Interface &interface)
 
     // render pos
     {
-        auto text = std::to_string(curr_pos.secs);
+        // auto text = format_time(curr_pos.secs);
+        std::string text = {"Hello, my name is DEPARTURE_MONO"};
 
-        Vector2 text_size = MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
-        DrawText(text.c_str(), (SCREEN_HALF - text_size.x/2), (HEADER_HEIGHT/2 - text_size.y/2), HEADER_FONT_SIZE, WHITE);
+        Vector2 text_size = MeasureTextEx(FONT, text.c_str(), HEADER_FONT_SIZE, 1);
+        DrawTextEx(
+            FONT,
+            text.c_str(),
+            Vector2{(SCREEN_HALF - text_size.x/2), (HEADER_HEIGHT/2 - text_size.y/2)},
+            HEADER_FONT_SIZE,
+            1,
+            WHITE);
     }
 
     // render metronome
