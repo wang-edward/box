@@ -35,6 +35,8 @@ constexpr int SCREEN_EIGHTH = 16;
 void assert_multiple(float a, float b);
 bool is_close(float a, float b);
 
+std::string format_time(float time);
+
 size_t clamp_decrement(size_t x);
 size_t clamp_increment(size_t x, size_t max);
 

@@ -15,6 +15,19 @@ bool is_close(float a, float b)
     return std::abs(a - b) < 1e-6;
 }
 
+std::string format_time(float time) {
+    int minutes = static_cast<int>(time) / 60;
+    int seconds = static_cast<int>(time) % 60;
+    int decimal = static_cast<int>(std::fmod(time, 1.0f) * 100); // Two decimal places
+
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << minutes << ":"
+        << std::setw(2) << std::setfill('0') << seconds << ":"
+        << std::setw(2) << std::setfill('0') << decimal;
+
+    return oss.str();
+}
+
 size_t clamp_decrement(size_t x) 
 {
     if (x == 0) return 0;
