@@ -17,6 +17,7 @@ extern App *APP;
 
 constexpr size_t MAX_ROWS = 4;
 constexpr size_t MAX_TRACKS = 8;
+constexpr int DEFAULT_FONT_SIZE = 10;
 constexpr int ICON_RADIUS = 8;
 constexpr int ICON_WIDTH = 16;
 constexpr int ROW_HEIGHT = 24;
