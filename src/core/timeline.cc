@@ -73,8 +73,8 @@ void Timeline:: Render(Interface &interface)
 
     // render pos
     {
-        // auto text = format_time(curr_pos.secs);
-        std::string text = {"Hello, my name is DEPARTURE_MONO"};
+        auto text = format_time(curr_pos.secs);
+        // std::string text = {"Hello, my name is DEPARTURE_MONO"};
 
         Vector2 text_size = MeasureTextEx(FONT, text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SPACING);
         DrawTextEx(

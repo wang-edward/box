@@ -28,13 +28,15 @@ int main()
 
     // Font
     {
-        // box::FONT = LoadFontEx("assets/font/QuiqueFive.ttf", 16, nullptr, 0);
-        box::FONT = LoadFont("assets/font/quinque.fnt");
+        // box::FONT = LoadFontEx("assets/font/QuinqueFive.ttf", 32, nullptr, 0);
+        // box::FONT = LoadFontEx("assets/font/BoldPixels.fnt", 8, nullptr, 0);
+        // box::FONT = LoadFont("assets/font/quinque.fnt");
+        box::FONT = LoadFont("assets/font/BoldPixels.fnt");
         if (box::FONT.texture.id == 0)
         {
             throw std::runtime_error{"Failed to load font.\n"};
         }
-        SetTextureFilter(box::FONT.texture, TEXTURE_FILTER_POINT);
+        // SetTextureFilter(box::FONT.texture, TEXTURE_FILTER_POINT);
     }
 
     try
