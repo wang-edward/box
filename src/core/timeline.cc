@@ -73,7 +73,7 @@ void Timeline:: Render(Interface &interface)
 
     // render pos
     {
-        auto text = std::to_string(curr_pos.secs);
+        auto text = format_time(curr_pos.secs);
 
         Vector2 text_size = MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
         DrawText(text.c_str(), (SCREEN_HALF - text_size.x/2), (HEADER_HEIGHT/2 - text_size.y/2), HEADER_FONT_SIZE, WHITE);
