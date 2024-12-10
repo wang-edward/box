@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang++)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -43,17 +46,40 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(BoxLib PUBLIC "-latomic")
 endif()
 
+# gtk3
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+include_directories(${GTK3_INCLUDE_DIRS})
+link_directories(${GTK3_LIBRARY_DIRS})
+add_definitions(${GTK3_CFLAGS_OTHER})
+
+# webkit
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(WEBKIT2 REQUIRED webkit2gtk-4.0)
+include_directories(${WEBKIT2_INCLUDE_DIRS})
+link_directories(${WEBKIT2_LIBRARY_DIRS})
+add_definitions(${WEBKIT2_CFLAGS_OTHER})
+
+# curl
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBCURL REQUIRED libcurl)
+include_directories(${LIBCURL_INCLUDE_DIRS})
+link_directories(${LIBCURL_LIBRARY_DIRS})
+add_definitions(${LIBCURL_CFLAGS_OTHER})
+target_link_libraries(BoxLib PRIVATE ${LIBCURL_LIBRARIES})
+
+
 # box
 juce_add_console_app(Box
     PRODUCT_NAME "Box"
-    NEEDS_WEB_BROWSER TRUE
+    NEEDS_WEB_BROWSER FALSE
     )
 target_sources(Box
     PRIVATE
         src/main.cc)
 target_compile_definitions(Box
     PRIVATE
-        JUCE_WEB_BROWSER=1
+        JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0)
 target_link_libraries(Box
     PRIVATE
