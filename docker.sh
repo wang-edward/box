@@ -31,8 +31,10 @@ docker run --rm -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e XDG_RUNTIME_DIR=/tmp/xdg_runtime_dir \
     --tmpfs /tmp/xdg_runtime_dir:rw,mode=0700 \
-    $IMAGE_NAME  bash
-
+    --cap-add=sys_nice \
+    --cap-add=IPC_LOCK \
+    --ulimit memlock=-1:-1 \
+    $IMAGE_NAME bash
 
 # docker run --rm -it \
 #     --name $CONTAINER_NAME \
