@@ -34,7 +34,10 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libgtk-3-dev \
     xvfb \
     ninja-build \
-    alsa-utils  # Add ALSA utilities for audio configuration
+    alsa-utils \
+    jackd2 \
+    qjackctl \
+    dbus-x11 # Add JACK and DBus for session management
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -43,12 +46,20 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Build the project
-RUN echo $((`nproc` / 2))
 RUN rm -rf build && cmake -S . -B build && cmake --build build --parallel $((`nproc` / 2))
 
 # Configure ALSA (create default asoundrc)
 RUN echo "pcm.!default { type plug slave.pcm \"hw:0,0\" }" > ~/.asoundrc
 RUN groupadd -f audio && usermod -aG audio root
 
-# Run the executable
-CMD ["./build/Box_artefacts/Box"]
+# Disable PulseAudio and set up JACK within the container
+RUN systemctl --user disable pulseaudio.socket pulseaudio.service && \
+    apt-get remove -y pulseaudio && \
+    apt-get clean
+
+# Configure entrypoint for audio setup and app launch
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Entrypoint to start JACK and run the app
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
