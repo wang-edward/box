@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get update && apt-get install -y \
     clang \
+    cmake \
     build-essential \
     wget \
     libglfw3-dev \
@@ -35,25 +36,19 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     ninja-build \
     alsa-utils  # Add ALSA utilities for audio configuration
 
-RUN clang --version
-
-# Install a newer version of CMake
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.22.0/cmake-3.22.0-linux-x86_64.sh && \
-    chmod +x cmake-3.22.0-linux-x86_64.sh && \
-    ./cmake-3.22.0-linux-x86_64.sh --skip-license --prefix=/usr/local && \
-    rm cmake-3.22.0-linux-x86_64.sh
-
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
 
-# Build the project (with half available cores)
+# Build the project
+RUN echo $((`nproc` / 2))
 RUN rm -rf build && cmake -S . -B build && cmake --build build --parallel $((`nproc` / 2))
 
 # Configure ALSA (create default asoundrc)
 RUN echo "pcm.!default { type plug slave.pcm \"hw:0,0\" }" > ~/.asoundrc
+RUN groupadd -f audio && usermod -aG audio root
 
 # Run the executable
 CMD ["./build/Box_artefacts/Box"]

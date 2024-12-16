@@ -15,7 +15,8 @@ xhost +local:docker
 ## Check if the Docker image exists
 if ! docker image inspect $IMAGE_NAME >/dev/null 2>&1; then
     echo "Docker image '$IMAGE_NAME' not found. Building the image..."
-    docker build -t $IMAGE_NAME .
+    docker build -t $IMAGE_NAME . --progress=plain
+    
 else
     echo "Docker image '$IMAGE_NAME' already exists. Skipping build."
 fi
@@ -31,4 +32,4 @@ docker run --rm -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e XDG_RUNTIME_DIR=/tmp/xdg_runtime_dir \
     --tmpfs /tmp/xdg_runtime_dir:rw \
-    $IMAGE_NAME
+    $IMAGE_NAME bash
