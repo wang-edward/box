@@ -7,6 +7,7 @@
 
 #include "raylib.h"
 
+#define JUCE_ALSA_MIDI_NAME "Box"
 
 int main() 
 {
@@ -14,6 +15,10 @@ int main()
     SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
+
+    engine.getDeviceManager().createVirtualMidiDevice("box_midi");
+    engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
+
     std::filesystem::path curr_path = std::filesystem::current_path();
     juce::File my_file {juce::String{curr_path.string() + "/tmp.box"}};
 
