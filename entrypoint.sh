@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Start the D-Bus daemon for JACK session management
-eval $(dbus-launch --sh-syntax)
+# Ensure unlimited memlock before starting JACK
+ulimit -l unlimited
 
 # Start JACK in the background
 jackd -d alsa &
@@ -9,5 +9,5 @@ jackd -d alsa &
 # Allow a moment for JACK to initialize
 sleep 2
 
-# Run the application
+# Start a shell if no arguments are given or forward commands
 exec "$@"
