@@ -32,6 +32,4 @@ COPY . .
 
 RUN rm -rf build && cmake -S . -B build && cmake --build build --parallel $((`nproc` / 2))
 
-RUN jackd -d alsa -d hw:1,0 &
-
 ENTRYPOINT ["/entrypoint.sh"]
