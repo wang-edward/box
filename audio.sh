@@ -11,4 +11,4 @@ docker run --rm -it \
     --device /dev/snd \
     --security-opt seccomp=unconfined \
     --security-opt apparmor=unconfined \
-    audio bash
+    audio ./build/Box_artefacts/Box
