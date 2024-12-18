@@ -163,9 +163,9 @@ void App:: HandleEvent(const Event& event)
 
                 active_notes_[event.value] = note;
                 auto message = juce::MidiMessage::noteOn(1, note, 1.0f);
-                tracks_[current_track_]->base_.injectLiveMidiMessage(message, 0);
-                // te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
-                // dev->keyboardState.noteOn(1, note, 1.0);
+                // tracks_[current_track_]->base_.injectLiveMidiMessage(message, 0);
+                te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
+                dev->keyboardState.noteOn(1, note, 1.0);
             }
             break;
         case EventType::KeyRelease:
@@ -177,9 +177,9 @@ void App:: HandleEvent(const Event& event)
 
                 active_notes_.erase(event.value);
                 auto message = juce::MidiMessage::noteOff(1, note);
-                tracks_[current_track_]->base_.injectLiveMidiMessage(message, 0);
-                // te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
-                // dev->keyboardState.noteOff(1, note, 1.0);
+                // tracks_[current_track_]->base_.injectLiveMidiMessage(message, 0);
+                te::MidiInputDevice* dev = engine_.getDeviceManager().getDefaultMidiInDevice();
+                dev->keyboardState.noteOff(1, note, 1.0);
             }
             break;
         }
