@@ -28,11 +28,11 @@ Timeline:: ~Timeline()
 void Timeline:: Render(Interface &interface) 
 {
     /*
-    terminology:
-    - row = the relative index of a track.
-      - so the top rectangle is always row 0, no matter what track it is
-    - track
-      - the actual "track"
+        terminology:
+        - row = the relative index of a track.
+          - so the top rectangle is always row 0, no matter what track it is
+        - track
+          - the actual "track"
     */
     assert(is_close(frame_.radius, radius_));
 
