@@ -43,31 +43,30 @@ target_link_libraries(BoxLib
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # atomic
     target_link_libraries(BoxLib PUBLIC "-latomic")
+    # gtk3
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    include_directories(${GTK3_INCLUDE_DIRS})
+    link_directories(${GTK3_LIBRARY_DIRS})
+    add_definitions(${GTK3_CFLAGS_OTHER})
+
+    # webkit
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(WEBKIT2 REQUIRED webkit2gtk-4.0)
+    include_directories(${WEBKIT2_INCLUDE_DIRS})
+    link_directories(${WEBKIT2_LIBRARY_DIRS})
+    add_definitions(${WEBKIT2_CFLAGS_OTHER})
+
+    # curl
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(LIBCURL REQUIRED libcurl)
+    include_directories(${LIBCURL_INCLUDE_DIRS})
+    link_directories(${LIBCURL_LIBRARY_DIRS})
+    add_definitions(${LIBCURL_CFLAGS_OTHER})
+    target_link_libraries(BoxLib PRIVATE ${LIBCURL_LIBRARIES})
 endif()
-
-# gtk3
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-include_directories(${GTK3_INCLUDE_DIRS})
-link_directories(${GTK3_LIBRARY_DIRS})
-add_definitions(${GTK3_CFLAGS_OTHER})
-
-# webkit
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(WEBKIT2 REQUIRED webkit2gtk-4.0)
-include_directories(${WEBKIT2_INCLUDE_DIRS})
-link_directories(${WEBKIT2_LIBRARY_DIRS})
-add_definitions(${WEBKIT2_CFLAGS_OTHER})
-
-# curl
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBCURL REQUIRED libcurl)
-include_directories(${LIBCURL_INCLUDE_DIRS})
-link_directories(${LIBCURL_LIBRARY_DIRS})
-add_definitions(${LIBCURL_CFLAGS_OTHER})
-target_link_libraries(BoxLib PRIVATE ${LIBCURL_LIBRARIES})
-
 
 # box
 juce_add_console_app(Box
