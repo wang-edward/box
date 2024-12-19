@@ -99,6 +99,19 @@ void Timeline:: Render(Interface &interface)
         }
     }
 
+    // render key offset
+    {
+        DrawRectangle(SCREEN_EIGHTH, 0, ICON_WIDTH, ICON_HEIGHT, YELLOW);
+        auto text = std::to_string(APP->key_offset_);
+        Vector2 text_size = MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(
+            text.c_str(),
+            SCREEN_EIGHTH + SCREEN_EIGHTH/2 - text_size.x/2,
+            HEADER_HEIGHT/2 - text_size.y/2,
+            HEADER_FONT_SIZE,
+            WHITE);
+    }
+
     // render bar lines
     {
         float first_bar_start = std::floor(screen.LeftEdge() / bar_width_) * bar_width_;

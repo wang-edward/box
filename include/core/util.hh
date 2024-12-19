@@ -20,6 +20,7 @@ constexpr size_t MAX_TRACKS = 8;
 constexpr int DEFAULT_FONT_SIZE = 10;
 constexpr int ICON_RADIUS = 8;
 constexpr int ICON_WIDTH = 16;
+constexpr int ICON_HEIGHT = 16;
 constexpr int ROW_HEIGHT = 28;
 constexpr int ROW_WIDTH = 128;
 constexpr int HEADER_HEIGHT = 16;
