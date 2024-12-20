@@ -44,6 +44,7 @@ struct App {
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 
+    Track &CurrTrack();
     size_t GetCurrTrack();
     void SetCurrTrack(size_t track_index);
     void AddTrack();

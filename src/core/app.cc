@@ -38,6 +38,11 @@ void App:: AddTrack()
     tracks_.push_back(std::make_unique<Track>(*base_tracks_[tracks_.size()]));
 }
 
+Track &App:: CurrTrack()
+{
+    return *tracks_[current_track_];
+}
+
 size_t App:: GetCurrTrack()
 {
     return current_track_;
