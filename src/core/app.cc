@@ -98,8 +98,9 @@ void App:: Render(Interface& interface)
 {
     assert_tracks(tracks_, current_track_, "render");
 
-    std::string text = std::to_string(GetFPS());
-    DrawText(text.c_str(), 115, 0, 10, WHITE);
+    // TODO this is for debugging fps
+    // std::string text = std::to_string(GetFPS());
+    // DrawText(text.c_str(), 115, 0, 10, WHITE);
 
     switch (screen_state_) 
     {

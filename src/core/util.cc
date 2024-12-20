@@ -21,8 +21,8 @@ std::string format_time(float time) {
     int decimal = static_cast<int>(std::fmod(time, 1.0f) * 100); // Two decimal places
 
     std::ostringstream oss;
-    oss << std::setw(2) << std::setfill('0') << minutes << ":"
-        << std::setw(2) << std::setfill('0') << seconds << ":"
+    oss << std::setw(2) << std::setfill('0') << minutes << "."
+        << std::setw(2) << std::setfill('0') << seconds << "."
         << std::setw(2) << std::setfill('0') << decimal;
 
     return oss.str();
@@ -33,6 +33,14 @@ std::string format_key_offset(int key_offset) {
         return "+" + std::to_string(key_offset);
     else
         return std::to_string(key_offset);
+}
+
+std::string format_cursor_pos(size_t track_pos, float cursor_pos)
+{
+    std::ostringstream oss;
+    oss << std::setw(1) << track_pos << ":"
+        << std::setw(3) << std::setfill('0') <<  cursor_pos;
+    return oss.str();
 }
 
 size_t clamp_decrement(size_t x) 
