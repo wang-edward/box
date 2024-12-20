@@ -55,13 +55,12 @@ void Timeline:: Render(Interface &interface)
 
     assert(is_close(screen.radius, radius_));
 
-    // draw track backgrounds
+    // draw track outlines
     for (size_t i = 0; i < num_rows; i++)
     {
         float x = 0;
         float y = (ROW_HEIGHT * i) + HEADER_HEIGHT;
-        DrawRectangleRec(Rectangle{x, y, ROW_WIDTH, ROW_HEIGHT}, DARKGRAY);
-        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, LIGHTGRAY);
+        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, DARKGRAY);
     }
 
     // render active track
@@ -127,7 +126,7 @@ void Timeline:: Render(Interface &interface)
         {
             float bar_position_pct = (bar_start - screen.LeftEdge()) / screen.Width();
             int x = static_cast<int>(bar_position_pct * SCREEN_WIDTH);
-            DrawLine(x, HEADER_HEIGHT, x, HEADER_HEIGHT + (ROW_HEIGHT * num_rows), LIGHTGRAY);
+            DrawLine(x, HEADER_HEIGHT, x, HEADER_HEIGHT + (ROW_HEIGHT * num_rows), DARKGRAY);
         }
     }
 
@@ -199,7 +198,8 @@ void Timeline:: Render(Interface &interface)
         {
             const float left_pct = (curr_pos.beats - screen.LeftEdge()) / screen.Width();
             const int left_px = static_cast<int>(left_pct * SCREEN_WIDTH);
-            DrawLine(left_px, HEADER_HEIGHT, left_px, SCREEN_HEIGHT, WHITE);
+            // -1 so that you can see the tick
+            DrawLine(left_px, HEADER_HEIGHT - 1, left_px, SCREEN_HEIGHT, WHITE);
         }
     }
 }
