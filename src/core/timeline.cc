@@ -246,7 +246,7 @@ void Timeline:: Render(Interface &interface)
 void Timeline:: print_timeline()
 {
     std::cout << std::endl;
-    const auto &track = APP->tracks_[APP->GetCurrTrack()]->base_;
+    const auto &track = APP->CurrTrack().base_;
     std::cout << "name: " << track.getName() << std::endl;
     std::cout << "isMuted: " << track.isMuted(false) << std::endl;
     std::cout << "isSolo: " << track.isSolo(false) << std::endl;

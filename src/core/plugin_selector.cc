@@ -89,7 +89,7 @@ void PluginSelector:: HandleEvent(const Event &event)
                 p = std::make_unique<Delay>(base);
             }
 
-            APP->tracks_[APP->GetCurrTrack()]-> AddPlugin(std::move(p));
+            APP->CurrTrack().AddPlugin(std::move(p));
             break;
         }
         break;
