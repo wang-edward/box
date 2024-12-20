@@ -28,11 +28,11 @@ Timeline:: ~Timeline()
 void Timeline:: Render(Interface &interface) 
 {
     /*
-    terminology:
-    - row = the relative index of a track.
-      - so the top rectangle is always row 0, no matter what track it is
-    - track
-      - the actual "track"
+        terminology:
+        - row = the relative index of a track.
+          - so the top rectangle is always row 0, no matter what track it is
+        - track
+          - the actual "track"
     */
     assert(is_close(frame_.radius, radius_));
 
@@ -97,6 +97,23 @@ void Timeline:: Render(Interface &interface)
         {
             DrawTexture(metronome_off_, SCREEN_EIGHTH/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
         }
+    }
+
+    // render key offset
+    {
+        DrawRectangle(SCREEN_EIGHTH, 0, ICON_WIDTH, ICON_HEIGHT, YELLOW);
+        auto text = format_key_offset(APP->key_offset_);
+        Vector2 text_size = MeasureTextEx(
+            GetFontDefault(),
+            text.c_str(),
+            HEADER_FONT_SIZE,
+            HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(
+            text.c_str(),
+            SCREEN_EIGHTH + SCREEN_EIGHTH/2 - text_size.x/2,
+            HEADER_HEIGHT/2 - text_size.y/2,
+            HEADER_FONT_SIZE,
+            WHITE);
     }
 
     // render bar lines

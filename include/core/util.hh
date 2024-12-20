@@ -20,6 +20,7 @@ constexpr size_t MAX_TRACKS = 8;
 constexpr int DEFAULT_FONT_SIZE = 10;
 constexpr int ICON_RADIUS = 8;
 constexpr int ICON_WIDTH = 16;
+constexpr int ICON_HEIGHT = 16;
 constexpr int ROW_HEIGHT = 28;
 constexpr int ROW_WIDTH = 128;
 constexpr int HEADER_HEIGHT = 16;
@@ -36,6 +37,7 @@ void assert_multiple(float a, float b);
 bool is_close(float a, float b);
 
 std::string format_time(float time);
+std::string format_key_offset(int key_offset);
 
 size_t clamp_decrement(size_t x);
 size_t clamp_increment(size_t x, size_t max);
