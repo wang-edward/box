@@ -347,6 +347,27 @@ void Timeline:: HandleEvent(const Event &event)
                     APP->AddTrack();
                 }
                 break;
+            case KEY_D:
+                {
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.start));
+
+                    te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                    if (item == nullptr)
+                    {
+                        LOG_MSG("NONE");
+                    }
+                    else
+                    {
+                        LOG_MSG("deleting item of type:");
+                        LOG_MSG(te::TrackItem::typeToString(item->type));
+                        if (auto clip = dynamic_cast<te::Clip*>(item))
+                        {
+                            clip->removeFromParent();
+                        }
+                    }
+                }
+                break;
             case KEY_P:
                 print_timeline();
                 LOG_VAR(frame_.center);
