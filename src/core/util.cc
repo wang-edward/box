@@ -28,6 +28,13 @@ std::string format_time(float time) {
     return oss.str();
 }
 
+std::string format_key_offset(int key_offset) {
+    if (key_offset > 0)
+        return "+" + std::to_string(key_offset);
+    else
+        return std::to_string(key_offset);
+}
+
 size_t clamp_decrement(size_t x) 
 {
     if (x == 0) return 0;
