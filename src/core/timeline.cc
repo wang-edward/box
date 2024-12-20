@@ -108,6 +108,22 @@ void Timeline:: Render(Interface &interface)
             BLACK);
     }
 
+    // render cursor position
+    {
+        auto text = format_cursor_pos(APP->GetCurrTrack(), cursor_.LeftEdge());
+        Vector2 text_size = MeasureTextEx(
+            GetFontDefault(),
+            text.c_str(),
+            HEADER_FONT_SIZE,
+            HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(
+            text.c_str(),
+            SCREEN_WIDTH - SCREEN_EIGHTH - text_size.x/2,
+            HEADER_HEIGHT/2 - text_size.y/2,
+            HEADER_FONT_SIZE,
+            WHITE);
+    }
+
     // render bar lines
     {
         float first_bar_start = std::floor(screen.LeftEdge() / bar_width_) * bar_width_;
