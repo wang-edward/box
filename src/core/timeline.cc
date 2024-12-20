@@ -61,7 +61,7 @@ void Timeline:: Render(Interface &interface)
         float x = 0;
         float y = (ROW_HEIGHT * i) + HEADER_HEIGHT;
         DrawRectangleRec(Rectangle{x, y, ROW_WIDTH, ROW_HEIGHT}, DARKGRAY);
-        DrawLine(x, y, 128, y, LIGHTGRAY);
+        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, LIGHTGRAY);
     }
 
     // render active track
