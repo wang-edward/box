@@ -103,7 +103,11 @@ void Timeline:: Render(Interface &interface)
     {
         DrawRectangle(SCREEN_EIGHTH, 0, ICON_WIDTH, ICON_HEIGHT, YELLOW);
         auto text = format_key_offset(APP->key_offset_);
-        Vector2 text_size = MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        Vector2 text_size = MeasureTextEx(
+            GetFontDefault(),
+            text.c_str(),
+            HEADER_FONT_SIZE,
+            HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
         DrawText(
             text.c_str(),
             SCREEN_EIGHTH + SCREEN_EIGHTH/2 - text_size.x/2,
