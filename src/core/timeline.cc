@@ -438,7 +438,7 @@ void Timeline:: HandleEvent(const Event &event)
                     LOG_VAR(cursor_.start);
                     auto &transport = APP->edit_.getTransport();
                     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.start)));
+                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
                 }
                 break;
             case KEY_COMMA:
