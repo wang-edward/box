@@ -60,7 +60,8 @@ void Timeline:: Render(Interface &interface)
     {
         float x = 0;
         float y = (ROW_HEIGHT * i) + HEADER_HEIGHT;
-        DrawRectangleRec(Rectangle{x, y, ROW_WIDTH, ROW_HEIGHT}, LIGHTGRAY);
+        DrawRectangleRec(Rectangle{x, y, ROW_WIDTH, ROW_HEIGHT}, DARKGRAY);
+        DrawLine(x, y, 128, y, LIGHTGRAY);
     }
 
     // render active track
@@ -126,7 +127,7 @@ void Timeline:: Render(Interface &interface)
         {
             float bar_position_pct = (bar_start - screen.LeftEdge()) / screen.Width();
             int x = static_cast<int>(bar_position_pct * SCREEN_WIDTH);
-            DrawLine(x, HEADER_HEIGHT, x, HEADER_HEIGHT + (ROW_HEIGHT * MAX_ROWS), DARKGRAY);
+            DrawLine(x, HEADER_HEIGHT, x, HEADER_HEIGHT + (ROW_HEIGHT * num_rows), LIGHTGRAY);
         }
     }
 
