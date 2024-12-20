@@ -63,14 +63,6 @@ void Timeline:: Render(Interface &interface)
         DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, DARKGRAY);
     }
 
-    // render active track
-    assert(curr_row < num_rows);
-    {
-        float x = 0;
-        float y = (ROW_HEIGHT * curr_row) + HEADER_HEIGHT;
-        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, RED);
-    }
-
     // render pos
     {
         auto text = format_time(curr_pos.secs);
@@ -113,7 +105,7 @@ void Timeline:: Render(Interface &interface)
             SCREEN_EIGHTH + SCREEN_EIGHTH/2 - text_size.x/2,
             HEADER_HEIGHT/2 - text_size.y/2,
             HEADER_FONT_SIZE,
-            WHITE);
+            BLACK);
     }
 
     // render bar lines
@@ -172,11 +164,21 @@ void Timeline:: Render(Interface &interface)
                     const int right_px = static_cast<int>(end_pct * SCREEN_WIDTH);
                     int clip_width = right_px - left_px;
 
-                    DrawRectangle(left_px, (i * ROW_HEIGHT) + HEADER_HEIGHT, clip_width, ROW_HEIGHT, PINK);
+                    DrawRectangle(left_px, (i * ROW_HEIGHT) + HEADER_HEIGHT, clip_width, ROW_HEIGHT, GREEN);
+                    DrawRectangleLines(left_px, (i * ROW_HEIGHT) + HEADER_HEIGHT, clip_width, ROW_HEIGHT, LIGHTGRAY);
                 }
             }
         }
     }
+
+    // render active track
+    assert(curr_row < num_rows);
+    {
+        float x = 0;
+        float y = (ROW_HEIGHT * curr_row) + HEADER_HEIGHT;
+        DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, RED);
+    }
+
 
     // render cursor
     if (!transport.isRecording() && !transport.isPlaying())
