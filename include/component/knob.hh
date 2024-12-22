@@ -4,7 +4,7 @@
 #include "core/cv.hh"
 
 namespace box {
-
+// TODO: Need to add booleans as on/off button
 template <typename T>
 struct Knob
 {

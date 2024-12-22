@@ -5,6 +5,7 @@
 
 template <typename T>
 struct CV {
+    // TODO: Need to add booleans
     juce::CachedValue<T> &value_;
     T min_, max_;
 
@@ -20,6 +21,7 @@ struct CV {
         value_ = std::clamp(new_value, min_, max_);
     }
 
+    // TODO: Need to either change SetNorm to take into account booleans or create a separate function for booleans.
     void SetNorm(T norm)
     {
         norm = std::clamp(norm, static_cast<T>(0), static_cast<T>(1));
