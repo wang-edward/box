@@ -354,6 +354,26 @@ void Timeline:: HandleEvent(const Event &event)
                     APP->AddTrack();
                 }
                 break;
+            case KEY_W:
+                {
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.RightEdge()));
+
+                    te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                    if (item == nullptr)
+                    {
+                        LOG_MSG("KEY_W found NONE");
+                    }
+                    else
+                    {
+                        if (auto clip = dynamic_cast<te::Clip*>(item))
+                        {
+                            cursor_.start = clip->getStartBeat().inBeats();
+                            FocusCursor();
+                        }
+                    }
+                }
+                break;
             case KEY_D:
                 {
                     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
