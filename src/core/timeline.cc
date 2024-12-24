@@ -362,7 +362,7 @@ void Timeline:: HandleEvent(const Event &event)
                     te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
                     if (item == nullptr)
                     {
-                        LOG_MSG("NONE");
+                        LOG_MSG("KEY_D found NONE");
                     }
                     else
                     {
