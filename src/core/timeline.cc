@@ -314,20 +314,12 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_H:
                 cursor_.start -= step_size_;
                 LOG_VAR(cursor_.LeftEdge() < frame_.LeftEdge());
-                if (cursor_.LeftEdge() < frame_.LeftEdge())
-                {
-                    const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
-                    frame_.center -= diff;
-                }
+                FocusCursor();
                 break;
             case KEY_L:
                 cursor_.start += step_size_;
                 LOG_VAR(cursor_.RightEdge() > frame_.RightEdge());
-                if (cursor_.RightEdge() > frame_.RightEdge())
-                {
-                    const float diff = cursor_.RightEdge() - frame_.RightEdge();
-                    frame_.center += diff;
-                }
+                FocusCursor();
                 break;
             case KEY_J:
                 if (!APP->edit_.getTransport().isRecording())
