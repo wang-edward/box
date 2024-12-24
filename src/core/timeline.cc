@@ -396,6 +396,8 @@ void Timeline:: HandleEvent(const Event &event)
                     }
                     else
                     {
+                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                        transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
                         transport.record(false);
                         playhead_mode_ = PlayheadMode::Locked;
                     }
@@ -418,6 +420,8 @@ void Timeline:: HandleEvent(const Event &event)
                     }
                     else
                     {
+                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                        transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
                         transport.play(false);
                         playhead_mode_ = PlayheadMode::Locked;
                     }
@@ -430,15 +434,6 @@ void Timeline:: HandleEvent(const Event &event)
                     transport.setPosition(te::TimePosition::fromSeconds(0.f));
                     cursor_.start = 0;
                     frame_.center = 0;
-                }
-                break;
-            case KEY_Z:
-                {
-                    LOG_MSG("align cursor and playhead");
-                    LOG_VAR(cursor_.start);
-                    auto &transport = APP->edit_.getTransport();
-                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
                 }
                 break;
             case KEY_COMMA:
