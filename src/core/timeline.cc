@@ -283,6 +283,21 @@ void Timeline:: print_timeline()
     }
 }
 
+void Timeline:: FocusCursor()
+{
+    assert(cursor_.len < frame_.Width());
+    if (cursor_.LeftEdge() < frame_.LeftEdge())
+    {
+        const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
+        frame_.center -= diff;
+    }
+    else if (cursor_.RightEdge() > frame_.RightEdge())
+    {
+        const float diff = cursor_.RightEdge() - frame_.RightEdge();
+        frame_.center += diff;
+    }
+}
+
 void Timeline:: HandleEvent(const Event &event) 
 {
     switch (screen_state_) 

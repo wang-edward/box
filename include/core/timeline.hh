@@ -57,6 +57,8 @@ struct Timeline {
     Timeline();
     ~Timeline();
 
+    void FocusCursor();
+
     void Render(Interface& interface);
     void HandleEvent(const Event& event);
 private:
