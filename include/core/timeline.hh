@@ -19,16 +19,16 @@ struct Timeline {
     struct BeatWindow {
         float start;
         float len;
-        float LeftEdge() {return start;}
-        float RightEdge() {return start + len;}
+        float LeftEdge() const {return start;}
+        float RightEdge() const {return start + len;}
     };
 
     struct BeatFrame {
         float center;
         float radius;
-        float LeftEdge() {return center - radius;}
-        float RightEdge() {return center + radius;}
-        float Width() {return radius * 2;}
+        float LeftEdge() const {return center - radius;}
+        float RightEdge() const {return center + radius;}
+        float Width() const {return radius * 2;}
         BeatFrame(float c, float &r): center{c}, radius{r} {}
     };
 
@@ -56,6 +56,8 @@ struct Timeline {
 
     Timeline();
     ~Timeline();
+
+    void FocusCursor();
 
     void Render(Interface& interface);
     void HandleEvent(const Event& event);

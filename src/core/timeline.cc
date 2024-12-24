@@ -283,6 +283,21 @@ void Timeline:: print_timeline()
     }
 }
 
+void Timeline:: FocusCursor()
+{
+    assert(cursor_.len < frame_.Width());
+    if (cursor_.LeftEdge() < frame_.LeftEdge())
+    {
+        const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
+        frame_.center -= diff;
+    }
+    else if (cursor_.RightEdge() > frame_.RightEdge())
+    {
+        const float diff = cursor_.RightEdge() - frame_.RightEdge();
+        frame_.center += diff;
+    }
+}
+
 void Timeline:: HandleEvent(const Event &event) 
 {
     switch (screen_state_) 
@@ -299,20 +314,12 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_H:
                 cursor_.start -= step_size_;
                 LOG_VAR(cursor_.LeftEdge() < frame_.LeftEdge());
-                if (cursor_.LeftEdge() < frame_.LeftEdge())
-                {
-                    const float diff = frame_.LeftEdge() - cursor_.LeftEdge();
-                    frame_.center -= diff;
-                }
+                FocusCursor();
                 break;
             case KEY_L:
                 cursor_.start += step_size_;
                 LOG_VAR(cursor_.RightEdge() > frame_.RightEdge());
-                if (cursor_.RightEdge() > frame_.RightEdge())
-                {
-                    const float diff = cursor_.RightEdge() - frame_.RightEdge();
-                    frame_.center += diff;
-                }
+                FocusCursor();
                 break;
             case KEY_J:
                 if (!APP->edit_.getTransport().isRecording())
@@ -347,6 +354,26 @@ void Timeline:: HandleEvent(const Event &event)
                     APP->AddTrack();
                 }
                 break;
+            case KEY_W:
+                {
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.RightEdge()));
+
+                    te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                    if (item == nullptr)
+                    {
+                        LOG_MSG("KEY_W found NONE");
+                    }
+                    else
+                    {
+                        if (auto clip = dynamic_cast<te::Clip*>(item))
+                        {
+                            cursor_.start = clip->getStartBeat().inBeats();
+                            FocusCursor();
+                        }
+                    }
+                }
+                break;
             case KEY_D:
                 {
                     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
@@ -355,7 +382,7 @@ void Timeline:: HandleEvent(const Event &event)
                     te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
                     if (item == nullptr)
                     {
-                        LOG_MSG("NONE");
+                        LOG_MSG("KEY_D found NONE");
                     }
                     else
                     {
@@ -452,9 +479,11 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_MINUS:
                 radius_ *= 2;
+                frame_.radius *= 2; // TODO centralize this
                 break;
             case KEY_EQUAL:
                 radius_ /= 2;
+                frame_.radius /= 2; // TODO centralize this
                 break;
             }
             break;
