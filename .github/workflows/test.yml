@@ -5,6 +5,7 @@ name: test
 env:
   CC: "ccache clang"
   CXX: "ccache clang++"
+  DOWNLOAD_CACHE_VERSION: 8
 
 on:
   # don't run on push to main cuz i do that a lot
@@ -73,6 +74,9 @@ jobs:
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
+
+    - name: Verify cache
+      run : ls -a
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
