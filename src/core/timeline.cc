@@ -459,9 +459,11 @@ void Timeline:: HandleEvent(const Event &event)
                 break;
             case KEY_MINUS:
                 radius_ *= 2;
+                frame_.radius *= 2; // TODO centralize this
                 break;
             case KEY_EQUAL:
                 radius_ /= 2;
+                frame_.radius /= 2; // TODO centralize this
                 break;
             }
             break;
