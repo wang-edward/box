@@ -20,7 +20,7 @@ struct Switch
 
     virtual void Render(Interface &interface) 
     {
-        Color text_color = value ? color_ : WHITE;
+        Color text_color = value_ ? color_ : WHITE;
         const int font_size = 10;
         int width = MeasureText(name_.c_str(), font_size);
         DrawText(name_.c_str(), x - (width / 2), y + 20, font_size, text_color);
