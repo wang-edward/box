@@ -4,23 +4,26 @@
 
 // instead of using cv.hh, we directly use juce::CachedValue<bool>
 
-namespace box{
-struct Switch{
+namespace box
+{
+
+struct Switch
+{
     juce::CachedValue<bool> &value_;
     uint8_t x_, y_;
-    Color colour_;
+    Color color_;
     std::string name_;
 
-    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, std::string name="")
-    : value_{value}, x_{x}, y_{y}, name_{name}, colour_{RED}
+    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, std::string name, Color color)
+    : value_{value}, x_{x}, y_{y}, name_{name}, color_{color}
     {}
 
     virtual void Render(Interface &interface) 
     {
-        colour_ = value? RED : WHITE;
+        Color text_color = value ? color_ : WHITE;
         const int font_size = 10;
         int width = MeasureText(name_.c_str(), font_size);
-        DrawText(name_.c_str(), x - (width / 2), y + 20, font_size, colour_);
+        DrawText(name_.c_str(), x - (width / 2), y + 20, font_size, text_color);
     }
 
     virtual void HandleEvent(const Event& event)
