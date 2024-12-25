@@ -14,8 +14,8 @@ struct Switch
     Color color_;
     std::string name_;
 
-    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, std::string name, Color color)
-    : value_{value}, x_{x}, y_{y}, name_{name}, color_{color}
+    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, Color color, std::string name)
+    : value_{value}, x_{x}, y_{y}, color_{color}, name_{name}
     {}
 
     virtual void Render(Interface &interface) 
