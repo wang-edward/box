@@ -2,27 +2,18 @@
 
 namespace box {
 
-Plugin:: Plugin(te::Plugin *p)
-: plugin_{p}
-{}
+Plugin::Plugin(te::Plugin *p) : plugin_{p} {}
 
-Plugin:: ~Plugin()
-{
-    plugin_->deleteFromParent();
+Plugin::~Plugin() { plugin_->deleteFromParent(); }
+
+void Plugin::EnsureTextureLoaded() const {
+  if (GetIcon().id == 0) {
+    Image icon = LoadImage(GetIconPath());
+    GetIcon() = LoadTextureFromImage(icon);
+    UnloadImage(icon);
+  }
 }
 
-void Plugin:: EnsureTextureLoaded() const
-{
-    if (GetIcon().id == 0) {
-        Image icon = LoadImage(GetIconPath());
-        GetIcon() = LoadTextureFromImage(icon);
-        UnloadImage(icon);
-    }
-}
+te::Plugin *const Plugin::GetPlugin() const { return plugin_; }
 
-te::Plugin *const Plugin:: GetPlugin() const
-{
-    return plugin_;
-}
-
-}
+}  // namespace box
