@@ -5,6 +5,7 @@ name: test
 env:
   CC: "ccache clang"
   CXX: "ccache clang++"
+  CCACHE_DIR: "~/.ccache"
   DOWNLOAD_CACHE_VERSION: 8
 
 on:
@@ -53,6 +54,9 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Create cache dir
+      run: mkdir ~/.ccache
 
     - name: Cache build artifacts
       uses: actions/cache@v4
