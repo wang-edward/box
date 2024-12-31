@@ -55,13 +55,10 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Create cache dir
-      run: mkdir ~/.ccache
-
     - name: Cache build artifacts
       uses: actions/cache@v4
       with:
-        path: ~/ccache
+        path: /home/runner/.ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         restore-keys: |
           ${{ runner.os }}-ccache-
@@ -83,10 +80,12 @@ jobs:
 
     - name: Check ~
       run : ls -a ~
-    - name: view cache
-      run : ls -a ~/.ccache
+    - name: Check /home/runner/
+      run : ls -a /home/runner
+    - name: Check cache
+      run : ls -a /home/runner/.ccache
     - name: tree cache
-      run : tree ~/.ccache
+      run : tree /home/runner/.ccache
     - name: ccache config
       run: ccache -p
     - name: ccache stats
