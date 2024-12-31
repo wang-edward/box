@@ -95,8 +95,8 @@ jobs:
       run : ls -a ~
     - name: Check /home/runner/
       run : ls -a /home/runner
-    - name: Check cache
-      run : ls -a /home/runner/.ccache
+    - name: Find cache
+      run: find ~ -type d -name ".ccache"
     - name: tree cache
       run : tree /home/runner/.ccache
     - name: ccache config
