@@ -83,8 +83,6 @@ jobs:
 
     - name: Check ~
       run : ls -a ~
-    - name: find ccache
-      run: find / -type d -name ".ccache" 2>/dev/null
     - name: view cache
       run : ls -a ~/.ccache
     - name: tree cache
