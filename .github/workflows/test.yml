@@ -76,7 +76,7 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
 
     - name: Verify cache
-      run : ls -a ~
+      run : ls -a ~/.config
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
