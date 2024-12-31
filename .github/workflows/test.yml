@@ -77,6 +77,10 @@ jobs:
 
     - name: Verify cache
       run : ls -a ~/.config
+    - name: Verify cache 2
+      run : tree ~/.config
+    - name: Verify cache 3
+      run : ls -a ~/.config/ccache
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
