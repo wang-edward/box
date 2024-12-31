@@ -67,18 +67,10 @@ jobs:
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
-    - name: Check ~
-      run : ls -a ~
-    - name: Check /home/runner/
-      run : ls -a /home/runner
-    - name: Find cache
-      run: find ~ -type d -name ".ccache"
-    - name: tree cache
-      run : tree /home/runner/.ccache
-    - name: ccache config
-      run: ccache -p
-    - name: ccache stats
-      run: ccache -s
+    - name: Print ccache stats
+      run: |
+        ccache -s
+        ccache -p
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
