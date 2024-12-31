@@ -61,7 +61,7 @@ jobs:
     - name: Cache build artifacts
       uses: actions/cache@v4
       with:
-        path: ~/.config/ccache
+        path: ~/ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         restore-keys: |
           ${{ runner.os }}-ccache-
@@ -79,12 +79,12 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
 
-    - name: Verify cache
-      run : ls -a ~/.config
-    - name: Verify cache 2
-      run : tree ~/.config
-    - name: Verify cache 3
-      run : ls -a ~/.config/ccache
+    - name: Check ~
+      run : ls -a ~
+    - name: find ccache
+      run: find . -iname ".ccache"
+    - name: ccache stats
+      run: ccache -p
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
