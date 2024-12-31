@@ -5,7 +5,7 @@ name: test
 env:
   CC: "ccache clang"
   CXX: "ccache clang++"
-  CCACHE_DIR: "~/.ccache"
+  # CCACHE_DIR: "~/.ccache"
   DOWNLOAD_CACHE_VERSION: 8
 
 on:
