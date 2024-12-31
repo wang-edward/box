@@ -82,13 +82,15 @@ jobs:
     - name: Check ~
       run : ls -a ~
     - name: find ccache
-      run: find . -iname ".ccache"
+      run: find / -type d -name ".ccache" 2>/dev/null
     - name: view cache
       run : ls -a ~/.ccache
     - name: tree cache
       run : tree ~/.ccache
-    - name: ccache stats
+    - name: ccache config
       run: ccache -p
+    - name: ccache stats
+      run: ccache -s
 
     # - name: Test
     #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
