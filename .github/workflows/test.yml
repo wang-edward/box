@@ -83,6 +83,10 @@ jobs:
       run : ls -a ~
     - name: find ccache
       run: find . -iname ".ccache"
+    - name: view cache
+      run : ls -a ~/.ccache
+    - name: tree cache
+      run : tree ~/.ccache
     - name: ccache stats
       run: ccache -p
 
