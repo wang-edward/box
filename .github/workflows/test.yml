@@ -1,8 +1,6 @@
 name: test
 
 env:
-  CC: ccache clang
-  CXX: ccache clang++
   DOWNLOAD_CACHE_VERSION: 8
 
 on:
@@ -63,6 +61,8 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache
+        -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -S ${{ github.workspace }}
 
     - name: Build
