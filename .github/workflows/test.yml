@@ -46,7 +46,7 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-    - name: make cache dir
+    - name: Make cache dir
       run: mkdir /home/runner/.ccache
     - name: Cache build artifacts
       uses: actions/cache@v4
