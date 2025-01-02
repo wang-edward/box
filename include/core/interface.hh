@@ -78,6 +78,7 @@ class Interface
         {KEY_DOWN, false},   
         {KEY_UP, false},
     };
+    // clang-format on
 };
 
 } // namespace box
