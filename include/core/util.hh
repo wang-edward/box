@@ -52,40 +52,40 @@ const LogLevel LOGLEVEL = get_loglevel();
 void LOG_MSG(const std::string &msg, LogLevel l = LogLevel::Debug);
 template <typename T>
 void log_var(const std::string &var_name, const T &var_value) {
-  LOG_MSG(var_name + ": " + std::to_string(var_value), LogLevel::Debug);
+    LOG_MSG(var_name + ": " + std::to_string(var_value), LogLevel::Debug);
 }
 #define LOG_VAR(var) log_var(#var, var)
 
 enum class DeviceType { Emulator, Hardware };
 
 enum class EventType {
-  KeyPress,
-  KeyRelease,
-  PotDown,
-  PotUp,
+    KeyPress,
+    KeyRelease,
+    PotDown,
+    PotUp,
 };
 
 struct Event {
-  EventType type;
-  int value;
+    EventType type;
+    int value;
 };
 
 const std::unordered_map<int, int> KEY_TO_MIDI = {
-    {KEY_A, 60},  // C4
-    {KEY_W, 61},  // C#4
-    {KEY_S, 62},  // D4
-    {KEY_E, 63},  // D#4
-    {KEY_D, 64},  // E4
-    {KEY_F, 65},  // F4
-    {KEY_T, 66},  // F#4
-    {KEY_G, 67},  // G4
-    {KEY_Y, 68},  // G#4
-    {KEY_H, 69},  // A4
-    {KEY_U, 70},  // A#4
-    {KEY_J, 71},  // B4
-    {KEY_K, 72},  // C5
-    {KEY_O, 73},  // C#5
-    {KEY_L, 74}   // D5
+    {KEY_A, 60}, // C4
+    {KEY_W, 61}, // C#4
+    {KEY_S, 62}, // D4
+    {KEY_E, 63}, // D#4
+    {KEY_D, 64}, // E4
+    {KEY_F, 65}, // F4
+    {KEY_T, 66}, // F#4
+    {KEY_G, 67}, // G4
+    {KEY_Y, 68}, // G#4
+    {KEY_H, 69}, // A4
+    {KEY_U, 70}, // A#4
+    {KEY_J, 71}, // B4
+    {KEY_K, 72}, // C5
+    {KEY_O, 73}, // C#5
+    {KEY_L, 74}  // D5
 };
 
-}  // namespace box
+} // namespace box
