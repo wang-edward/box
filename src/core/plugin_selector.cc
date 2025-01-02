@@ -6,7 +6,8 @@
 #include "plugin/delay.hh"
 #include "plugin/four_osc.hh"
 
-namespace box {
+namespace box
+{
 
 const std::vector<std::string> PluginSelector::PLUGIN_NAMES = {
     te::FourOscPlugin::xmlTypeName,    te::ChorusPlugin::xmlTypeName,
@@ -15,16 +16,21 @@ const std::vector<std::string> PluginSelector::PLUGIN_NAMES = {
     te::ReverbPlugin::xmlTypeName,
 };
 
-void assert_index(std::vector<std::string> v, size_t curr) {
+void assert_index(std::vector<std::string> v, size_t curr)
+{
     if (curr >= v.size())
         throw std::runtime_error{"PluginSelector index out of range: " +
                                  std::to_string(curr)};
 }
 
-PluginSelector::PluginSelector() {}
+PluginSelector::PluginSelector()
+{
+}
 
-void PluginSelector::Render(Interface &interface) {
-    for (size_t i = 0; i < interface.HEIGHT / 8; i++) {
+void PluginSelector::Render(Interface &interface)
+{
+    for (size_t i = 0; i < interface.HEIGHT / 8; i++)
+    {
         if (i >= PLUGIN_NAMES.size())
             break;
         auto name = PLUGIN_NAMES[i];
@@ -33,7 +39,8 @@ void PluginSelector::Render(Interface &interface) {
         float width = 128;
         float height = 15;
         Color color = RED;
-        if (current_index_ == i) {
+        if (current_index_ == i)
+        {
             color = BLUE;
         }
         DrawRectangleRec(Rectangle{x, y, width, height}, DARKGRAY);
@@ -41,10 +48,13 @@ void PluginSelector::Render(Interface &interface) {
     }
 }
 
-void PluginSelector::HandleEvent(const Event &event) {
-    switch (event.type) {
+void PluginSelector::HandleEvent(const Event &event)
+{
+    switch (event.type)
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value)
+        {
         case KEY_ESCAPE:
             APP->screen_state_ = App::ScreenState::Track;
             break;
@@ -65,13 +75,20 @@ void PluginSelector::HandleEvent(const Event &event) {
                             .createNewPlugin(name.c_str(), {})
                             .get();
             // TODO use cast?
-            if (name == te::ChorusPlugin::xmlTypeName) {
+            if (name == te::ChorusPlugin::xmlTypeName)
+            {
                 p = std::make_unique<Chorus>(base);
-            } else if (name == te::FourOscPlugin::xmlTypeName) {
+            }
+            else if (name == te::FourOscPlugin::xmlTypeName)
+            {
                 p = std::make_unique<FourOsc>(base);
-            } else if (name == te::CompressorPlugin::xmlTypeName) {
+            }
+            else if (name == te::CompressorPlugin::xmlTypeName)
+            {
                 p = std::make_unique<Compressor>(base);
-            } else if (name == te::DelayPlugin::xmlTypeName) {
+            }
+            else if (name == te::DelayPlugin::xmlTypeName)
+            {
                 p = std::make_unique<Delay>(base);
             }
 

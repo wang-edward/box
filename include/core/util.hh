@@ -11,7 +11,8 @@
 
 namespace te = tracktion;
 
-namespace box {
+namespace box
+{
 
 struct App;
 extern App *APP;
@@ -44,28 +45,41 @@ std::string format_cursor_pos(size_t track_pos, float cursor_pos);
 size_t clamp_decrement(size_t x);
 size_t clamp_increment(size_t x, size_t max);
 
-enum class LogLevel { Off, Debug, Warn, Err };
+enum class LogLevel
+{
+    Off,
+    Debug,
+    Warn,
+    Err
+};
 LogLevel string_to_loglevel(const std::string &s);
 std::string loglevel_to_string(LogLevel l);
 LogLevel get_loglevel();
 const LogLevel LOGLEVEL = get_loglevel();
 void LOG_MSG(const std::string &msg, LogLevel l = LogLevel::Debug);
 template <typename T>
-void log_var(const std::string &var_name, const T &var_value) {
+void log_var(const std::string &var_name, const T &var_value)
+{
     LOG_MSG(var_name + ": " + std::to_string(var_value), LogLevel::Debug);
 }
 #define LOG_VAR(var) log_var(#var, var)
 
-enum class DeviceType { Emulator, Hardware };
+enum class DeviceType
+{
+    Emulator,
+    Hardware
+};
 
-enum class EventType {
+enum class EventType
+{
     KeyPress,
     KeyRelease,
     PotDown,
     PotUp,
 };
 
-struct Event {
+struct Event
+{
     EventType type;
     int value;
 };

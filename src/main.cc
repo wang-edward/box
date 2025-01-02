@@ -6,7 +6,8 @@
 #include "core/util.hh"
 #include "raylib.h"
 
-int main() {
+int main()
+{
     const juce::ScopedJuceInitialiser_GUI initialiser; // need this
     SetTargetFPS(60);
 
@@ -23,27 +24,34 @@ int main() {
     box::App app(engine, edit);
     box::APP = &app;
 
-    try {
+    try
+    {
         // arm
         {
             auto &dm = engine.getDeviceManager();
 
-            for (int i = 0; i < dm.getNumWaveInDevices(); i++) {
-                if (auto wip = dm.getWaveInDevice(i)) {
+            for (int i = 0; i < dm.getNumWaveInDevices(); i++)
+            {
+                if (auto wip = dm.getWaveInDevice(i))
+                {
                     wip->setStereoPair(false);
                     // wip->setEndToEnd(true); // TODO update ?
                     wip->setEnabled(true);
-                } else if (auto mip = dm.getMidiInDevice(i)) {
+                }
+                else if (auto mip = dm.getMidiInDevice(i))
+                {
                     // mip->setEndToEndEnabled(true); // TODO update ?
                     mip->setEnabled(true);
                 }
             }
         }
 
-        while (!interface.ShouldClose()) {
+        while (!interface.ShouldClose())
+        {
             // poll and handle events
             box::Event event;
-            if (interface.PollEvent(event)) {
+            if (interface.PollEvent(event))
+            {
                 app.HandleEvent(event);
             }
 
@@ -56,7 +64,9 @@ int main() {
 
             interface.PostRender();
         }
-    } catch (std::exception &e) {
+    }
+    catch (std::exception &e)
+    {
         std::cerr << e.what() << std::endl;
     }
     return 0;

@@ -3,9 +3,11 @@
 #include "core/interface.hh"
 #include "core/plugin.hh"
 
-namespace box {
+namespace box
+{
 
-struct FourOsc : public Plugin {
+struct FourOsc : public Plugin
+{
     static Texture2D icon_;
     static constexpr const char *icon_path_ = "assets/four_16x16.png";
     static constexpr const char *name_ = "4osc";

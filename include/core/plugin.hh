@@ -2,9 +2,11 @@
 #include "core/interface.hh"
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-struct Plugin {
+struct Plugin
+{
     te::Plugin *const plugin_;
 
   public:

@@ -3,35 +3,59 @@
 #include "interface.hh"
 #include "util.hh"
 
-namespace box {
+namespace box
+{
 
-struct Timeline {
-    enum class ScreenState {
+struct Timeline
+{
+    enum class ScreenState
+    {
         Overview,
     };
 
-    enum class PlayheadMode {
+    enum class PlayheadMode
+    {
         Detached,
         Locked,
     };
 
-    struct BeatWindow {
+    struct BeatWindow
+    {
         float start;
         float len;
-        float LeftEdge() const { return start; }
-        float RightEdge() const { return start + len; }
+        float LeftEdge() const
+        {
+            return start;
+        }
+        float RightEdge() const
+        {
+            return start + len;
+        }
     };
 
-    struct BeatFrame {
+    struct BeatFrame
+    {
         float center;
         float radius;
-        float LeftEdge() const { return center - radius; }
-        float RightEdge() const { return center + radius; }
-        float Width() const { return radius * 2; }
-        BeatFrame(float c, float &r) : center{c}, radius{r} {}
+        float LeftEdge() const
+        {
+            return center - radius;
+        }
+        float RightEdge() const
+        {
+            return center + radius;
+        }
+        float Width() const
+        {
+            return radius * 2;
+        }
+        BeatFrame(float c, float &r) : center{c}, radius{r}
+        {
+        }
     };
 
-    struct Position {
+    struct Position
+    {
         float secs;
         float beats;
     };

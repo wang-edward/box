@@ -3,9 +3,11 @@
 
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-class Interface {
+class Interface
+{
   public:
     static const int WIDTH = 128;
     static const int HEIGHT = 128;

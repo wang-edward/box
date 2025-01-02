@@ -7,10 +7,13 @@
 #include "core/plugin.hh"
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-class Track {
-    enum class ScreenState {
+class Track
+{
+    enum class ScreenState
+    {
         Overview,
         Plugin,
     };

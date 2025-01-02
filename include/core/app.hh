@@ -4,16 +4,20 @@
 #include "core/track.hh"
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-struct App {
-    enum class ScreenState {
+struct App
+{
+    enum class ScreenState
+    {
         Timeline,
         Track,
         PluginSelector,
     };
 
-    enum class Mode {
+    enum class Mode
+    {
         Normal,
         Insert,
     };

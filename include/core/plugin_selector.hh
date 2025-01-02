@@ -2,9 +2,11 @@
 #include "core/interface.hh"
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-struct PluginSelector {
+struct PluginSelector
+{
     PluginSelector();
     void Render(Interface &interface);
     void HandleEvent(const Event &event);

@@ -1,6 +1,7 @@
 #include "plugin/four_osc.hh"
 
-namespace box {
+namespace box
+{
 
 Texture2D FourOsc::icon_; // Define the static member
 
@@ -14,26 +15,44 @@ FourOsc::FourOsc(te::Plugin *p)
                          22, // y
                          16, // radius
                          GREEN,
-                         "volume"} {
+                         "volume"}
+{
     EnsureTextureLoaded();
     // TODO for testing effects
-    for (int i = 0; i < base_plugin_->oscParams.size(); i++) {
+    for (int i = 0; i < base_plugin_->oscParams.size(); i++)
+    {
         base_plugin_->oscParams[i]->waveShapeValue.setValue(2, nullptr);
     }
 }
 
-FourOsc::~FourOsc() { UnloadTexture(icon_); }
+FourOsc::~FourOsc()
+{
+    UnloadTexture(icon_);
+}
 
-Texture2D &FourOsc::GetIcon() const { return icon_; }
+Texture2D &FourOsc::GetIcon() const
+{
+    return icon_;
+}
 
-const char *FourOsc::GetIconPath() const { return icon_path_; }
+const char *FourOsc::GetIconPath() const
+{
+    return icon_path_;
+}
 
-const char *FourOsc::GetName() const { return name_; }
+const char *FourOsc::GetName() const
+{
+    return name_;
+}
 
-void FourOsc::Render(Interface &interface) {
-    for (int y = 0; y < Interface::HEIGHT; ++y) {
-        for (int x = 0; x < Interface::WIDTH; ++x) {
-            if (x % 2 == 0 && y % 2 == 0) {
+void FourOsc::Render(Interface &interface)
+{
+    for (int y = 0; y < Interface::HEIGHT; ++y)
+    {
+        for (int x = 0; x < Interface::WIDTH; ++x)
+        {
+            if (x % 2 == 0 && y % 2 == 0)
+            {
                 DrawPixel(x, y, RED);
             }
         }
@@ -41,10 +60,13 @@ void FourOsc::Render(Interface &interface) {
     knob_master_level_.Render(interface);
 }
 
-void FourOsc::HandleEvent(const Event &event) {
-    switch (event.type) {
+void FourOsc::HandleEvent(const Event &event)
+{
+    switch (event.type)
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value)
+        {
         case KEY_ONE:
             LOG_VAR(knob_master_level_.param_.GetNorm());
             knob_master_level_.param_.SetNorm(

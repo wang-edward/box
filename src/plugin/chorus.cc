@@ -2,7 +2,8 @@
 
 #include "core/cv.hh"
 
-namespace box {
+namespace box
+{
 
 Texture2D Chorus::icon_; // Define the static member
 
@@ -32,29 +33,46 @@ Chorus::Chorus(te::Plugin *p)
           86, // y
           16, // radius
           YELLOW,
-          "mix"} {
+          "mix"}
+{
     EnsureTextureLoaded();
 }
 
-Chorus::~Chorus() { UnloadTexture(icon_); }
+Chorus::~Chorus()
+{
+    UnloadTexture(icon_);
+}
 
-Texture2D &Chorus::GetIcon() const { return icon_; }
+Texture2D &Chorus::GetIcon() const
+{
+    return icon_;
+}
 
-const char *Chorus::GetIconPath() const { return icon_path_; }
+const char *Chorus::GetIconPath() const
+{
+    return icon_path_;
+}
 
-const char *Chorus::GetName() const { return name_; }
+const char *Chorus::GetName() const
+{
+    return name_;
+}
 
-void Chorus::Render(Interface &interface) {
+void Chorus::Render(Interface &interface)
+{
     knob_depth_.Render(interface);
     knob_width_.Render(interface);
     knob_speed_.Render(interface);
     knob_mix_.Render(interface);
 }
 
-void Chorus::HandleEvent(const Event &event) {
-    switch (event.type) {
+void Chorus::HandleEvent(const Event &event)
+{
+    switch (event.type)
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value)
+        {
         case KEY_ONE:
             LOG_VAR(knob_depth_.param_.GetNorm());
             knob_depth_.param_.SetNorm(knob_depth_.param_.GetNorm() - 0.125);

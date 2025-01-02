@@ -2,7 +2,8 @@
 
 #include "core/cv.hh"
 
-namespace box {
+namespace box
+{
 
 Texture2D Delay::icon_; // Define the static member
 
@@ -25,28 +26,45 @@ Delay::Delay(te::Plugin *p)
                    86, // y
                    16, // radius
                    BLUE,
-                   "speed"} {
+                   "speed"}
+{
     EnsureTextureLoaded();
 }
 
-Delay::~Delay() { UnloadTexture(icon_); }
+Delay::~Delay()
+{
+    UnloadTexture(icon_);
+}
 
-Texture2D &Delay::GetIcon() const { return icon_; }
+Texture2D &Delay::GetIcon() const
+{
+    return icon_;
+}
 
-const char *Delay::GetIconPath() const { return icon_path_; }
+const char *Delay::GetIconPath() const
+{
+    return icon_path_;
+}
 
-const char *Delay::GetName() const { return name_; }
+const char *Delay::GetName() const
+{
+    return name_;
+}
 
-void Delay::Render(Interface &interface) {
+void Delay::Render(Interface &interface)
+{
     knob_feedback_.Render(interface);
     knob_mix_.Render(interface);
     knob_length_.Render(interface);
 }
 
-void Delay::HandleEvent(const Event &event) {
-    switch (event.type) {
+void Delay::HandleEvent(const Event &event)
+{
+    switch (event.type)
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value)
+        {
         case KEY_ONE:
             LOG_VAR(knob_feedback_.param_.GetNorm());
             knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() -

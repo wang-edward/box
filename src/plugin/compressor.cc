@@ -2,7 +2,8 @@
 
 #include "core/cv.hh"
 
-namespace box {
+namespace box
+{
 
 Texture2D Compressor::icon_; // Define the static member
 
@@ -31,29 +32,46 @@ Compressor::Compressor(te::Plugin *p)
                     86, // y
                     16, // radius
                     YELLOW,
-                    "release"} {
+                    "release"}
+{
     EnsureTextureLoaded();
 }
 
-Compressor::~Compressor() { UnloadTexture(icon_); }
+Compressor::~Compressor()
+{
+    UnloadTexture(icon_);
+}
 
-Texture2D &Compressor::GetIcon() const { return icon_; }
+Texture2D &Compressor::GetIcon() const
+{
+    return icon_;
+}
 
-const char *Compressor::GetIconPath() const { return icon_path_; }
+const char *Compressor::GetIconPath() const
+{
+    return icon_path_;
+}
 
-const char *Compressor::GetName() const { return name_; }
+const char *Compressor::GetName() const
+{
+    return name_;
+}
 
-void Compressor::Render(Interface &interface) {
+void Compressor::Render(Interface &interface)
+{
     knob_threshold_.Render(interface);
     knob_ratio_.Render(interface);
     knob_attack_.Render(interface);
     knob_release_.Render(interface);
 }
 
-void Compressor::HandleEvent(const Event &event) {
-    switch (event.type) {
+void Compressor::HandleEvent(const Event &event)
+{
+    switch (event.type)
+    {
     case EventType::KeyPress:
-        switch (event.value) {
+        switch (event.value)
+        {
         case KEY_ONE:
             LOG_VAR(knob_threshold_.param_.GetNorm());
             knob_threshold_.param_.SetNorm(knob_threshold_.param_.GetNorm() -

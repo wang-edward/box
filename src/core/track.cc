@@ -5,22 +5,30 @@
 #include "core/app.hh"
 #include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
 static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins,
-                           int index, std::string function_name) {
-    if (index >= plugins.size()) {
+                           int index, std::string function_name)
+{
+    if (index >= plugins.size())
+    {
         throw std::runtime_error{
             "Track::" + function_name + " => index [" + std::to_string(index) +
             "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
     }
 }
 
-Track::Track(te::AudioTrack &base) : base_{base} {}
+Track::Track(te::AudioTrack &base) : base_{base}
+{
+}
 
-Track::~Track() {}
+Track::~Track()
+{
+}
 
-void Track::AddPlugin(std::unique_ptr<Plugin> plugin) {
+void Track::AddPlugin(std::unique_ptr<Plugin> plugin)
+{
     if (active_plugin_ == -1)
         active_plugin_ = 0; // TODO better way to handle this
     int index = plugins_.size();
@@ -28,12 +36,15 @@ void Track::AddPlugin(std::unique_ptr<Plugin> plugin) {
     plugins_.push_back(std::move(plugin));
 }
 
-void Track::RemoveActivePlugin() {
-    if (plugins_.size() == 0) {
+void Track::RemoveActivePlugin()
+{
+    if (plugins_.size() == 0)
+    {
         LOG_MSG("tried to remove plugin from empty track", LogLevel::Warn);
         return;
     }
-    if (active_plugin_ == -1) {
+    if (active_plugin_ == -1)
+    {
         LOG_MSG("tried to remove active_plugin == -1", LogLevel::Warn);
         return;
     }
@@ -43,11 +54,18 @@ void Track::RemoveActivePlugin() {
         std::min(active_plugin_, static_cast<int>(plugins_.size()) - 1);
 }
 
-void Track::SetActivePlugin(int index) { active_plugin_ = index; }
+void Track::SetActivePlugin(int index)
+{
+    active_plugin_ = index;
+}
 
-int Track::GetActivePlugin() { return active_plugin_; }
+int Track::GetActivePlugin()
+{
+    return active_plugin_;
+}
 
-int clamp_index(int i, int len) {
+int clamp_index(int i, int len)
+{
     int range = len;
     int val = i % range;
     if (val < 0)
@@ -55,14 +73,19 @@ int clamp_index(int i, int len) {
     return val;
 }
 
-void Track::HandleEvent(const Event &event) {
-    switch (screen_state_) {
+void Track::HandleEvent(const Event &event)
+{
+    switch (screen_state_)
+    {
     case ScreenState::Overview:
-        switch (APP->mode_) {
+        switch (APP->mode_)
+        {
         case App::Mode::Normal:
-            switch (event.type) {
+            switch (event.type)
+            {
             case EventType::KeyPress:
-                switch (event.value) {
+                switch (event.value)
+                {
                 case KEY_ESCAPE:
                     APP->screen_state_ = App::ScreenState::Timeline;
                     break;
@@ -72,13 +95,16 @@ void Track::HandleEvent(const Event &event) {
                 case KEY_X:
                     RemoveActivePlugin();
                     break;
-                case KEY_P: {
+                case KEY_P:
+                {
                     auto l = base_.pluginList.getPlugins();
-                    for (auto p : l) {
+                    for (auto p : l)
+                    {
                         std::cout << p->getName() << ", ";
                     }
                     std::cout << std::endl;
-                } break;
+                }
+                break;
                 // TODO KEY_J and KEY_K move up and down
                 case KEY_H:
                     LOG_MSG("left");
@@ -106,11 +132,13 @@ void Track::HandleEvent(const Event &event) {
         }
         break;
     case ScreenState::Plugin:
-        if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE) {
+        if (event.type == EventType::KeyPress && event.value == KEY_ESCAPE)
+        {
             screen_state_ = ScreenState::Overview;
             return;
         }
-        switch (APP->mode_) {
+        switch (APP->mode_)
+        {
         case App::Mode::Normal:
             plugins_[active_plugin_]->HandleEvent(event);
             break;
@@ -121,17 +149,21 @@ void Track::HandleEvent(const Event &event) {
     }
 }
 
-void Track::Render(Interface &interface) {
-    switch (screen_state_) {
+void Track::Render(Interface &interface)
+{
+    switch (screen_state_)
+    {
     case ScreenState::Overview:
         // draw grid
-        for (int i = 1; i < GRID_SIZE; i++) {
+        for (int i = 1; i < GRID_SIZE; i++)
+        {
             float pos = static_cast<float>(i);
             DrawLineV(Vector2{0, pos * 32}, Vector2{128, pos * 32}, WHITE);
             DrawLineV(Vector2{pos * 32, 0}, Vector2{pos * 32, 128}, WHITE);
         }
 
-        for (int i = 0; i < plugins_.size(); i++) {
+        for (int i = 0; i < plugins_.size(); i++)
+        {
             auto x = static_cast<float>((i % 4) * 32 + 16);
             auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
             DrawTexture(plugins_[i]->GetIcon(), x - 8, y - 8, WHITE);
@@ -141,13 +173,15 @@ void Track::Render(Interface &interface) {
             DrawText(plugins_[i]->GetName(), (x - width / 2), y + 6, font_size,
                      WHITE);
 
-            if (i == active_plugin_) {
+            if (i == active_plugin_)
+            {
                 DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16,
                                     static_cast<float>(i / 4) * 32 + 64 + 16},
                             5.0f, GREEN);
             }
         }
-        for (int i = plugins_.size(); i < MAX_PLUGINS; i++) {
+        for (int i = plugins_.size(); i < MAX_PLUGINS; i++)
+        {
             auto x = static_cast<float>((i % 4) * 32 + 16);
             auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
             DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16,
