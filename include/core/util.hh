@@ -57,8 +57,7 @@ std::string loglevel_to_string(LogLevel l);
 LogLevel get_loglevel();
 const LogLevel LOGLEVEL = get_loglevel();
 void LOG_MSG(const std::string &msg, LogLevel l = LogLevel::Debug);
-template <typename T>
-void log_var(const std::string &var_name, const T &var_value)
+template <typename T> void log_var(const std::string &var_name, const T &var_value)
 {
     LOG_MSG(var_name + ": " + std::to_string(var_value), LogLevel::Debug);
 }

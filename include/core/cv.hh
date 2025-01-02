@@ -11,7 +11,9 @@ template <typename T> struct CV
 
     // TODO add default value?
     CV(juce::CachedValue<T> &cv, T min, T max)
-        : value_{cv}, min_{min}, max_{max}
+        : value_{cv},
+          min_{min},
+          max_{max}
     {
         assert(min <= max);
     }

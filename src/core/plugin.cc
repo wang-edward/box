@@ -3,7 +3,8 @@
 namespace box
 {
 
-Plugin::Plugin(te::Plugin *p) : plugin_{p}
+Plugin::Plugin(te::Plugin *p)
+    : plugin_{p}
 {
 }
 

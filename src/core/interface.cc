@@ -48,12 +48,9 @@ void Interface::PostRender()
 
         EndTextureMode(); // matches PreRender
         BeginDrawing();
-        DrawTexturePro(target_.texture,
-                       Rectangle{0, 0, float(target_.texture.width),
-                                 float(-target_.texture.height)},
-                       Rectangle{float(pos_x), float(pos_y), float(square_len),
-                                 float(square_len)},
-                       Vector2{0, 0}, 0.0f, WHITE);
+        DrawTexturePro(target_.texture, Rectangle{0, 0, float(target_.texture.width), float(-target_.texture.height)},
+                       Rectangle{float(pos_x), float(pos_y), float(square_len), float(square_len)}, Vector2{0, 0}, 0.0f,
+                       WHITE);
         EndDrawing();
         // hardware rendering
     }

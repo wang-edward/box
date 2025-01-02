@@ -14,9 +14,12 @@ struct Switch
     Color color_;
     std::string name_;
 
-    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, Color color,
-           std::string name)
-        : value_{value}, x_{x}, y_{y}, color_{color}, name_{name}
+    Switch(juce::CachedValue<bool> &value, uint8_t x, uint8_t y, Color color, std::string name)
+        : value_{value},
+          x_{x},
+          y_{y},
+          color_{color},
+          name_{name}
     {
     }
 

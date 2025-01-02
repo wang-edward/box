@@ -8,7 +8,8 @@ namespace box
 Texture2D Delay::icon_; // Define the static member
 
 Delay::Delay(te::Plugin *p)
-    : Plugin(p), base_plugin_{static_cast<te::DelayPlugin *>(p)},
+    : Plugin(p),
+      base_plugin_{static_cast<te::DelayPlugin *>(p)},
       knob_feedback_{Parameter<float>{base_plugin_->feedbackDb},
                      32, // x
                      22, // y
@@ -67,13 +68,11 @@ void Delay::HandleEvent(const Event &event)
         {
         case KEY_ONE:
             LOG_VAR(knob_feedback_.param_.GetNorm());
-            knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() -
-                                          0.125);
+            knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() - 0.125);
             break;
         case KEY_TWO:
             LOG_VAR(knob_feedback_.param_.GetNorm());
-            knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() +
-                                          0.125);
+            knob_feedback_.param_.SetNorm(knob_feedback_.param_.GetNorm() + 0.125);
             break;
         case KEY_THREE:
             LOG_VAR(knob_mix_.param_.GetNorm());

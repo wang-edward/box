@@ -49,7 +49,9 @@ struct Timeline
         {
             return radius * 2;
         }
-        BeatFrame(float c, float &r) : center{c}, radius{r}
+        BeatFrame(float c, float &r)
+            : center{c},
+              radius{r}
         {
         }
     };
@@ -73,8 +75,7 @@ struct Timeline
 
     static constexpr const char *METRONOME_PATH_L = "assets/metronome_l.png";
     static constexpr const char *METRONOME_PATH_R = "assets/metronome_r.png";
-    static constexpr const char *METRONOME_PATH_OFF =
-        "assets/metronome_off.png";
+    static constexpr const char *METRONOME_PATH_OFF = "assets/metronome_off.png";
     Texture2D metronome_l_;
     Texture2D metronome_r_;
     Texture2D metronome_off_;

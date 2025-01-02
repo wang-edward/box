@@ -6,7 +6,8 @@ namespace box
 Texture2D FourOsc::icon_; // Define the static member
 
 FourOsc::FourOsc(te::Plugin *p)
-    : Plugin(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
+    : Plugin(p),
+      base_plugin_{static_cast<te::FourOscPlugin *>(p)},
       // knob_master_level_{32, 64, 16, {255,0,0},
       // base_plugin_->masterLevelValue, base_plugin_->masterLevel}
 
@@ -69,13 +70,11 @@ void FourOsc::HandleEvent(const Event &event)
         {
         case KEY_ONE:
             LOG_VAR(knob_master_level_.param_.GetNorm());
-            knob_master_level_.param_.SetNorm(
-                knob_master_level_.param_.GetNorm() - 0.125);
+            knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() - 0.125);
             break;
         case KEY_TWO:
             LOG_VAR(knob_master_level_.param_.GetNorm());
-            knob_master_level_.param_.SetNorm(
-                knob_master_level_.param_.GetNorm() + 0.125);
+            knob_master_level_.param_.SetNorm(knob_master_level_.param_.GetNorm() + 0.125);
             break;
         }
         break;

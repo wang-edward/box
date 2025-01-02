@@ -5,14 +5,12 @@
 namespace box
 {
 
-static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks,
-                          size_t index, const std::string &name)
+static void assert_tracks(const std::vector<std::unique_ptr<Track>> &tracks, size_t index, const std::string &name)
 {
     if (tracks.size() == 0 || index >= tracks.size())
     {
-        throw std::runtime_error{
-            "App::" + name + "(): index [" + std::to_string(index) +
-            "] out of range: [0, " + std::to_string(tracks.size()) + "]"};
+        throw std::runtime_error{"App::" + name + "(): index [" + std::to_string(index) + "] out of range: [0, " +
+                                 std::to_string(tracks.size()) + "]"};
     }
 }
 
@@ -29,7 +27,9 @@ void print_tracks(App a)
 }
 
 App::App(te::Engine &engine, te::Edit &edit)
-    : engine_{engine}, edit_{edit}, current_track_{0},
+    : engine_{engine},
+      edit_{edit},
+      current_track_{0},
       base_tracks_{te::getAudioTracks(edit)}
 {
     AddTrack(); // ensure there's always at least 1
@@ -73,14 +73,12 @@ void App::ArmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        if (device_type == te::InputDevice::physicalMidiDevice ||
-            device_type == te::InputDevice::virtualMidiDevice)
+        if (device_type == te::InputDevice::physicalMidiDevice || device_type == te::InputDevice::virtualMidiDevice)
         {
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
             {
-                [[maybe_unused]] auto res = instance->setTarget(
-                    t->itemID, true, &edit_.getUndoManager(), 0);
+                [[maybe_unused]] auto res = instance->setTarget(t->itemID, true, &edit_.getUndoManager(), 0);
                 instance->setRecordingEnabled(t->itemID, true);
             }
         }
@@ -92,8 +90,7 @@ void App::UnarmMidi(size_t index)
     for (auto instance : edit_.getAllInputDevices())
     {
         auto device_type = instance->getInputDevice().getDeviceType();
-        if (device_type == te::InputDevice::physicalMidiDevice ||
-            device_type == te::InputDevice::virtualMidiDevice)
+        if (device_type == te::InputDevice::physicalMidiDevice || device_type == te::InputDevice::virtualMidiDevice)
         {
             auto t = te::getAudioTracks(edit_)[index];
             if (t != nullptr)
@@ -174,8 +171,7 @@ void App::HandleEvent(const Event &event)
 
                 active_notes_[event.value] = note;
                 auto message = juce::MidiMessage::noteOn(1, note, 1.0f);
-                te::MidiInputDevice *dev =
-                    engine_.getDeviceManager().getDefaultMidiInDevice();
+                te::MidiInputDevice *dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOn(1, note, 1.0);
             }
             break;
@@ -188,8 +184,7 @@ void App::HandleEvent(const Event &event)
 
                 active_notes_.erase(event.value);
                 auto message = juce::MidiMessage::noteOff(1, note);
-                te::MidiInputDevice *dev =
-                    engine_.getDeviceManager().getDefaultMidiInDevice();
+                te::MidiInputDevice *dev = engine_.getDeviceManager().getDefaultMidiInDevice();
                 dev->keyboardState.noteOff(1, note, 1.0);
             }
             break;

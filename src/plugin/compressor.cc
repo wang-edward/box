@@ -8,7 +8,8 @@ namespace box
 Texture2D Compressor::icon_; // Define the static member
 
 Compressor::Compressor(te::Plugin *p)
-    : Plugin(p), base_plugin_{static_cast<te::CompressorPlugin *>(p)},
+    : Plugin(p),
+      base_plugin_{static_cast<te::CompressorPlugin *>(p)},
       knob_threshold_{Parameter<float>{base_plugin_->thresholdGain.parameter},
                       32, // x
                       22, // y
@@ -74,13 +75,11 @@ void Compressor::HandleEvent(const Event &event)
         {
         case KEY_ONE:
             LOG_VAR(knob_threshold_.param_.GetNorm());
-            knob_threshold_.param_.SetNorm(knob_threshold_.param_.GetNorm() -
-                                           0.125);
+            knob_threshold_.param_.SetNorm(knob_threshold_.param_.GetNorm() - 0.125);
             break;
         case KEY_TWO:
             LOG_VAR(knob_threshold_.param_.GetNorm());
-            knob_threshold_.param_.SetNorm(knob_threshold_.param_.GetNorm() +
-                                           0.125);
+            knob_threshold_.param_.SetNorm(knob_threshold_.param_.GetNorm() + 0.125);
             break;
         case KEY_THREE:
             LOG_VAR(knob_ratio_.param_.GetNorm());
@@ -100,13 +99,11 @@ void Compressor::HandleEvent(const Event &event)
             break;
         case KEY_SEVEN:
             LOG_VAR(knob_release_.param_.GetNorm());
-            knob_release_.param_.SetNorm(knob_release_.param_.GetNorm() -
-                                         0.125);
+            knob_release_.param_.SetNorm(knob_release_.param_.GetNorm() - 0.125);
             break;
         case KEY_EIGHT:
             LOG_VAR(knob_release_.param_.GetNorm());
-            knob_release_.param_.SetNorm(knob_release_.param_.GetNorm() +
-                                         0.125);
+            knob_release_.param_.SetNorm(knob_release_.param_.GetNorm() + 0.125);
             break;
         }
         break;

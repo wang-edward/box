@@ -16,11 +16,13 @@ template <typename T> class Parameter
     std::variant<CV<T>, AP *> param_;
 
   public:
-    Parameter(CV<T> cv) : param_{cv}
+    Parameter(CV<T> cv)
+        : param_{cv}
     {
     }
 
-    Parameter(AP *p) : param_{p}
+    Parameter(AP *p)
+        : param_{p}
     {
     }
 
@@ -34,8 +36,7 @@ template <typename T> class Parameter
         else if (std::holds_alternative<AP *>(param_))
         {
             auto v = std::get<AP *>(param_);
-            v->setParameter(new_value,
-                            juce::NotificationType::dontSendNotification);
+            v->setParameter(new_value, juce::NotificationType::dontSendNotification);
         }
     }
     void SetNorm(T new_value)
@@ -48,8 +49,7 @@ template <typename T> class Parameter
         else if (std::holds_alternative<AP *>(param_))
         {
             auto v = std::get<AP *>(param_);
-            v->setNormalisedParameter(
-                new_value, juce::NotificationType::dontSendNotification);
+            v->setNormalisedParameter(new_value, juce::NotificationType::dontSendNotification);
         }
     }
     T GetValue() const

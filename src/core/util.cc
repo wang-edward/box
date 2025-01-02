@@ -20,13 +20,11 @@ std::string format_time(float time)
 {
     int minutes = static_cast<int>(time) / 60;
     int seconds = static_cast<int>(time) % 60;
-    int decimal =
-        static_cast<int>(std::fmod(time, 1.0f) * 100); // Two decimal places
+    int decimal = static_cast<int>(std::fmod(time, 1.0f) * 100); // Two decimal places
 
     std::ostringstream oss;
-    oss << std::setw(2) << std::setfill('0') << minutes << "." << std::setw(2)
-        << std::setfill('0') << seconds << "." << std::setw(2)
-        << std::setfill('0') << decimal;
+    oss << std::setw(2) << std::setfill('0') << minutes << "." << std::setw(2) << std::setfill('0') << seconds << "."
+        << std::setw(2) << std::setfill('0') << decimal;
 
     return oss.str();
 }
@@ -42,8 +40,7 @@ std::string format_key_offset(int key_offset)
 std::string format_cursor_pos(size_t track_pos, float cursor_pos)
 {
     std::ostringstream oss;
-    oss << std::setw(1) << track_pos << ":" << std::setw(3) << std::setfill('0')
-        << cursor_pos;
+    oss << std::setw(1) << track_pos << ":" << std::setw(3) << std::setfill('0') << cursor_pos;
     return oss.str();
 }
 
@@ -83,8 +80,7 @@ std::string loglevel_to_string(LogLevel l)
         return "WARN";
     if (l == LogLevel::Err)
         return "ERR";
-    throw std::runtime_error{"loglevel_to_string(" + loglevel_to_string(l) +
-                             ") not found"};
+    throw std::runtime_error{"loglevel_to_string(" + loglevel_to_string(l) + ") not found"};
 }
 
 // get loglevel from env
@@ -112,8 +108,7 @@ void LOG_MSG(const std::string &msg, LogLevel l)
     std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
 
     // print
-    std::cout << "[" << buf << "] " << loglevel_to_string(l) << ": " << msg
-              << std::endl;
+    std::cout << "[" << buf << "] " << loglevel_to_string(l) << ": " << msg << std::endl;
 }
 
 } // namespace box

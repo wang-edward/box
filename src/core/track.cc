@@ -8,18 +8,17 @@
 namespace box
 {
 
-static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins,
-                           int index, std::string function_name)
+static void assert_plugins(const std::vector<std::unique_ptr<Plugin>> &plugins, int index, std::string function_name)
 {
     if (index >= plugins.size())
     {
-        throw std::runtime_error{
-            "Track::" + function_name + " => index [" + std::to_string(index) +
-            "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
+        throw std::runtime_error{"Track::" + function_name + " => index [" + std::to_string(index) +
+                                 "] out of range: [0, " + std::to_string(plugins.size()) + "]"};
     }
 }
 
-Track::Track(te::AudioTrack &base) : base_{base}
+Track::Track(te::AudioTrack &base)
+    : base_{base}
 {
 }
 
@@ -50,8 +49,7 @@ void Track::RemoveActivePlugin()
     }
     plugins_.erase(plugins_.begin() + active_plugin_);
     // TODO check for underflow messing up min
-    active_plugin_ =
-        std::min(active_plugin_, static_cast<int>(plugins_.size()) - 1);
+    active_plugin_ = std::min(active_plugin_, static_cast<int>(plugins_.size()) - 1);
 }
 
 void Track::SetActivePlugin(int index)
@@ -108,14 +106,12 @@ void Track::HandleEvent(const Event &event)
                 // TODO KEY_J and KEY_K move up and down
                 case KEY_H:
                     LOG_MSG("left");
-                    active_plugin_ =
-                        clamp_index(active_plugin_ - 1, plugins_.size());
+                    active_plugin_ = clamp_index(active_plugin_ - 1, plugins_.size());
                     LOG_VAR(active_plugin_);
                     break;
                 case KEY_L:
                     LOG_MSG("right");
-                    active_plugin_ =
-                        clamp_index(active_plugin_ + 1, plugins_.size());
+                    active_plugin_ = clamp_index(active_plugin_ + 1, plugins_.size());
                     LOG_VAR(active_plugin_);
                     break;
                 case KEY_ENTER:
@@ -170,13 +166,11 @@ void Track::Render(Interface &interface)
 
             constexpr int font_size = 10;
             int width = MeasureText(plugins_[i]->GetName(), font_size);
-            DrawText(plugins_[i]->GetName(), (x - width / 2), y + 6, font_size,
-                     WHITE);
+            DrawText(plugins_[i]->GetName(), (x - width / 2), y + 6, font_size, WHITE);
 
             if (i == active_plugin_)
             {
-                DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16,
-                                    static_cast<float>(i / 4) * 32 + 64 + 16},
+                DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16},
                             5.0f, GREEN);
             }
         }
@@ -184,9 +178,8 @@ void Track::Render(Interface &interface)
         {
             auto x = static_cast<float>((i % 4) * 32 + 16);
             auto y = static_cast<float>((i / 4) * 32 + 64 + 16);
-            DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16,
-                                static_cast<float>(i / 4) * 32 + 64 + 16},
-                        1.0f, RED);
+            DrawCircleV(Vector2{static_cast<float>(i % 4) * 32 + 16, static_cast<float>(i / 4) * 32 + 64 + 16}, 1.0f,
+                        RED);
             DrawTextPro(GetFontDefault(), "none", Vector2{x, y},
                         Vector2{
                             11,
