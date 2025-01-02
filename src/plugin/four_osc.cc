@@ -1,21 +1,22 @@
 #include "plugin/four_osc.hh"
 
-namespace box {
+namespace box
+{
 
-Texture2D FourOsc::icon_;  // Define the static member
+Texture2D FourOsc::icon_; // Define the static member
 
-FourOsc:: FourOsc(te::Plugin *p): 
-    Plugin(p), base_plugin_{static_cast<te::FourOscPlugin *>(p)},
-    // knob_master_level_{32, 64, 16, {255,0,0}, base_plugin_->masterLevelValue, base_plugin_->masterLevel}
+FourOsc::FourOsc(te::Plugin *p)
+    : Plugin(p),
+      base_plugin_{static_cast<te::FourOscPlugin *>(p)},
+      // knob_master_level_{32, 64, 16, {255,0,0},
+      // base_plugin_->masterLevelValue, base_plugin_->masterLevel}
 
-    knob_master_level_{
-        Parameter<float>(base_plugin_->masterLevel),
-        32, // x
-        22, // y
-        16, // radius
-        GREEN,
-        "volume"
-    }
+      knob_master_level_{Parameter<float>(base_plugin_->masterLevel),
+                         32, // x
+                         22, // y
+                         16, // radius
+                         GREEN,
+                         "volume"}
 {
     EnsureTextureLoaded();
     // TODO for testing effects
@@ -25,17 +26,17 @@ FourOsc:: FourOsc(te::Plugin *p):
     }
 }
 
-FourOsc:: ~FourOsc()
+FourOsc::~FourOsc()
 {
     UnloadTexture(icon_);
 }
 
-Texture2D &FourOsc:: GetIcon() const
+Texture2D &FourOsc::GetIcon() const
 {
     return icon_;
 }
 
-const char *FourOsc:: GetIconPath() const
+const char *FourOsc::GetIconPath() const
 {
     return icon_path_;
 }
@@ -45,7 +46,7 @@ const char *FourOsc::GetName() const
     return name_;
 }
 
-void FourOsc:: Render(Interface &interface)
+void FourOsc::Render(Interface &interface)
 {
     for (int y = 0; y < Interface::HEIGHT; ++y)
     {
@@ -60,12 +61,12 @@ void FourOsc:: Render(Interface &interface)
     knob_master_level_.Render(interface);
 }
 
-void FourOsc:: HandleEvent(const Event &event)
+void FourOsc::HandleEvent(const Event &event)
 {
     switch (event.type)
     {
     case EventType::KeyPress:
-        switch(event.value)
+        switch (event.value)
         {
         case KEY_ONE:
             LOG_VAR(knob_master_level_.param_.GetNorm());

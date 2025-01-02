@@ -1,21 +1,19 @@
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
-#include "core/util.hh"
-#include "core/interface.hh"
 #include "core/app.hh"
-
+#include "core/interface.hh"
+#include "core/util.hh"
 #include "raylib.h"
 
-
-int main() 
+int main()
 {
     const juce::ScopedJuceInitialiser_GUI initialiser; // need this
     SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
     std::filesystem::path curr_path = std::filesystem::current_path();
-    juce::File my_file {juce::String{curr_path.string() + "/tmp.box"}};
+    juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
 
     std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
     te::Edit &edit = *my_edit;
@@ -30,7 +28,7 @@ int main()
     {
         // arm
         {
-            auto& dm = engine.getDeviceManager();
+            auto &dm = engine.getDeviceManager();
 
             for (int i = 0; i < dm.getNumWaveInDevices(); i++)
             {
@@ -48,11 +46,11 @@ int main()
             }
         }
 
-        while (!interface.ShouldClose()) 
+        while (!interface.ShouldClose())
         {
             // poll and handle events
             box::Event event;
-            if (interface.PollEvent(event)) 
+            if (interface.PollEvent(event))
             {
                 app.HandleEvent(event);
             }
@@ -66,8 +64,8 @@ int main()
 
             interface.PostRender();
         }
-    } 
-    catch (std::exception &e) 
+    }
+    catch (std::exception &e)
     {
         std::cerr << e.what() << std::endl;
     }

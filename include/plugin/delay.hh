@@ -1,7 +1,7 @@
 #pragma once
+#include "component/knob.hh"
 #include "core/interface.hh"
 #include "core/plugin.hh"
-#include "component/knob.hh"
 
 namespace box
 {
@@ -17,8 +17,7 @@ struct Delay : public Plugin
     Knob<float> knob_mix_;
     Knob<int> knob_length_;
 
-public:
-
+  public:
     Delay(te::Plugin *p);
     ~Delay() override;
 
@@ -26,7 +25,7 @@ public:
     const char *GetIconPath() const override;
     const char *GetName() const override;
     void Render(Interface &interface) override;
-    void HandleEvent(const Event& event) override;
+    void HandleEvent(const Event &event) override;
 };
 
 } // namespace box

@@ -1,12 +1,12 @@
 #pragma once
-#include "core/util.hh"
-#include "core/parameter.hh"
 #include "core/cv.hh"
+#include "core/parameter.hh"
+#include "core/util.hh"
 
-namespace box {
+namespace box
+{
 
-template <typename T>
-struct Knob
+template <typename T> struct Knob
 {
     Parameter<T> param_;
     uint8_t x_, y_, radius_;
@@ -14,10 +14,16 @@ struct Knob
     std::string name_;
 
     Knob(Parameter<T> p, uint8_t x, uint8_t y, uint8_t radius, Color color, std::string name = "")
-    : param_{p}, x_{x}, y_{y}, radius_{radius}, color_{color}, name_{name}
-    {}
+        : param_{p},
+          x_{x},
+          y_{y},
+          radius_{radius},
+          color_{color},
+          name_{name}
+    {
+    }
 
-    virtual void Render(Interface &interface) 
+    virtual void Render(Interface &interface)
     {
         auto angle = param_.GetNorm() * 360;
         auto x = static_cast<float>(x_);
@@ -28,11 +34,9 @@ struct Knob
         int width = MeasureText(name_.c_str(), font_size);
         DrawText(name_.c_str(), x - (width / 2), y + 20, font_size, WHITE);
     }
-    virtual void HandleEvent(const Event& event) 
+    virtual void HandleEvent(const Event &event)
     {
-        
     }
 };
 
 } // namespace box
-

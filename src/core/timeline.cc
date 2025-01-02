@@ -1,9 +1,11 @@
 #include "core/timeline.hh"
+
 #include "core/app.hh"
 
-namespace box {
+namespace box
+{
 
-Timeline:: Timeline()
+Timeline::Timeline()
 {
     {
         Image tmp_l = LoadImage(METRONOME_PATH_L);
@@ -18,14 +20,14 @@ Timeline:: Timeline()
     }
 }
 
-Timeline:: ~Timeline()
+Timeline::~Timeline()
 {
     UnloadTexture(metronome_l_);
     UnloadTexture(metronome_r_);
     UnloadTexture(metronome_off_);
 }
 
-void Timeline:: Render(Interface &interface) 
+void Timeline::Render(Interface &interface)
 {
     /*
         terminology:
@@ -42,9 +44,8 @@ void Timeline:: Render(Interface &interface)
     const te::TransportControl &transport = APP->edit_.getTransport();
     const te::TempoSequence &tempo = APP->edit_.tempoSequence;
 
-    const Position curr_pos = {
-        static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
-        static_cast<float>(tempo.toBeats(transport.getPosition()).inBeats())};
+    const Position curr_pos = {static_cast<float>(APP->edit_.getTransport().getPosition().inSeconds()),
+                               static_cast<float>(tempo.toBeats(transport.getPosition()).inBeats())};
 
     BeatFrame screen{curr_pos.beats, radius_};
 
@@ -67,8 +68,10 @@ void Timeline:: Render(Interface &interface)
     {
         auto text = format_time(curr_pos.secs);
 
-        Vector2 text_size = MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
-        DrawText(text.c_str(), (SCREEN_HALF - text_size.x/2), (HEADER_HEIGHT/2 - text_size.y/2), HEADER_FONT_SIZE, WHITE);
+        Vector2 text_size =
+            MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(text.c_str(), (SCREEN_HALF - text_size.x / 2), (HEADER_HEIGHT / 2 - text_size.y / 2), HEADER_FONT_SIZE,
+                 WHITE);
     }
 
     // render metronome
@@ -78,16 +81,16 @@ void Timeline:: Render(Interface &interface)
             const int beat = static_cast<int>(curr_pos.beats);
             if (beat % 2 == 0)
             {
-                DrawTexture(metronome_l_, SCREEN_EIGHTH/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_l_, SCREEN_EIGHTH / 2 - ICON_RADIUS, HEADER_HEIGHT / 2 - ICON_RADIUS, WHITE);
             }
             else
             {
-                DrawTexture(metronome_r_, SCREEN_EIGHTH/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+                DrawTexture(metronome_r_, SCREEN_EIGHTH / 2 - ICON_RADIUS, HEADER_HEIGHT / 2 - ICON_RADIUS, WHITE);
             }
         }
         else
         {
-            DrawTexture(metronome_off_, SCREEN_EIGHTH/2 - ICON_RADIUS, HEADER_HEIGHT/2 - ICON_RADIUS, WHITE);
+            DrawTexture(metronome_off_, SCREEN_EIGHTH / 2 - ICON_RADIUS, HEADER_HEIGHT / 2 - ICON_RADIUS, WHITE);
         }
     }
 
@@ -95,42 +98,26 @@ void Timeline:: Render(Interface &interface)
     {
         DrawRectangle(SCREEN_EIGHTH, 0, ICON_WIDTH, ICON_HEIGHT, YELLOW);
         auto text = format_key_offset(APP->key_offset_);
-        Vector2 text_size = MeasureTextEx(
-            GetFontDefault(),
-            text.c_str(),
-            HEADER_FONT_SIZE,
-            HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
-        DrawText(
-            text.c_str(),
-            SCREEN_EIGHTH + SCREEN_EIGHTH/2 - text_size.x/2,
-            HEADER_HEIGHT/2 - text_size.y/2,
-            HEADER_FONT_SIZE,
-            BLACK);
+        Vector2 text_size =
+            MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(text.c_str(), SCREEN_EIGHTH + SCREEN_EIGHTH / 2 - text_size.x / 2, HEADER_HEIGHT / 2 - text_size.y / 2,
+                 HEADER_FONT_SIZE, BLACK);
     }
 
     // render cursor position
     {
         auto text = format_cursor_pos(APP->GetCurrTrack(), cursor_.LeftEdge());
-        Vector2 text_size = MeasureTextEx(
-            GetFontDefault(),
-            text.c_str(),
-            HEADER_FONT_SIZE,
-            HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
-        DrawText(
-            text.c_str(),
-            SCREEN_WIDTH - SCREEN_EIGHTH - text_size.x/2,
-            HEADER_HEIGHT/2 - text_size.y/2,
-            HEADER_FONT_SIZE,
-            WHITE);
+        Vector2 text_size =
+            MeasureTextEx(GetFontDefault(), text.c_str(), HEADER_FONT_SIZE, HEADER_FONT_SIZE / DEFAULT_FONT_SIZE);
+        DrawText(text.c_str(), SCREEN_WIDTH - SCREEN_EIGHTH - text_size.x / 2, HEADER_HEIGHT / 2 - text_size.y / 2,
+                 HEADER_FONT_SIZE, WHITE);
     }
 
     // render bar lines
     {
         float first_bar_start = std::floor(screen.LeftEdge() / bar_width_) * bar_width_;
 
-        for (float bar_start = first_bar_start; 
-            bar_start < screen.RightEdge();
-            bar_start += bar_width_)
+        for (float bar_start = first_bar_start; bar_start < screen.RightEdge(); bar_start += bar_width_)
         {
             float bar_position_pct = (bar_start - screen.LeftEdge()) / screen.Width();
             int x = static_cast<int>(bar_position_pct * SCREEN_WIDTH);
@@ -148,8 +135,10 @@ void Timeline:: Render(Interface &interface)
             float left_px = (left_pct * SCREEN_WIDTH);
             DrawRectangle(left_px, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, (SCREEN_HALF - left_px), ROW_HEIGHT, RED);
         }
-        else {
-            DrawRectangle(0, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, (SCREEN_HALF - 0), ROW_HEIGHT, RED); // 64 - 0 means full half bar
+        else
+        {
+            DrawRectangle(0, (curr_row * ROW_HEIGHT) + HEADER_HEIGHT, (SCREEN_HALF - 0), ROW_HEIGHT,
+                          RED); // 64 - 0 means full half bar
         }
     }
 
@@ -163,9 +152,8 @@ void Timeline:: Render(Interface &interface)
             {
                 const te::ClipPosition c_pos = c->getPosition();
                 te::BeatRange t_br = te::toBeats(c_pos.time, tempo);
-                BeatWindow clip = {
-                    static_cast<float>(t_br.getStart().inBeats()), 
-                    static_cast<float>(t_br.getLength().inBeats())};
+                BeatWindow clip = {static_cast<float>(t_br.getStart().inBeats()),
+                                   static_cast<float>(t_br.getLength().inBeats())};
 
                 // Determine overlap with visible range
                 const float visible_start = std::max(screen.LeftEdge(), clip.LeftEdge());
@@ -195,7 +183,6 @@ void Timeline:: Render(Interface &interface)
         DrawRectangleLines(x, y, ROW_WIDTH, ROW_HEIGHT, RED);
     }
 
-
     // render cursor
     if (!transport.isRecording() && !transport.isPlaying())
     {
@@ -211,8 +198,7 @@ void Timeline:: Render(Interface &interface)
 
     // render playhead
     {
-        if (screen.LeftEdge() < curr_pos.beats &&
-            curr_pos.beats < screen.RightEdge())
+        if (screen.LeftEdge() < curr_pos.beats && curr_pos.beats < screen.RightEdge())
         {
             const float left_pct = (curr_pos.beats - screen.LeftEdge()) / screen.Width();
             const int left_px = static_cast<int>(left_pct * SCREEN_WIDTH);
@@ -243,7 +229,7 @@ void Timeline:: Render(Interface &interface)
 //     return false;
 // }
 
-void Timeline:: print_timeline()
+void Timeline::print_timeline()
 {
     std::cout << std::endl;
     const auto &track = APP->CurrTrack().base_;
@@ -268,22 +254,30 @@ void Timeline:: print_timeline()
     std::cout << "num clips: " << clips.size() << std::endl;
     for (auto c : clips)
     {
-        std::cout << "\t"<< "name: " << c->getName() << std::endl;
-        std::cout << "\t\t"<< "isMidi: " << c->isMidi() << std::endl;
+        std::cout << "\t"
+                  << "name: " << c->getName() << std::endl;
+        std::cout << "\t\t"
+                  << "isMidi: " << c->isMidi() << std::endl;
         const te::ClipPosition pos = c->getPosition();
         auto edit_range = te::EditTimeRange{pos.time};
         te::TimeRange time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
         te::BeatRange beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
-        std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
-        std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
-        std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
-        std::cout << "\t\t" << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
-        std::cout << "\t\t" << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
-        std::cout << "\t\t" << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
+        std::cout << "\t\t"
+                  << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t"
+                  << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
+        std::cout << "\t\t"
+                  << "TIME length: " << pos.getLength().inSeconds() << std::endl;
+        std::cout << "\t\t"
+                  << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
+        std::cout << "\t\t"
+                  << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
+        std::cout << "\t\t"
+                  << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
     }
 }
 
-void Timeline:: FocusCursor()
+void Timeline::FocusCursor()
 {
     assert(cursor_.len < frame_.Width());
     if (cursor_.LeftEdge() < frame_.LeftEdge())
@@ -298,15 +292,15 @@ void Timeline:: FocusCursor()
     }
 }
 
-void Timeline:: HandleEvent(const Event &event) 
+void Timeline::HandleEvent(const Event &event)
 {
-    switch (screen_state_) 
+    switch (screen_state_)
     {
     case ScreenState::Overview:
-        switch (event.type) 
+        switch (event.type)
         {
         case EventType::KeyPress:
-            switch (event.value) 
+            switch (event.value)
             {
             case KEY_ENTER:
                 APP->screen_state_ = App::ScreenState::Track;
@@ -324,8 +318,7 @@ void Timeline:: HandleEvent(const Event &event)
             case KEY_J:
                 if (!APP->edit_.getTransport().isRecording())
                 {
-                    APP->SetCurrTrack(
-                        clamp_increment(APP->GetCurrTrack(), APP->tracks_.size()));
+                    APP->SetCurrTrack(clamp_increment(APP->GetCurrTrack(), APP->tracks_.size()));
                     if (APP->GetCurrTrack() - scroll_offset_ >= MAX_ROWS)
                     {
                         scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
@@ -349,52 +342,52 @@ void Timeline:: HandleEvent(const Event &event)
                 scroll_offset_ = clamp_increment(scroll_offset_, APP->tracks_.size());
                 break;
             case KEY_O: // add track
-                if (APP->tracks_.size() < MAX_TRACKS) 
+                if (APP->tracks_.size() < MAX_TRACKS)
                 {
                     APP->AddTrack();
                 }
                 break;
             case KEY_W:
-                {
-                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                    auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.RightEdge()));
+            {
+                const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.RightEdge()));
 
-                    te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
-                    if (item == nullptr)
+                te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                if (item == nullptr)
+                {
+                    LOG_MSG("KEY_W found NONE");
+                }
+                else
+                {
+                    if (auto clip = dynamic_cast<te::Clip *>(item))
                     {
-                        LOG_MSG("KEY_W found NONE");
-                    }
-                    else
-                    {
-                        if (auto clip = dynamic_cast<te::Clip*>(item))
-                        {
-                            cursor_.start = clip->getStartBeat().inBeats();
-                            FocusCursor();
-                        }
+                        cursor_.start = clip->getStartBeat().inBeats();
+                        FocusCursor();
                     }
                 }
-                break;
+            }
+            break;
             case KEY_D:
-                {
-                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                    auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.start));
+            {
+                const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.start));
 
-                    te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
-                    if (item == nullptr)
+                te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                if (item == nullptr)
+                {
+                    LOG_MSG("KEY_D found NONE");
+                }
+                else
+                {
+                    LOG_MSG("deleting item of type:");
+                    LOG_MSG(te::TrackItem::typeToString(item->type));
+                    if (auto clip = dynamic_cast<te::Clip *>(item))
                     {
-                        LOG_MSG("KEY_D found NONE");
-                    }
-                    else
-                    {
-                        LOG_MSG("deleting item of type:");
-                        LOG_MSG(te::TrackItem::typeToString(item->type));
-                        if (auto clip = dynamic_cast<te::Clip*>(item))
-                        {
-                            clip->removeFromParent();
-                        }
+                        clip->removeFromParent();
                     }
                 }
-                break;
+            }
+            break;
             case KEY_P:
                 print_timeline();
                 LOG_VAR(frame_.center);
@@ -404,79 +397,79 @@ void Timeline:: HandleEvent(const Event &event)
                 APP->edit_.clickTrackEnabled = !APP->edit_.clickTrackEnabled;
                 break;
             case KEY_R:
+            {
+                auto &transport = APP->edit_.getTransport();
+                LOG_VAR(transport.getPosition().inSeconds());
+                LOG_VAR(transport.isRecording());
+                if (transport.isRecording())
                 {
-                    auto &transport = APP->edit_.getTransport();
-                    LOG_VAR(transport.getPosition().inSeconds());
-                    LOG_VAR(transport.isRecording());
-                    if (transport.isRecording())
-                    {
-                        transport.stop(false, false); // TODO should this discard?
-                        te::EditFileOperations (APP->edit_).save(true, true, false);
-                        playhead_mode_ = PlayheadMode::Detached;
+                    transport.stop(false, false); // TODO should this discard?
+                    te::EditFileOperations(APP->edit_).save(true, true, false);
+                    playhead_mode_ = PlayheadMode::Detached;
 
-                        {
-                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos/bar_width_) * bar_width_;
-                        frame_.center = curr_pos;
-                        }
-                        assert_multiple(cursor_.start, bar_width_);
-                    }
-                    else
                     {
-                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                        transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
-                        transport.record(false);
-                        playhead_mode_ = PlayheadMode::Locked;
+                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
+                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        frame_.center = curr_pos;
                     }
+                    assert_multiple(cursor_.start, bar_width_);
                 }
-                break;
+                else
+                {
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
+                    transport.record(false);
+                    playhead_mode_ = PlayheadMode::Locked;
+                }
+            }
+            break;
             case KEY_T:
+            {
+                auto &transport = APP->edit_.getTransport();
+                if (transport.isPlaying())
                 {
-                    auto &transport = APP->edit_.getTransport();
-                    if (transport.isPlaying())
-                    {
-                        transport.stop(false, false); // TODO should this discard?
-                        playhead_mode_ = PlayheadMode::Detached;
+                    transport.stop(false, false); // TODO should this discard?
+                    playhead_mode_ = PlayheadMode::Detached;
 
-                        {
-                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
-                        cursor_.start = std::floor(curr_pos/bar_width_) * bar_width_;
-                        frame_.center = curr_pos;
-                        }
-                        assert_multiple(cursor_.start, bar_width_);
-                    }
-                    else
                     {
-                        const te::TempoSequence &tempo = APP->edit_.tempoSequence;
-                        transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
-                        transport.play(false);
-                        playhead_mode_ = PlayheadMode::Locked;
+                        const float curr_pos = APP->edit_.tempoSequence.toBeats(transport.getPosition()).inBeats();
+                        cursor_.start = std::floor(curr_pos / bar_width_) * bar_width_;
+                        frame_.center = curr_pos;
                     }
+                    assert_multiple(cursor_.start, bar_width_);
                 }
-                break;
+                else
+                {
+                    const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                    transport.setPosition(tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge())));
+                    transport.play(false);
+                    playhead_mode_ = PlayheadMode::Locked;
+                }
+            }
+            break;
             case KEY_S:
-                {
-                    LOG_MSG("move to origin");
-                    auto &transport = APP->edit_.getTransport();
-                    transport.setPosition(te::TimePosition::fromSeconds(0.f));
-                    cursor_.start = 0;
-                    frame_.center = 0;
-                }
-                break;
+            {
+                LOG_MSG("move to origin");
+                auto &transport = APP->edit_.getTransport();
+                transport.setPosition(te::TimePosition::fromSeconds(0.f));
+                cursor_.start = 0;
+                frame_.center = 0;
+            }
+            break;
             case KEY_COMMA:
-                {
-                    LOG_MSG("move left");
-                    auto &transport = APP->edit_.getTransport();
-                    transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() - 2.f));
-                }
-                break;
+            {
+                LOG_MSG("move left");
+                auto &transport = APP->edit_.getTransport();
+                transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() - 2.f));
+            }
+            break;
             case KEY_PERIOD:
-                {
-                    LOG_MSG("move right");
-                    auto &transport = APP->edit_.getTransport();
-                    transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() + 2.f));
-                }
-                break;
+            {
+                LOG_MSG("move right");
+                auto &transport = APP->edit_.getTransport();
+                transport.setPosition(te::TimePosition::fromSeconds(transport.getPosition().inSeconds() + 2.f));
+            }
+            break;
             case KEY_MINUS:
                 radius_ *= 2;
                 frame_.radius *= 2; // TODO centralize this

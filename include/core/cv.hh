@@ -1,16 +1,19 @@
 #pragma once
 
-#include "core/util.hh"
 #include <algorithm>
 
-template <typename T>
-struct CV {
+#include "core/util.hh"
+
+template <typename T> struct CV
+{
     juce::CachedValue<T> &value_;
     T min_, max_;
 
     // TODO add default value?
     CV(juce::CachedValue<T> &cv, T min, T max)
-    : value_{cv}, min_{min}, max_{max}
+        : value_{cv},
+          min_{min},
+          max_{max}
     {
         assert(min <= max);
     }
@@ -27,7 +30,10 @@ struct CV {
         value_ = range * norm;
     }
 
-    T GetValue() const { return value_.get(); }
+    T GetValue() const
+    {
+        return value_.get();
+    }
     T GetNorm() const
     {
         const auto range = max_ - min_;

@@ -1,7 +1,7 @@
 #pragma once
+#include "component/knob.hh"
 #include "core/interface.hh"
 #include "core/plugin.hh"
-#include "component/knob.hh"
 
 namespace box
 {
@@ -18,8 +18,7 @@ struct Compressor : public Plugin
     Knob<float> knob_attack_;
     Knob<float> knob_release_;
 
-public:
-
+  public:
     Compressor(te::Plugin *p);
     ~Compressor() override;
 
@@ -27,7 +26,7 @@ public:
     const char *GetIconPath() const override;
     const char *GetName() const override;
     void Render(Interface &interface) override;
-    void HandleEvent(const Event& event) override;
+    void HandleEvent(const Event &event) override;
 };
 
-}
+} // namespace box

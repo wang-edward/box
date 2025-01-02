@@ -1,45 +1,43 @@
 #include "core/plugin_selector.hh"
-#include "core/app.hh"
 
+#include "core/app.hh"
 #include "plugin/chorus.hh"
-#include "plugin/four_osc.hh"
 #include "plugin/compressor.hh"
 #include "plugin/delay.hh"
+#include "plugin/four_osc.hh"
 
-namespace box {
+namespace box
+{
 
-const std::vector<std::string> PluginSelector:: PLUGIN_NAMES = {
-    te::FourOscPlugin::xmlTypeName,
-    te::ChorusPlugin::xmlTypeName,
-    te::CompressorPlugin::xmlTypeName,
-    te::DelayPlugin::xmlTypeName,
-    te::EqualiserPlugin::xmlTypeName,
-    te::PhaserPlugin::xmlTypeName,
+const std::vector<std::string> PluginSelector::PLUGIN_NAMES = {
+    te::FourOscPlugin::xmlTypeName, te::ChorusPlugin::xmlTypeName,    te::CompressorPlugin::xmlTypeName,
+    te::DelayPlugin::xmlTypeName,   te::EqualiserPlugin::xmlTypeName, te::PhaserPlugin::xmlTypeName,
     te::ReverbPlugin::xmlTypeName,
 };
 
-void assert_index(std::vector<std::string> v, size_t curr) 
+void assert_index(std::vector<std::string> v, size_t curr)
 {
-    if (curr >= v.size()) throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
+    if (curr >= v.size())
+        throw std::runtime_error{"PluginSelector index out of range: " + std::to_string(curr)};
 }
 
-PluginSelector:: PluginSelector()
+PluginSelector::PluginSelector()
 {
-
 }
 
-void PluginSelector:: Render(Interface &interface) 
+void PluginSelector::Render(Interface &interface)
 {
-    for (size_t i = 0; i < interface.HEIGHT / 8; i++) 
+    for (size_t i = 0; i < interface.HEIGHT / 8; i++)
     {
-        if (i >= PLUGIN_NAMES.size()) break;
+        if (i >= PLUGIN_NAMES.size())
+            break;
         auto name = PLUGIN_NAMES[i];
-        float x =  0;
+        float x = 0;
         float y = 16 * i;
         float width = 128;
         float height = 15;
         Color color = RED;
-        if (current_index_ == i) 
+        if (current_index_ == i)
         {
             color = BLUE;
         }
@@ -48,12 +46,12 @@ void PluginSelector:: Render(Interface &interface)
     }
 }
 
-void PluginSelector:: HandleEvent(const Event &event) 
+void PluginSelector::HandleEvent(const Event &event)
 {
-    switch(event.type) 
+    switch (event.type)
     {
     case EventType::KeyPress:
-        switch (event.value) 
+        switch (event.value)
         {
         case KEY_ESCAPE:
             APP->screen_state_ = App::ScreenState::Track;
@@ -64,7 +62,7 @@ void PluginSelector:: HandleEvent(const Event &event)
         case KEY_J:
             current_index_ = std::min(current_index_ + 1, PLUGIN_NAMES.size() - 1);
             break;
-       case KEY_ENTER:
+        case KEY_ENTER:
             // TODO proper back button?
             APP->screen_state_ = App::ScreenState::Track;
             const auto &name = PLUGIN_NAMES[current_index_];
@@ -72,11 +70,11 @@ void PluginSelector:: HandleEvent(const Event &event)
             std::unique_ptr<Plugin> p;
             auto base = APP->edit_.getPluginCache().createNewPlugin(name.c_str(), {}).get();
             // TODO use cast?
-            if (name == te::ChorusPlugin::xmlTypeName) 
+            if (name == te::ChorusPlugin::xmlTypeName)
             {
                 p = std::make_unique<Chorus>(base);
-            } 
-            else if (name == te::FourOscPlugin::xmlTypeName) 
+            }
+            else if (name == te::FourOscPlugin::xmlTypeName)
             {
                 p = std::make_unique<FourOsc>(base);
             }

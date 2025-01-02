@@ -1,59 +1,54 @@
 #include "plugin/compressor.hh"
+
 #include "core/cv.hh"
 
-namespace box {
+namespace box
+{
 
-Texture2D Compressor::icon_;  // Define the static member
+Texture2D Compressor::icon_; // Define the static member
 
 Compressor::Compressor(te::Plugin *p)
-    : Plugin(p), base_plugin_{static_cast<te::CompressorPlugin *>(p)},
-    knob_threshold_{
-        Parameter<float>{base_plugin_->thresholdGain.parameter},
-        32, // x
-        22, // y
-        16, // radius
-        GREEN,
-        "threshold"
-    },
-    knob_ratio_{
-        Parameter<float>{base_plugin_->ratio.parameter},
-        96, // x
-        22, // y
-        16, // radius
-        RED,
-        "ratio"
-    },
-    knob_attack_{
-        Parameter<float>{base_plugin_->attackMs.parameter},
-        32, // x
-        86, // y
-        16, // radius
-        BLUE,
-        "attack"
-    },
-    knob_release_{
-        Parameter<float>{base_plugin_->releaseMs.parameter},
-        96, // x
-        86, // y
-        16, // radius
-        YELLOW,
-        "release"
-    }
+    : Plugin(p),
+      base_plugin_{static_cast<te::CompressorPlugin *>(p)},
+      knob_threshold_{Parameter<float>{base_plugin_->thresholdGain.parameter},
+                      32, // x
+                      22, // y
+                      16, // radius
+                      GREEN,
+                      "threshold"},
+      knob_ratio_{Parameter<float>{base_plugin_->ratio.parameter},
+                  96, // x
+                  22, // y
+                  16, // radius
+                  RED,
+                  "ratio"},
+      knob_attack_{Parameter<float>{base_plugin_->attackMs.parameter},
+                   32, // x
+                   86, // y
+                   16, // radius
+                   BLUE,
+                   "attack"},
+      knob_release_{Parameter<float>{base_plugin_->releaseMs.parameter},
+                    96, // x
+                    86, // y
+                    16, // radius
+                    YELLOW,
+                    "release"}
 {
     EnsureTextureLoaded();
 }
 
-Compressor:: ~Compressor()
+Compressor::~Compressor()
 {
     UnloadTexture(icon_);
 }
 
-Texture2D &Compressor:: GetIcon() const
+Texture2D &Compressor::GetIcon() const
 {
     return icon_;
 }
 
-const char *Compressor:: GetIconPath() const
+const char *Compressor::GetIconPath() const
 {
     return icon_path_;
 }
@@ -76,7 +71,7 @@ void Compressor::HandleEvent(const Event &event)
     switch (event.type)
     {
     case EventType::KeyPress:
-        switch(event.value)
+        switch (event.value)
         {
         case KEY_ONE:
             LOG_VAR(knob_threshold_.param_.GetNorm());
