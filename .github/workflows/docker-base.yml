@@ -1,0 +1,22 @@
+name: Build and Push Box Base Image
+
+on:
+  push:
+    paths:
+      - Dockerfile.box_base
+
+jobs:
+  build-and-push:
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to GHCR
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Build and Push Box Base
+      run: |
+        docker build -f Dockerfile.box_base -t ghcr.io/${{ github.repository }}/box-base:latest .
+        docker push ghcr.io/${{ github.repository }}/box-base:latest
