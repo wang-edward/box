@@ -277,7 +277,7 @@ void Timeline::print_timeline()
     }
 }
 
-void Timeline::FocusCursor()
+void Timeline::CursorFocus()
 {
     assert(cursor_.len < frame_.Width());
     if (cursor_.LeftEdge() < frame_.LeftEdge())
@@ -290,6 +290,11 @@ void Timeline::FocusCursor()
         const float diff = cursor_.RightEdge() - frame_.RightEdge();
         frame_.center += diff;
     }
+}
+
+void Timeline::CursorAlignGrid()
+{
+    cursor_.start = std::floor(cursor_.start / bar_width_) * bar_width_;
 }
 
 void Timeline::HandleEvent(const Event &event)
@@ -308,12 +313,12 @@ void Timeline::HandleEvent(const Event &event)
             case KEY_H:
                 cursor_.start -= step_size_;
                 LOG_VAR(cursor_.LeftEdge() < frame_.LeftEdge());
-                FocusCursor();
+                CursorFocus();
                 break;
             case KEY_L:
                 cursor_.start += step_size_;
                 LOG_VAR(cursor_.RightEdge() > frame_.RightEdge());
-                FocusCursor();
+                CursorFocus();
                 break;
             case KEY_J:
                 if (!APP->edit_.getTransport().isRecording())
@@ -362,7 +367,29 @@ void Timeline::HandleEvent(const Event &event)
                     if (auto clip = dynamic_cast<te::Clip *>(item))
                     {
                         cursor_.start = clip->getStartBeat().inBeats();
-                        FocusCursor();
+                        CursorFocus();
+                        CursorAlignGrid();
+                    }
+                }
+            }
+            break;
+            case KEY_E:
+            {
+                const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.RightEdge()));
+
+                te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
+                if (item == nullptr)
+                {
+                    LOG_MSG("KEY_E found NONE");
+                }
+                else
+                {
+                    if (auto clip = dynamic_cast<te::Clip *>(item))
+                    {
+                        cursor_.start = clip->getEndBeat().inBeats();
+                        CursorFocus();
+                        CursorAlignGrid();
                     }
                 }
             }
