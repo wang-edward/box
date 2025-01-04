@@ -83,7 +83,8 @@ struct Timeline
     Timeline();
     ~Timeline();
 
-    void FocusCursor();
+    void CursorFocus();
+    void CursorAlignGrid();
 
     void Render(Interface &interface);
     void HandleEvent(const Event &event);
