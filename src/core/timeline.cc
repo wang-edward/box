@@ -254,26 +254,20 @@ void Timeline::print_timeline()
     std::cout << "num clips: " << clips.size() << std::endl;
     for (auto c : clips)
     {
-        std::cout << "\t"
-                  << "name: " << c->getName() << std::endl;
-        std::cout << "\t\t"
-                  << "isMidi: " << c->isMidi() << std::endl;
+        // clang-format off
+        std::cout << "\t" << "name: " << c->getName() << std::endl;
+        std::cout << "\t\t" << "isMidi: " << c->isMidi() << std::endl;
         const te::ClipPosition pos = c->getPosition();
         auto edit_range = te::EditTimeRange{pos.time};
         te::TimeRange time_range = te::toTime(edit_range, APP->edit_.tempoSequence);
         te::BeatRange beat_range = te::toBeats(edit_range, APP->edit_.tempoSequence);
-        std::cout << "\t\t"
-                  << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
-        std::cout << "\t\t"
-                  << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
-        std::cout << "\t\t"
-                  << "TIME length: " << pos.getLength().inSeconds() << std::endl;
-        std::cout << "\t\t"
-                  << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
-        std::cout << "\t\t"
-                  << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
-        std::cout << "\t\t"
-                  << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
+        std::cout << "\t\t" << "TIME start: " << time_range.getStart().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME end: " << time_range.getEnd().inSeconds() << std::endl;
+        std::cout << "\t\t" << "TIME length: " << pos.getLength().inSeconds() << std::endl;
+        std::cout << "\t\t" << "BEATS start: " << beat_range.getStart().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS end: " << beat_range.getEnd().inBeats() << std::endl;
+        std::cout << "\t\t" << "BEATS length: " << beat_range.getLength().inBeats() << std::endl;
+        // clang-format on
     }
 }
 
