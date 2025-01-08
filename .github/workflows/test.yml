@@ -28,7 +28,7 @@ jobs:
         build_type: [Release]
         c_compiler: [clang]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             c_compiler: clang
             cpp_compiler: clang++
     steps:
