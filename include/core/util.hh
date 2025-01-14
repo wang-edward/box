@@ -45,6 +45,9 @@ std::string format_cursor_pos(size_t track_pos, float cursor_pos);
 size_t clamp_decrement(size_t x);
 size_t clamp_increment(size_t x, size_t max);
 
+te::Clip *findCurrClip(te::AudioTrack &track, te::TimePosition time);
+te::Clip *findPrevClip(te::AudioTrack &track, te::TimePosition time);
+
 enum class LogLevel
 {
     Off,

@@ -57,6 +57,36 @@ size_t clamp_increment(size_t x, size_t max)
     return std::min(x + 1, clamp_decrement(max));
 }
 
+te::Clip *findCurrClip(te::AudioTrack &track, te::TimePosition time)
+{
+    for (int i = 0; i < track.getNumTrackItems(); i++)
+    {
+        te::TrackItem *item = track.getTrackItem(i);
+        auto pos = item->getPosition().time;
+        if (pos.getStart() < time && pos.getEnd() > time)
+        {
+            return dynamic_cast<te::Clip *>(item);
+        }
+    }
+    return nullptr;
+}
+
+te::Clip *findPrevClip(te::AudioTrack &track, te::TimePosition time)
+{
+    // iterate in reverse and find the first track before
+    int n = track.getNumTrackItems();
+    for (int i = n - 1; i >= 0; i--)
+    {
+        te::TrackItem *item = track.getTrackItem(i);
+        auto pos = item->getPosition().time;
+        if (pos.getEnd() < time)
+        {
+            return dynamic_cast<te::Clip *>(item);
+        }
+    }
+    return nullptr;
+}
+
 LogLevel string_to_loglevel(const std::string &s)
 {
     if (s == "OFF")
