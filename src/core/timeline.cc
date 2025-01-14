@@ -398,42 +398,20 @@ void Timeline::HandleEvent(const Event &event)
                 const te::TempoSequence &tempo = APP->edit_.tempoSequence;
                 auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge()));
 
-                te::TrackItem *item = APP->CurrTrack().base_.getNextTrackItemAt(pos);
-                int index = APP->CurrTrack().base_.getIndexOfNextTrackItemAt(pos);
-                if (item == nullptr && index == 0) // do nothing
+                te::Clip *curr_clip = findCurrClip(APP->CurrTrack().base_, pos);
+                te::Clip *prev_clip = findPrevClip(APP->CurrTrack().base_, pos);
+
+                if (curr_clip != nullptr)
                 {
-                    LOG_MSG("KEY_B found nothing behind it");
+                    cursor_.start = curr_clip->getStartBeat().inBeats();
+                    CursorFocus();
+                    CursorAlignGrid();
                 }
-                else if (item == nullptr && index > 0) // go to the previous clip
+                else if (prev_clip != nullptr)
                 {
-                    te::TrackItem *next_item = APP->CurrTrack().base_.getTrackItem(index - 1);
-                    if (auto clip = dynamic_cast<te::Clip *>(next_item))
-                    {
-                        cursor_.start = clip->getStartBeat().inBeats();
-                        CursorFocus();
-                        CursorAlignGrid();
-                    }
-                }
-                else if (item != nullptr) // move to the start of this clip
-                {
-                    if (auto clip = dynamic_cast<te::Clip *>(item))
-                    {
-                        cursor_.start = clip->getStartBeat().inBeats();
-                        CursorFocus();
-                        CursorAlignGrid();
-                    }
-                }
-                if (index == 0)
-                {
-                }
-                else
-                {
-                    if (auto clip = dynamic_cast<te::Clip *>(item))
-                    {
-                        cursor_.start = clip->getEndBeat().inBeats();
-                        CursorFocus();
-                        CursorAlignGrid();
-                    }
+                    cursor_.start = prev_clip->getStartBeat().inBeats();
+                    CursorFocus();
+                    CursorAlignGrid();
                 }
             }
             break;
