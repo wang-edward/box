@@ -393,6 +393,27 @@ void Timeline::HandleEvent(const Event &event)
                     }
                 }
             }
+            case KEY_B:
+            {
+                const te::TempoSequence &tempo = APP->edit_.tempoSequence;
+                auto pos = tempo.toTime(te::BeatPosition::fromBeats(cursor_.LeftEdge()));
+
+                te::Clip *curr_clip = findCurrClip(APP->CurrTrack().base_, pos);
+                te::Clip *prev_clip = findPrevClip(APP->CurrTrack().base_, pos);
+
+                if (curr_clip != nullptr)
+                {
+                    cursor_.start = curr_clip->getStartBeat().inBeats();
+                    CursorFocus();
+                    CursorAlignGrid();
+                }
+                else if (prev_clip != nullptr)
+                {
+                    cursor_.start = prev_clip->getStartBeat().inBeats();
+                    CursorFocus();
+                    CursorAlignGrid();
+                }
+            }
             break;
             case KEY_D:
             {
