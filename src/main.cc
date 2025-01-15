@@ -19,7 +19,8 @@ int main()
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
-    box::Interface interface{};
+    box::Interface interface {
+    };
 
     box::App app(engine, edit);
     box::APP = &app;

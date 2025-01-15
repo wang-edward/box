@@ -79,3 +79,15 @@ jobs:
     #   # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
     #   # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
     #   run: ctest --build-config ${{ matrix.build_type }}
+    - name: Run fuzzer
+      continue-on-error: true  # Allows next steps to run even if this fails
+      run: |
+        set -o pipefail
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests 2>&1 | tee fuzzer_log.txt
+
+    - name: Upload fuzzer log
+      if: always()  # This ensures it uploads even if the test fails
+      uses: actions/upload-artifact@v4
+      with:
+        name: fuzzer-logs
+        path: fuzzer_log.txt
