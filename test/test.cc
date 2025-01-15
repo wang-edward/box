@@ -1,12 +1,12 @@
+#include "core/app.hh"
+#include "core/interface.hh"
+#include "core/util.hh"
+#include "raylib.h"
+#include <chrono>
+#include <filesystem>
 #include <gtest/gtest.h>
 #include <iostream>
-#include <filesystem>
-#include <chrono>
 #include <random>
-#include "core/util.hh"
-#include "core/interface.hh"
-#include "core/app.hh"
-#include "raylib.h"
 
 #include "test_util.hh"
 
@@ -28,12 +28,13 @@ TEST(Fuzzer, DontCrash)
     SetTargetFPS(60);
     te::Engine engine{"Tracktion Hello World"};
     std::filesystem::path curr_path = std::filesystem::current_path();
-    juce::File my_file {juce::String{curr_path.string() + "/tmp.box"}};
+    juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
     std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
-    box::Interface interface{};
+    box::Interface interface {
+    };
     box::App app(engine, edit);
     box::APP = &app;
 
@@ -41,12 +42,13 @@ TEST(Fuzzer, DontCrash)
     const unsigned int seed = std::random_device{}();
     std::cout << "Random seed: " << seed << std::endl;
     std::mt19937 gen(seed);
-    
+
     std::vector<KeyboardKey> available_keys;
-    for (const auto& [key, _] : interface.keys_) {
+    for (const auto &[key, _] : interface.keys_)
+    {
         available_keys.push_back(key);
     }
-    
+
     std::uniform_int_distribution<> key_dist(0, available_keys.size() - 1);
     std::uniform_int_distribution<> event_dist(0, 1);
 
@@ -55,7 +57,7 @@ TEST(Fuzzer, DontCrash)
 
     // arm audio devices
     {
-        auto& dm = engine.getDeviceManager();
+        auto &dm = engine.getDeviceManager();
         for (int i = 0; i < dm.getNumWaveInDevices(); i++)
         {
             if (auto wip = dm.getWaveInDevice(i))
@@ -71,27 +73,27 @@ TEST(Fuzzer, DontCrash)
     }
 
     unsigned long event_count = 0;
-    
-    while (!interface.ShouldClose()) 
+
+    while (!interface.ShouldClose())
     {
         auto current_time = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time);
-        
-        if (elapsed >= duration) {
+
+        if (elapsed >= duration)
+        {
             break;
         }
 
         box::Event event;
         KeyboardKey random_key = available_keys[key_dist(gen)];
         bool is_press = event_dist(gen) == 0;
-        
+
         event.type = is_press ? box::EventType::KeyPress : box::EventType::KeyRelease;
         event.value = static_cast<int>(random_key);
-        
+
         // Log the event before processing it
-        std::cout << "Event " << event_count++ << " at " << elapsed.count() << "ms: "
-                  << (is_press ? "PRESS" : "RELEASE") << " " 
-                  << KeyToString(random_key) << std::endl;
+        std::cout << "Event " << event_count++ << " at " << elapsed.count()
+                  << "ms: " << (is_press ? "PRESS" : "RELEASE") << " " << KeyToString(random_key) << std::endl;
 
         app.HandleEvent(event);
 
