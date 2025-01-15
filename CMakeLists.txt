@@ -87,8 +87,12 @@ target_link_libraries(Box
 
 # boxtest
 enable_testing()
+file(GLOB_RECURSE TEST_SRC_FILES test/*.cc)
 add_executable(BoxTests
-    test/test.cc)
+    ${TEST_SRC_FILES})
+target_include_directories(BoxTests
+    PUBLIC
+        test)
 target_link_libraries(BoxTests 
     PRIVATE 
         BoxLib
