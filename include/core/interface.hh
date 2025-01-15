@@ -23,7 +23,6 @@ class Interface
     bool PollEvent(Event &event);
     bool ShouldClose() const;
 
-  private:
     RenderTexture2D target_;
     // clang-format off
     std::map<KeyboardKey, bool> keys_ = {
