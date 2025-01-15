@@ -81,7 +81,7 @@ jobs:
     #   run: ctest --build-config ${{ matrix.build_type }}
     - name: run tests
       run: |
-        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests > 2>&1 | tee fuzzer_log.txt
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests 2>&1 | tee fuzzer_log.txt
 
     - name: Upload fuzzer log
       if: always()  # This ensures it uploads even if the test fails
