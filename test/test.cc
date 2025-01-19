@@ -22,7 +22,8 @@ TEST(VirtualMidi, Environment)
     engine.getDeviceManager().createVirtualMidiDevice("box_midi");
     engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
     auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_NE(ptr, nullptr)
+        << "Expected engine.dm.getDefaultMidiInDevice() to not be nullptr after assigning a virtual midi device";
 }
 
 TEST(PlayTransport, Environment)
