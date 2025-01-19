@@ -35,7 +35,8 @@ TEST(PlayTransport, Environment)
 
     {
         transport.play(false);
-        ASSERT_EQ(transport.isPlaying(), true);
+        ASSERT_EQ(transport.isPlaying(), true)
+            << "Expected transport.isPlaying() to be true after doing transport.play(false)";
     }
 
     {
@@ -47,7 +48,7 @@ TEST(PlayTransport, Environment)
 
         const float tolerance = 1e-5f;
         ASSERT_TRUE(std::fabs(curr_pos) > tolerance)
-            << "Expected the playhead position: {" << curr_pos << "s} to be more than {" << tolerance << "s} after waiting 1 second.";
+            << "Expected the playhead position: {" << curr_pos << "s} to be more than {" << tolerance << "s} after waiting {1.0s}.";
     }
 }
 
