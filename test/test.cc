@@ -37,6 +37,18 @@ TEST(PlayTransport, Environment)
         transport.play(false);
         ASSERT_EQ(transport.isPlaying(), true);
     }
+
+    {
+        using namespace std::this_thread; // sleep_for, sleep_until
+        using namespace std::chrono; // nanoseconds, system_clock, seconds
+
+        sleep_for(seconds(1));
+        const float curr_pos = static_cast<float>(transport.getPosition().inSeconds());
+
+        const float tolerance = 1e-5f;
+        ASSERT_TRUE(std::fabs(curr_pos) > tolerance)
+            << "Expected the playhead position: {" << curr_pos << "s} to be more than {" << tolerance << "s} after waiting 1 second.";
+    }
 }
 
 TEST(Fuzzer, DontCrash)
