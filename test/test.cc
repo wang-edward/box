@@ -16,6 +16,16 @@ TEST(ExampleTest, BasicAssertions)
     EXPECT_TRUE(true);
 }
 
+TEST(VirtualMidi, Environment)
+{
+
+    te::Engine engine{"Tracktion Hello World"};
+    engine.getDeviceManager().createVirtualMidiDevice("box_midi");
+    engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
+    auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
+    EXPECT_NE(ptr, nullptr);
+}
+
 TEST(Fuzzer, DontCrash)
 {
     bool completed_successfully = false;
