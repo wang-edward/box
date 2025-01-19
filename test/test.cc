@@ -16,7 +16,7 @@ TEST(ExampleTest, BasicAssertions)
     EXPECT_TRUE(true);
 }
 
-TEST(VirtualMidi, Environment)
+TEST(ALSA, VirtualMidi)
 {
     te::Engine engine{"Tracktion Hello World"};
     engine.getDeviceManager().createVirtualMidiDevice("box_midi");
@@ -26,7 +26,7 @@ TEST(VirtualMidi, Environment)
         << "Expected engine.dm.getDefaultMidiInDevice() to not be nullptr after assigning a virtual midi device";
 }
 
-TEST(PlayTransport, Environment)
+TEST(ALSA, TransportPlay)
 {
     te::Engine engine{"Tracktion Hello World"};
     juce::File my_file{juce::String{"tmp.box"}};
