@@ -18,12 +18,25 @@ TEST(ExampleTest, BasicAssertions)
 
 TEST(VirtualMidi, Environment)
 {
-
     te::Engine engine{"Tracktion Hello World"};
     engine.getDeviceManager().createVirtualMidiDevice("box_midi");
     engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
     auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
     EXPECT_NE(ptr, nullptr);
+}
+
+TEST(PlayTransport, Environment)
+{
+    te::Engine engine{"Tracktion Hello World"};
+    juce::File my_file{juce::String{"tmp.box"}};
+    std::unique_ptr<te::Edit> edit = createEmptyEdit(engine, my_file);
+    auto &transport = edit->getTransport();
+    transport.ensureContextAllocated();
+
+    {
+        transport.play(false);
+        ASSERT_EQ(transport.isPlaying(), true);
+    }
 }
 
 TEST(Fuzzer, DontCrash)
