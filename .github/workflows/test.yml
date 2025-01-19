@@ -73,13 +73,8 @@ jobs:
       run: |
         ccache -s
         ccache -p
-
-    # - name: Test
-    #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
-    #   # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-    #   # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-    #   run: ctest --build-config ${{ matrix.build_type }}
     - name: Run fuzzer
+      id: fuzzer
       continue-on-error: true  # Allows next steps to run even if this fails
       run: |
         set -o pipefail
@@ -91,3 +86,10 @@ jobs:
       with:
         name: fuzzer-logs
         path: fuzzer_log.txt
+    - name: Check test result
+      if: always()
+      run: |
+        if [ "${{ steps.fuzzer.outcome }}" != "success" ]; then
+          echo "Fuzzer test failed"
+          exit 1
+        fi
