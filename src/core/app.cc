@@ -29,8 +29,8 @@ void print_tracks(App a)
 App::App(te::Engine &engine, te::Edit &edit)
     : engine_{engine},
       edit_{edit},
-      current_track_{0},
-      base_tracks_{te::getAudioTracks(edit)}
+      base_tracks_{te::getAudioTracks(edit)},
+      current_track_{0}
 {
     AddTrack(); // ensure there's always at least 1
     LOG_VAR(tracks_.size());

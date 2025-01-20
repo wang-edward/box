@@ -439,6 +439,14 @@ void Timeline::HandleEvent(const Event &event)
             case KEY_P:
                 print_timeline();
                 LOG_VAR(frame_.center);
+                {
+                    auto vec = APP->engine_.getDeviceManager().getMidiInDevices();
+                    std::cout << "midiInputs.size(): " << vec.size() << std::endl;
+                    for (auto &x : vec)
+                    {
+                        std::cout << x->getName() << std::endl;
+                    }
+                }
                 break;
             case KEY_C:
                 // toggle metronome
