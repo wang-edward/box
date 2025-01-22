@@ -43,6 +43,9 @@ TEST(ALSA, PrintMidiIn)
     }
 }
 
+// this generates different code than main()
+// where the assert(ptr != nullptr) passes in main(),
+//   ASSERT_NE(ptr, nullptr) fails.
 TEST(ALSA, VirtualMidi)
 {
     const juce::ScopedJuceInitialiser_GUI initialiser; // need this
