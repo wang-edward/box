@@ -73,6 +73,8 @@ jobs:
       run: |
         ccache -s
         ccache -p
+    - name: print build
+      run: ls build
     - name: Run tests
       id: test
       continue-on-error: true  # Allows next steps to run even if this fails
