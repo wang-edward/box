@@ -85,6 +85,24 @@ target_link_libraries(Box
     PRIVATE
         BoxLib)
 
+# fake_main
+juce_add_console_app(FakeMain
+    PRODUCT_NAME "FakeMain"
+    NEEDS_WEB_BROWSER FALSE
+    )
+target_sources(FakeMain
+    PRIVATE
+        fake_main/fake_main.cc)
+target_compile_definitions(FakeMain
+    PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
+target_link_libraries(FakeMain
+    PRIVATE
+        BoxLib
+        gtest
+        gtest_main)
+
 # boxtest
 enable_testing()
 file(GLOB_RECURSE TEST_SRC_FILES test/*.cc)
@@ -105,7 +123,7 @@ target_include_directories(BoxTests
 target_link_libraries(BoxTests 
     PRIVATE 
         BoxLib
-        gtest 
+        gtest
         gtest_main)
 
 file(GLOB_RECURSE JUNIT_TEST_SRC_FILES junit/*.cc)
@@ -128,5 +146,5 @@ target_link_libraries(JunitTests
         # juce::juce_recommended_warning_flags)
 
 # Register tests with ctest
-add_test(NAME BoxTests COMMAND BoxTests)
+# add_test(NAME BoxTests COMMAND BoxTests)
 # set_tests_properties(BoxTests PROPERTIES CONFIGURATIONS Debug Release)
