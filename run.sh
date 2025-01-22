@@ -12,7 +12,8 @@ else
     exit 1
 fi
 
-cmake -DCMAKE_BUILD_TYPE=Debug -B build
+cmake -DCMAKE_BUILD_TYPE=Debug -B build -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
 
 if [[ $? == 0 ]]; then
     make -C build -j6
