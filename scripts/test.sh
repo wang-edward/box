@@ -1,5 +1,6 @@
 
 BIN_PATH="./build/BoxTests"
+BIN_PATH="./build/BoxTests_artefacts/Debug/BoxTests"
 
 cmake -DCMAKE_BUILD_TYPE=Debug -B build
 
