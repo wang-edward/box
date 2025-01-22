@@ -74,15 +74,17 @@ jobs:
         ccache -s
         ccache -p
 
-    # 3) Update ccache right after a successful build (regardless of test status)
+    # 3) Update ccache immediately after a successful build
     - name: Update ccache
-      if: ${{ steps.build.outcome == 'success' }}
+      if: ${{ steps.build.outcome == 'success' }} # TODO should upload even on fail
       uses: actions/cache@v4
       with:
         path: /home/runner/.ccache
-        # Use the same key so it updates the existing cache entry
-        key: ${{ steps.restore-ccache.outputs.cache-key }}
-        upload-changes: true
+        # Use the *same* key as in "Restore ccache":
+        # TODO set this as an env var?
+        key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
+        # Ensure we overwrite the cache even on exact match:
+        save-always: true
 
     # 4) Run tests - can fail without skipping the cache upload above
     - name: Run tests
