@@ -99,8 +99,6 @@ jobs:
     - name: check pwd
       run: |
         pwd
-        ls
-
 
     - name: Download build artifacts
       uses: actions/download-artifact@v4
@@ -109,6 +107,9 @@ jobs:
         # The artifact will be placed in your workspace or a subfolder
         # (defaults to ./build-artifacts in GITHUB_WORKSPACE).
         path: build
+
+    - name: ls
+      run: ls
 
     - name: Run tests
       id: test
