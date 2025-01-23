@@ -28,7 +28,7 @@ jobs:
           libxinerama-dev libxrandr-dev mesa-common-dev ladspa-sdk \
           webkit2gtk-4.0 libgtk-3-dev xvfb ninja-build libwebkit2gtk-4.1-dev
 
-    - name: Check format
+    - name: Linter
       run: |
         clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
 
@@ -41,9 +41,8 @@ jobs:
     - name: Make cache dir
       run: mkdir -p /home/runner/.ccache
 
-    # 1) Restore ccache
     - name: Restore ccache
-      id: restore-ccache
+      id: restore-ccache # TODO delete?
       uses: actions/cache@v4
       with:
         path: /home/runner/.ccache
@@ -65,26 +64,38 @@ jobs:
     - name: Build
       id: build
       run: |
+        # TODO option for --config Release
         cmake --build ${{ steps.strings.outputs.build-output-dir }} \
-          --config Release \
+          --config Debug \
           --parallel $(nproc)
 
     - name: Print ccache stats (post-build)
       run: |
         ccache -s
         ccache -p
-        echo ${{ steps.restore-ccache.outputs.cache-key}}
+        echo "cache-key: " ${{ steps.restore-ccache.outputs.cache-key}}
 
-    # 3) Update ccache right after a successful build (regardless of test status)
-    - name: Update ccache
-      if: ${{ steps.build.outcome == 'success' }} # TODO should upload even on fail
-      uses: actions/cache@v4
+    - name: Upload build artifacts
+      if: ${{ steps.build.outcome == 'success' }}
+      uses: actions/upload-artifact@v4
       with:
-        path: /home/runner/.ccache
-        # Use the same key so it updates the existing cache entry
-        key: ${{ steps.restore-ccache.outputs.cache-key }}
+        name: build-artifacts
+        path: |
+          build
 
-    # 4) Run tests - can fail without skipping the cache upload above
+  tests:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+    # - uses: actions/checkout@v4
+    #   with:
+    #     submodules: recursive
+
+    - name: Install test dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+
     - name: Run tests
       id: test
       continue-on-error: true  # If tests fail, we still proceed
