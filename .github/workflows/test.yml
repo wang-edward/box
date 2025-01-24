@@ -112,12 +112,12 @@ jobs:
         ls
         pwd
     - name: mkdir ~/.ccache
-      run: mkdir /home/runner/.ccache
+      run: mkdir ~/.ccache
     - name: Restore cache
       uses: actions/cache/restore@v4
       id: restore-cache
       with:
-        path: /home/runner/.ccache
+        path: ~/.ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         restore-keys: |
           ${{ runner.os }}-ccache-
