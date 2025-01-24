@@ -85,20 +85,66 @@ target_link_libraries(Box
     PRIVATE
         BoxLib)
 
+# fake_main
+juce_add_console_app(FakeMain
+    PRODUCT_NAME "FakeMain"
+    NEEDS_WEB_BROWSER FALSE
+    )
+target_sources(FakeMain
+    PRIVATE
+        fake_main/fake_main.cc)
+target_compile_definitions(FakeMain
+    PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
+target_link_libraries(FakeMain
+    PRIVATE
+        BoxLib
+        gtest
+        gtest_main)
+
 # boxtest
 enable_testing()
 file(GLOB_RECURSE TEST_SRC_FILES test/*.cc)
-add_executable(BoxTests
-    ${TEST_SRC_FILES})
+juce_add_console_app(BoxTests
+    PRODUCT_NAME "BoxTests"
+    NEEDS_WEB_BROWSER FALSE
+    )
+target_sources(BoxTests
+    PRIVATE
+        ${TEST_SRC_FILES})
+target_compile_definitions(BoxTests
+    PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
 target_include_directories(BoxTests
     PUBLIC
         test)
 target_link_libraries(BoxTests 
     PRIVATE 
         BoxLib
-        gtest 
+        gtest
         gtest_main)
 
+file(GLOB_RECURSE JUNIT_TEST_SRC_FILES junit/*.cc)
+juce_add_console_app(JunitTests
+    PRODUCT_NAME "JunitTests"
+    NEEDS_WEB_BROWSER FALSE)
+target_sources(JunitTests
+    PRIVATE
+        ${JUNIT_TEST_SRC_FILES})
+target_compile_definitions(JunitTests
+    PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
+target_link_libraries(JunitTests
+    PRIVATE
+        BoxLib)
+        # tracktion::tracktion_engine
+        # juce::juce_core
+        # juce::juce_recommended_config_flags
+        # juce::juce_recommended_warning_flags)
+
 # Register tests with ctest
-add_test(NAME BoxTests COMMAND BoxTests)
+# add_test(NAME BoxTests COMMAND BoxTests)
 # set_tests_properties(BoxTests PROPERTIES CONFIGURATIONS Debug Release)

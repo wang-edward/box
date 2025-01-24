@@ -1,0 +1,845 @@
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.6s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gmock
+[  3%] Built target gtest_main
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 53%] Built target Box
+[ 54%] Building CXX object CMakeFiles/FakeMain.dir/fake_main/fake_main.cc.o
+[ 83%] Built target BoxTests
+[ 84%] Built target JunitTests
+[ 85%] Linking CXX executable FakeMain_artefacts/Debug/FakeMain
+[100%] Built target FakeMain
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 3 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In:
+MIDI Input devices scanned in: 0
+Updating MIDI I/O devices
+Found MIDI in: all_midi_in ("All MIDI Ins") (enabled)
+Found MIDI in: vmidiin_7f01b6eb ("Virtual") (enabled)
+Found MIDI in: vmidiin_6dd15aa ("yodie") (enabled)
+Found MIDI in: vmidiin_863a4515 ("box_midi") (enabled)
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:48:31] DEBUG: tracks_.size(): 1
+INFO: TEXTURE: [ID 4] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 5] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 6] Unloaded texture data from VRAM (GPU)
+INFO: FBO: [ID 1] Unloaded framebuffer from VRAM (GPU)
+INFO: TEXTURE: [ID 2] Unloaded texture data from VRAM (GPU)
+INFO: SHADER: [ID 3] Default shader unloaded successfully
+INFO: TEXTURE: [ID 1] Default texture unloaded successfully
+INFO: Window closed successfully
+Cleaning up temp files..
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.6s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gtest_main
+[  3%] Built target gmock
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 53%] Built target JunitTests
+[ 54%] Building CXX object CMakeFiles/FakeMain.dir/fake_main/fake_main.cc.o
+[ 84%] Built target Box
+[ 84%] Built target BoxTests
+[ 85%] Linking CXX executable FakeMain_artefacts/Debug/FakeMain
+[100%] Built target FakeMain
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 2 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In:
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:50:10] DEBUG: tracks_.size(): 1
+Assertion failed: (ptr != nullptr), function main, file fake_main.cc, line 33.
+./scripts/fake.sh: line 17:  5022 Abort trap: 6           $BIN_PATH
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.6s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gmock
+[  3%] Built target gtest_main
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 39%] Building CXX object CMakeFiles/FakeMain.dir/fake_main/fake_main.cc.o
+[ 65%] Built target JunitTests
+[ 69%] Built target Box
+[ 84%] Built target BoxTests
+[ 85%] Linking CXX executable FakeMain_artefacts/Debug/FakeMain
+[100%] Built target FakeMain
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 2 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In:
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:50:53] DEBUG: tracks_.size(): 1
+Assertion failed: (ptr != nullptr), function main, file fake_main.cc, line 33.
+./scripts/fake.sh: line 17:  5267 Abort trap: 6           $BIN_PATH
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.6s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gtest_main
+[  3%] Built target gmock
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 53%] Built target JunitTests
+[ 54%] Building CXX object CMakeFiles/FakeMain.dir/fake_main/fake_main.cc.o
+[ 83%] Built target BoxTests
+[ 84%] Built target Box
+[ 85%] Linking CXX executable FakeMain_artefacts/Debug/FakeMain
+[100%] Built target FakeMain
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 2 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+MIDI Input devices scanned in: 0
+Updating MIDI I/O devices
+Found MIDI in: all_midi_in ("All MIDI Ins") (enabled)
+Found MIDI in: vmidiin_7f01b6eb ("Virtual") (enabled)
+Found MIDI in: vmidiin_6dd15aa ("yodie") (enabled)
+Found MIDI in: vmidiin_863a4515 ("box_midi") (enabled)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In: All MIDI Ins
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:51:53] DEBUG: tracks_.size(): 1
+midiInputs.size(): 4
+All MIDI Ins
+Virtual
+yodie
+box_midi
+INFO: TEXTURE: [ID 4] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 5] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 6] Unloaded texture data from VRAM (GPU)
+INFO: FBO: [ID 1] Unloaded framebuffer from VRAM (GPU)
+INFO: TEXTURE: [ID 2] Unloaded texture data from VRAM (GPU)
+INFO: SHADER: [ID 3] Default shader unloaded successfully
+INFO: TEXTURE: [ID 1] Default texture unloaded successfully
+INFO: Window closed successfully
+Cleaning up temp files..
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.5s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gmock
+[  3%] Built target gtest_main
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 98%] Built target Box
+[100%] Built target FakeMain
+[100%] Built target BoxTests
+[100%] Built target JunitTests
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 1 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In:
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:52:01] DEBUG: tracks_.size(): 1
+midiInputs.size(): 0
+Assertion failed: (ptr != nullptr), function main, file fake_main.cc, line 43.
+./scripts/fake.sh: line 17:  5723 Abort trap: 6           $BIN_PATH
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.5s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gtest_main
+[  3%] Built target gmock
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 53%] Built target JunitTests
+[ 82%] Built target BoxTests
+[ 84%] Built target FakeMain
+[100%] Built target Box
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 3 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+MIDI Input devices scanned in: 0
+Updating MIDI I/O devices
+Found MIDI in: all_midi_in ("All MIDI Ins") (enabled)
+Found MIDI in: vmidiin_7f01b6eb ("Virtual") (enabled)
+Found MIDI in: vmidiin_6dd15aa ("yodie") (enabled)
+Found MIDI in: vmidiin_863a4515 ("box_midi") (enabled)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In: All MIDI Ins
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:52:07] DEBUG: tracks_.size(): 1
+midiInputs.size(): 4
+All MIDI Ins
+Virtual
+yodie
+box_midi
+INFO: TEXTURE: [ID 4] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 5] Unloaded texture data from VRAM (GPU)
+INFO: TEXTURE: [ID 6] Unloaded texture data from VRAM (GPU)
+INFO: FBO: [ID 1] Unloaded framebuffer from VRAM (GPU)
+INFO: TEXTURE: [ID 2] Unloaded texture data from VRAM (GPU)
+INFO: SHADER: [ID 3] Default shader unloaded successfully
+INFO: TEXTURE: [ID 1] Default texture unloaded successfully
+INFO: Window closed successfully
+Cleaning up temp files..
+edw@goat ~/github/box (test-alsa*?) $ ./scripts/fake.sh
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+CMake Deprecation Warning at external/raylib/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+-- Using raylib's GLFW
+-- Including Cocoa support
+CMake Warning (dev) at external/raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  external/raylib/src/CMakeLists.txt:49 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: Debug
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (1.4s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/edw/github/box/build
+[  1%] Built target gtest
+[  3%] Built target gtest_main
+[  3%] Built target gmock
+[  4%] Built target gmock_main
+[ 14%] Built target glfw
+[ 18%] Built target raylib
+[ 38%] Built target BoxLib
+[ 54%] Built target FakeMain
+[ 87%] Built target BoxTests
+[ 95%] Built target JunitTests
+[100%] Built target Box
+JUCE v8.0.3
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+Audio block size: 512  Rate: 48000
+Creating Default Controllers...
+Edit loaded in: 2 ms
+INFO: Initializing raylib 5.5-dev
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+Rebuilding Wave Device List...
+Wave In: Input 1 (enabled): 0 (L)
+Wave Out: Output 1 + 2 (enabled): 0 (L), 1 (R)
+Default Wave Out: Output 1 + 2
+Default MIDI Out:
+Default Wave In: Input 1
+Default MIDI In:
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1440 x 900
+INFO:     > Screen size:  512 x 512
+INFO:     > Render size:  512 x 512
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M1
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Cocoa): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: /Users/edw/github/box
+INFO: TEXTURE: [ID 3] Texture loaded successfully (128x128 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Depth renderbuffer loaded successfully (32 bits)
+INFO: FBO: [ID 1] Framebuffer object created successfully
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: FILEIO: [assets/metronome_l.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 4] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_r.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 5] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: FILEIO: [assets/metronome_off.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 6] Texture loaded successfully (16x16 | R8G8B8A8 | 1 mipmaps)
+[2025-01-22 14:52:13] DEBUG: tracks_.size(): 1
+midiInputs.size(): 0
+Assertion failed: (ptr != nullptr), function main, file fake_main.cc, line 43.
+./scripts/fake.sh: line 17:  6085 Abort trap: 6           $BIN_PATH
+edw@goat ~/github/box (test-alsa*?) $ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+

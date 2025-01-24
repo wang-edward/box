@@ -16,6 +16,88 @@ TEST(ExampleTest, BasicAssertions)
     EXPECT_TRUE(true);
 }
 
+TEST(ALSA, PrintMidiIn)
+{
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
+    te::Engine engine{"Tracktion Hello World"};
+    std::filesystem::path curr_path = std::filesystem::current_path();
+    juce::File my_file{juce::String{curr_path.string() + "PrintMidiIn.box"}};
+    std::unique_ptr<te::Edit> edit = createEmptyEdit(engine, my_file);
+    edit->ensureNumberOfAudioTracks(8);
+    edit->getTransport().ensureContextAllocated();
+
+    using namespace std::this_thread; // sleep_for, sleep_until
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+
+    sleep_for(seconds(5));
+
+
+    {
+        auto &dm = engine.getDeviceManager();
+
+        for (int i = 0; i < dm.getNumWaveInDevices(); i++)
+        {
+            if (auto wip = dm.getWaveInDevice(i))
+            {
+                wip->setStereoPair(false);
+                // wip->setEndToEnd(true); // TODO update ?
+                wip->setEnabled(true);
+            }
+            else if (auto mip = dm.getMidiInDevice(i))
+            {
+                // mip->setEndToEndEnabled(true); // TODO update ?
+                mip->setEnabled(true);
+            }
+        }
+    }
+
+    auto vec = engine.getDeviceManager().getMidiInDevices();
+    std::cout << "midiInputs.size(): " << vec.size() << std::endl;
+    for (auto &x : vec)
+    {
+        std::cout << x->getName() << std::endl;
+    }
+}
+
+TEST(ALSA, VirtualMidi)
+{
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
+    te::Engine engine{"Tracktion Hello World"};
+    engine.getDeviceManager().createVirtualMidiDevice("box_midi");
+    engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
+    auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
+    EXPECT_NE(ptr, nullptr)
+        << "Expected engine.dm.getDefaultMidiInDevice() to not be nullptr after assigning a virtual midi device";
+}
+
+TEST(ALSA, TransportPlay)
+{
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
+    te::Engine engine{"Tracktion Hello World"};
+    juce::File my_file{juce::String{"tmp.box"}};
+    std::unique_ptr<te::Edit> edit = createEmptyEdit(engine, my_file);
+    auto &transport = edit->getTransport();
+    transport.ensureContextAllocated();
+
+    {
+        transport.play(false);
+        ASSERT_EQ(transport.isPlaying(), true)
+            << "Expected transport.isPlaying() to be true after doing transport.play(false)";
+    }
+
+    {
+        using namespace std::this_thread; // sleep_for, sleep_until
+        using namespace std::chrono; // nanoseconds, system_clock, seconds
+
+        sleep_for(seconds(1));
+        const float curr_pos = static_cast<float>(transport.getPosition().inSeconds());
+
+        const float tolerance = 1e-5f;
+        ASSERT_TRUE(std::fabs(curr_pos) > tolerance)
+            << "Expected the playhead position: {" << curr_pos << "s} to be more than {" << tolerance << "s} after waiting {1.0s}.";
+    }
+}
+
 TEST(Fuzzer, DontCrash)
 {
     bool completed_successfully = false;
