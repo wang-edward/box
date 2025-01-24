@@ -101,20 +101,24 @@ int main()
 
     // test ALSA::PrintMidiIn
     {
+        std::cout << "ALSA::PrintMidiIn begin:" << std::endl;
         auto vec = engine.getDeviceManager().getMidiInDevices();
         std::cout << "midiInputs.size(): " << vec.size() << std::endl;
         for (auto &x : vec)
         {
             std::cout << x->getName() << std::endl;
         }
+        std::cout << "ALSA::PrintMidiIn end" << std::endl;
     }
 
     // test ALSA::VirtualMidi
     {
+        std::cout << "ALSA::VirtualMidi end" << std::endl;
         engine.getDeviceManager().createVirtualMidiDevice("box_midi");
         engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
         auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
         assert(ptr != nullptr);
+        std::cout << "ALSA::VirtualMidi end" << std::endl;
     }
 
     // // test ALSA::TransportPlay
