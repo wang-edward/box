@@ -119,6 +119,7 @@ jobs:
       id: test
       continue-on-error: true  # If tests fail, we still proceed
       run: |
+        chmod +x ./build/BoxTests_artefacts/Debug/BoxTests
         set -o pipefail
         xvfb-run -a --server-args="-screen 0 1280x1024x24" \
           ./build/BoxTests_artefacts/Debug/BoxTests 2>&1 | tee test_log.txt
@@ -127,6 +128,7 @@ jobs:
       id: fake_main_test
       continue-on-error: true
       run: |
+        chmod +x ./build/BoxTests_artefacts/Debug/BoxTests
         set -o pipefail
         xvfb-run -a --server-args="-screen 0 1280x1024x24" \
           ./build/FakeMain_artefacts/Debug/FakeMain 2>&1 | tee fake_main_test_log.txt
