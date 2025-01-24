@@ -22,6 +22,8 @@ int main()
     box::Interface interface {
     };
 
+    return 0;
+
     box::App app(engine, edit);
     box::APP = &app;
 

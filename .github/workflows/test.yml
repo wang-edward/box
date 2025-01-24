@@ -11,81 +11,137 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
 
-    strategy:
-      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
-      fail-fast: false
-
-      # Set up a matrix to run the following 3 configurations:
-      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
-      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
-      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
-      #
-      # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
-      matrix:
-        os: [ubuntu-22.04]
-        build_type: [Release]
-        c_compiler: [clang]
-        include:
-          - os: ubuntu-22.04
-            c_compiler: clang
-            cpp_compiler: clang++
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+
     - name: Install dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt update
-        sudo apt-get install -y tree clang clang-format ccache gcc-11 g++-11 freeglut3-dev g++ libasound2-dev libcurl4-openssl-dev libfreetype6-dev libjack-jackd2-dev libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev mesa-common-dev ladspa-sdk webkit2gtk-4.0 libgtk-3-dev xvfb ninja-build libwebkit2gtk-4.1-dev
-    - name: Check format
+        sudo apt-get update
+        sudo apt-get install -y tree clang clang-format ccache gcc-11 g++-11 \
+          freeglut3-dev g++ libasound2-dev libcurl4-openssl-dev libfreetype6-dev \
+          libjack-jackd2-dev libx11-dev libxcomposite-dev libxcursor-dev \
+          libxinerama-dev libxrandr-dev mesa-common-dev ladspa-sdk \
+          webkit2gtk-4.0 libgtk-3-dev xvfb ninja-build libwebkit2gtk-4.1-dev
+
+    - name: Linter
       run: |
         clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
+
     - name: Set reusable strings
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
     - name: Make cache dir
-      run: mkdir /home/runner/.ccache
-    - name: Cache build artifacts
+      run: mkdir -p /home/runner/.ccache
+
+    - name: Restore ccache
+      id: restore-ccache # TODO delete?
       uses: actions/cache@v4
       with:
         path: /home/runner/.ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         restore-keys: |
           ${{ runner.os }}-ccache-
+
     - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache
-        -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -S ${{ github.workspace }}
+      run: |
+        cmake -B "${{ steps.strings.outputs.build-output-dir }}" \
+              -DCMAKE_CXX_COMPILER=clang++ \
+              -DCMAKE_C_COMPILER=clang \
+              -DCMAKE_BUILD_TYPE=Debug \
+              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+              -S "${{ github.workspace }}"
+
+    # 2) Build
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
-    - name: Print ccache stats
+      id: build
+      run: |
+        # TODO option for --config Release
+        cmake --build ${{ steps.strings.outputs.build-output-dir }} \
+          --config Debug \
+          --parallel $(nproc)
+
+    - name: Print ccache stats (post-build)
       run: |
         ccache -s
         ccache -p
+        echo "cache-key: " ${{ steps.restore-ccache.outputs.cache-key}}
+
+    - name: Upload build artifacts
+      if: ${{ steps.build.outcome == 'success' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          build
+
+  tests:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+    # - uses: actions/checkout@v4
+    #   with:
+    #     submodules: recursive
+
+    - name: Install test dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+
+    - name: check pwd
+      run: |
+        pwd
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        # The artifact will be placed in your workspace or a subfolder
+        # (defaults to ./build-artifacts in GITHUB_WORKSPACE).
+        path: build
+
+    - name: ls
+      run: |
+        ls
+        ls build
+    - name: tree
+      run: tree
+
     - name: Run tests
       id: test
-      continue-on-error: true  # Allows next steps to run even if this fails
+      continue-on-error: true  # If tests fail, we still proceed
       run: |
+        chmod +x ./build/BoxTests_artefacts/Debug/BoxTests
         set -o pipefail
-        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests 2>&1 | tee test_log.txt
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" \
+          ./build/BoxTests_artefacts/Debug/BoxTests 2>&1 | tee test_log.txt
 
-    - name: Upload test log
-      if: always()  # This ensures it uploads even if the test fails
+    - name: Run "Fake Main" test
+      id: fake_main_test
+      continue-on-error: true
+      run: |
+        chmod +x ./build/BoxTests_artefacts/Debug/BoxTests
+        set -o pipefail
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" \
+          ./build/FakeMain_artefacts/Debug/FakeMain 2>&1 | tee fake_main_test_log.txt
+
+    - name: Upload test logs
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-logs
-        path: test_log.txt
+        path: |
+          test_log.txt
+          fake_main_test_log.txt
+
     - name: Check test result
       if: always()
       run: |
