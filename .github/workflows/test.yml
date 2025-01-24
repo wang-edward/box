@@ -86,13 +86,13 @@ jobs:
       continue-on-error: true  # Allows next steps to run even if this fails
       run: |
         set -o pipefail
-        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests_artefacts/Debug/BoxTests 2>&1 | tee test_log.txt
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests_artefacts/Release/BoxTests 2>&1 | tee test_log.txt
     - name: Run "Fake Main" test
       id: fake_main_test
       continue-on-error: true  # Allows next steps to run even if this fails
       run: |
         set -o pipefail
-        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/FakeMain_artefacts/Debug/FakeMain 2>&1 | tee fake_main_test_log.txt
+        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/FakeMain_artefacts/Release/FakeMain 2>&1 | tee fake_main_test_log.txt
 
     - name: Upload test log
       if: always()  # This ensures it uploads even if the test fails
