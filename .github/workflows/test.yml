@@ -52,7 +52,6 @@ jobs:
       uses: actions/cache/save@v4
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
-        # key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         path: /home/runner/.ccache
     - name: Run tests
       id: test
