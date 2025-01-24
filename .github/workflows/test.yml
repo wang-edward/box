@@ -25,10 +25,11 @@ jobs:
     - name: Check format
       run: |
         clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
-    - name: Make cache dir
+    - name: mkdir ~/.ccache
       run: mkdir /home/runner/.ccache
-    - name: Cache build artifacts
-      uses: actions/cache@v4
+    - name: Restore cache
+      uses: actions/cache/restore@v4
+      id: restore-cache
       with:
         path: /home/runner/.ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
@@ -50,8 +51,8 @@ jobs:
       if: always() # TODO && steps.restore-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
-        # key: ${{ steps.restore-cache.outputs.cache-primary-key }}
-        key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+        # key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
         path: /home/runner/.ccache
     - name: Run tests
       id: test
