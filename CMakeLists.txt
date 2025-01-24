@@ -140,10 +140,6 @@ target_compile_definitions(JunitTests
 target_link_libraries(JunitTests
     PRIVATE
         BoxLib)
-        # tracktion::tracktion_engine
-        # juce::juce_core
-        # juce::juce_recommended_config_flags
-        # juce::juce_recommended_warning_flags)
 
 # Register tests with ctest
 # add_test(NAME BoxTests COMMAND BoxTests)
