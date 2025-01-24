@@ -55,10 +55,10 @@ jobs:
       id: restore-cache
       uses: actions/cache@v4
       with:
-        path: /home/runner/.ccache
         key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
-        restore-keys: |
-          ${{ runner.os }}-ccache-
+        path: /home/runner/.ccache
+        # restore-keys: |
+        #   ${{ runner.os }}-ccache-
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -69,7 +69,7 @@ jobs:
         -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -S ${{ github.workspace }}
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel $(nproc)
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --parallel $(nproc)
     - name: Print ccache stats
       run: |
         ccache -s
