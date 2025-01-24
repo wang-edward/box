@@ -128,7 +128,7 @@ jobs:
         -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -S ${{ github.workspace }}
     - name: Build
-      run: cmake --build build --parallel $(nproc)
+      run: cmake --build build --parallel $(sysctl -n hw.ncpu)
     - name: Print ccache stats
       run: |
         ccache -s
