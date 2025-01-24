@@ -109,7 +109,9 @@ jobs:
         path: build
 
     - name: ls
-      run: ls
+      run: |
+        ls
+        ls build
 
     - name: Run tests
       id: test
