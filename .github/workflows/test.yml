@@ -93,3 +93,45 @@ jobs:
           echo "Tests failed"
           exit 1
         fi
+
+  mac:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: |
+        brew install clang-format ccache cmake tree
+    - name: Check format
+      run: |
+        clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
+    - name: mkdir ~/.ccache
+      run: mkdir /home/runner/.ccache
+    - name: Restore cache
+      uses: actions/cache/restore@v4
+      id: restore-cache
+      with:
+        path: /home/runner/.ccache
+        key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}-${{ env.DOWNLOAD_CACHE_VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache
+        -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -S ${{ github.workspace }}
+    - name: Build
+      run: cmake --build build --parallel $(nproc)
+    - name: Print ccache stats
+      run: |
+        ccache -s
+        ccache -p
+    - name: Always save cache
+      if: always() # TODO && steps.restore-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+        path: /home/runner/.ccache
