@@ -112,6 +112,8 @@ jobs:
       run: |
         ls
         ls build
+    - name: tree
+      run: tree
 
     - name: Run tests
       id: test
