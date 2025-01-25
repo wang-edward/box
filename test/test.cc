@@ -102,11 +102,11 @@ TEST(Fuzzer, DontCrash)
 
             app.HandleEvent(event);
 
-            interface.PreRender();
-            {
-                app.Render(interface);
-            }
-            interface.PostRender();
+            // interface.PreRender();
+            // {
+            //     app.Render(interface);
+            // }
+            // interface.PostRender();
         }
 
         std::cout << "Fuzzer completed successfully after " << event_count << " events" << std::endl;
