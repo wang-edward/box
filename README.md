@@ -12,4 +12,3 @@ It runs on the CM4 platform. Here is a prototype PCB:
 ## Here's a short demo (don't mind the playing 💀💀💀)
 
 https://github.com/user-attachments/assets/b4d823b6-e4d8-4bfe-be34-bb8d03cdb5cc
-
