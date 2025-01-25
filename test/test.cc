@@ -30,6 +30,7 @@ TEST(Fuzzer, DontCrash)
 
         const juce::ScopedJuceInitialiser_GUI initialiser;
         SetTargetFPS(60);
+        SetConfigFlags(FLAG_WINDOW_HIDDEN);
         te::Engine engine{"Tracktion Hello World"};
         std::filesystem::path curr_path = std::filesystem::current_path();
         juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
