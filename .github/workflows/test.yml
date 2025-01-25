@@ -51,7 +51,7 @@ jobs:
         ccache -s
         ccache -p
     - name: Always save cache
-      if: always() # TODO && steps.restore-cache.outputs.cache-hit != 'true'
+      if: always() && steps.restore-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
