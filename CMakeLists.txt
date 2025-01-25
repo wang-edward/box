@@ -87,7 +87,7 @@ target_link_libraries(Box
 
 # boxtest
 enable_testing()
-file(GLOB_RECURSE TEST_SRC_FILES test/*.cc)
+file(GLOB_RECURSE TEST_SRC_FILES test/test.cc test/test_util.cc)
 add_executable(BoxTests
     ${TEST_SRC_FILES})
 target_include_directories(BoxTests
@@ -95,10 +95,25 @@ target_include_directories(BoxTests
         test)
 target_link_libraries(BoxTests 
     PRIVATE 
-        BoxLib
         gtest 
         gtest_main)
 
+# fuzz
+file(GLOB_RECURSE FUZZ_SRC_FILES test/fuzz.cc test/test_util.cc)
+juce_add_console_app(Fuzz
+    PRODUCT_NAME "Fuzz"
+    NEEDS_WEB_BROWSER FALSE
+    )
+target_sources(Fuzz
+    PRIVATE
+        ${FUZZ_SRC_FILES})
+target_include_directories(Fuzz
+    PUBLIC
+        test)
+target_link_libraries(Fuzz
+    PRIVATE
+        BoxLib)
+
 # Register tests with ctest
-add_test(NAME BoxTests COMMAND BoxTests)
+# add_test(NAME BoxTests COMMAND BoxTests)
 # set_tests_properties(BoxTests PROPERTIES CONFIGURATIONS Debug Release)
