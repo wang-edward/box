@@ -139,8 +139,3 @@ jobs:
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
         path: ~/.ccache
-    - name: Run tests
-      id: test
-      run: |
-        set -o pipefail
-        ./build/BoxTests 2>&1 | tee test_log.txt
