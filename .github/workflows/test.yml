@@ -43,9 +43,15 @@ jobs:
         cmake -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache
         -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D CMAKE_BUILD_TYPE=Debug
         -S ${{ github.workspace }}
     - name: Build
       run: cmake --build build --parallel $(nproc)
+    - name: list
+      run: |
+        ls
+        ls build
+        tree build
     - name: Print ccache stats
       run: |
         ccache -s
@@ -56,24 +62,33 @@ jobs:
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
         path: /home/runner/.ccache
-    - name: Run tests
-      id: test
+    - name: Run Unit tests
+      id: unit-test
+      continue-on-error: true
+      run: |
+        set -o pipefail
+        xvfb-run -a --server-args="-screen 0 1920x1080x24" ./build/UnitTests 2>&1 | tee unit_test_log.txt
+    - name: Run Fuzz test
+      id: fuzz-test
       continue-on-error: true  # Allows next steps to run even if this fails
       run: |
         set -o pipefail
-        xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests 2>&1 | tee test_log.txt
-
+        xvfb-run -a --server-args="-screen 0 1920x1080x24" ./build/Fuzz_artefacts/Debug/Fuzz 2>&1 | tee fuzz_test_log.txt
     - name: Upload test log
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-logs
-        path: test_log.txt
+        path: "*test_log.txt"
     - name: Check test result
       if: always()
       run: |
-        if [ "${{ steps.test.outcome }}" != "success" ]; then
-          echo "Tests failed"
+        if [ "${{ steps.unit-test.outcome }}" != "success" ]; then
+          echo "Unit Tests failed"
+          exit 1
+        fi
+        if [ "${{ steps.fuzz-test.outcome }}" != "success" ]; then
+          echo "Fuzz Tests failed"
           exit 1
         fi
 
@@ -105,6 +120,7 @@ jobs:
         cmake -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache
         -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D CMAKE_BUILD_TYPE=Debug
         -S ${{ github.workspace }}
     - name: Build
       run: cmake --build build --parallel $(sysctl -n hw.ncpu)

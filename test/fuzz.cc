@@ -4,19 +4,12 @@
 #include "raylib.h"
 #include <chrono>
 #include <filesystem>
-#include <gtest/gtest.h>
 #include <iostream>
 #include <random>
 
 #include "test_util.hh"
 
-TEST(ExampleTest, BasicAssertions)
-{
-    EXPECT_EQ(1 + 1, 2);
-    EXPECT_TRUE(true);
-}
-
-TEST(Fuzzer, DontCrash)
+int main()
 {
     bool completed_successfully = false;
 
@@ -102,11 +95,11 @@ TEST(Fuzzer, DontCrash)
 
             app.HandleEvent(event);
 
-            // interface.PreRender();
-            // {
-            //     app.Render(interface);
-            // }
-            // interface.PostRender();
+            interface.PreRender();
+            {
+                app.Render(interface);
+            }
+            interface.PostRender();
         }
 
         std::cout << "Fuzzer completed successfully after " << event_count << " events" << std::endl;
@@ -117,6 +110,5 @@ TEST(Fuzzer, DontCrash)
         std::cerr << "Exception caught: " << e.what() << std::endl;
         throw;
     }
-
-    EXPECT_TRUE(completed_successfully);
+    return 0;
 }
