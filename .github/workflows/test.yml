@@ -47,6 +47,11 @@ jobs:
         -S ${{ github.workspace }}
     - name: Build
       run: cmake --build build --parallel $(nproc)
+    - name: list
+      run: |
+        ls
+        ls build
+        tree build
     - name: Print ccache stats
       run: |
         ccache -s
