@@ -90,10 +90,6 @@ jobs:
     - name: Check format
       run: |
         clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
-    - name: list
-      run: |
-        ls
-        pwd
     - name: mkdir ~/.ccache
       run: mkdir ~/.ccache
     - name: Restore cache
