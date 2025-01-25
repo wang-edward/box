@@ -48,7 +48,7 @@ jobs:
     - name: CMake Build
       run: cmake --build build --parallel $(nproc)
     - name: Overwrite existing cache
-      if: ${{ steps.cache-restore.outputs.cache-hit }}
+      if: ${{ steps.restore-cache.outputs.cache-hit }}
       continue-on-error: true
       run: |
         gh extension install actions/gh-actions-cache
