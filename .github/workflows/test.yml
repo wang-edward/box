@@ -83,8 +83,12 @@ jobs:
     - name: Check test result
       if: always()
       run: |
-        if [ "${{ steps.test.outcome }}" != "success" ]; then
-          echo "Tests failed"
+        if [ "${{ steps.unit-test.outcome }}" != "success" ]; then
+          echo "Unit Tests failed"
+          exit 1
+        fi
+        if [ "${{ steps.fuzz-test.outcome }}" != "success" ]; then
+          echo "Fuzz Tests failed"
           exit 1
         fi
 
