@@ -63,13 +63,13 @@ jobs:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
         path: /home/runner/.ccache
     - name: Run Unit tests
-      id: test
+      id: unit-test
       continue-on-error: true
       run: |
         set -o pipefail
         xvfb-run -a --server-args="-screen 0 1920x1080x24" ./build/UnitTests 2>&1 | tee unit_test_log.txt
     - name: Run Fuzz test
-      id: test
+      id: fuzz-test
       continue-on-error: true  # Allows next steps to run even if this fails
       run: |
         set -o pipefail
