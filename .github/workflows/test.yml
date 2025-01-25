@@ -56,7 +56,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Save cache
-      if: always()
+      if: ${{ steps.restore-cache.outputs.cache-hit }}
       uses: actions/cache/save@v4
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
@@ -132,7 +132,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Save cache
-      if: always()
+      if: ${{ steps.restore-cache.outputs.cache-hit }}
       uses: actions/cache/save@v4
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
