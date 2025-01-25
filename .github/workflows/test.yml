@@ -64,7 +64,7 @@ jobs:
         xvfb-run -a --server-args="-screen 0 1280x1024x24" ./build/BoxTests 2>&1 | tee test_log.txt
 
     - name: Upload test log
-      if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-logs
