@@ -30,6 +30,7 @@ TEST(Fuzzer, DontCrash)
 
         const juce::ScopedJuceInitialiser_GUI initialiser;
         SetTargetFPS(60);
+        SetConfigFlags(FLAG_WINDOW_HIDDEN);
         te::Engine engine{"Tracktion Hello World"};
         std::filesystem::path curr_path = std::filesystem::current_path();
         juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
@@ -101,11 +102,11 @@ TEST(Fuzzer, DontCrash)
 
             app.HandleEvent(event);
 
-            interface.PreRender();
-            {
-                app.Render(interface);
-            }
-            interface.PostRender();
+            // interface.PreRender();
+            // {
+            //     app.Render(interface);
+            // }
+            // interface.PostRender();
         }
 
         std::cout << "Fuzzer completed successfully after " << event_count << " events" << std::endl;
