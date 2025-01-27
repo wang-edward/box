@@ -19,19 +19,10 @@ int main()
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
-    box::Interface interface {
-    };
-
-    // box::App app(engine, edit);
-    // box::APP = &app;
+    engine.getDeviceManager().rescanMidiDeviceList();
 
     std::cout << "-----------" << std::endl;
     std::cout << "begin tests" << std::endl;
-
-    using namespace std::this_thread; // sleep_for, sleep_until
-    using namespace std::chrono; // nanoseconds, system_clock, seconds
-    std::cout << "wait 5s for stuff to init? ..." << std::endl;
-    sleep_for(seconds(5));
 
     // test ALSA::PrintMidiIn
     {
@@ -59,26 +50,6 @@ int main()
 
     std::cout << "end tests" << std::endl;
     std::cout << "-----------" << std::endl;
-
-    // // test ALSA::TransportPlay
-    // {
-    //     auto &transport = edit.getTransport();
-    //     transport.play(false);
-    //     assert(transport.isPlaying() == true);
-    //     using namespace std::this_thread; // sleep_for, sleep_until
-    //     using namespace std::chrono; // nanoseconds, system_clock, seconds
-
-    //     sleep_for(seconds(1));
-
-    //     while (true) {
-    //         double curr_pos = (transport.getPosition().inSeconds());
-    //         std::cout << "curr_pos is: " << curr_pos << std::endl;
-    //     }
-
-    //     // const double tolerance = 1e-5f;
-    //     // std::cout << "curr_pos is: " << curr_pos << std::endl;
-    //     // assert(std::fabs(curr_pos) > tolerance);
-    // }
 
     return 0;
 }
