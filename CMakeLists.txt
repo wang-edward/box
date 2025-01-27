@@ -129,9 +129,7 @@ target_compile_definitions(FakeMain
         JUCE_USE_CURL=0)
 target_link_libraries(FakeMain
     PRIVATE
-        BoxLib
-        gtest
-        gtest_main)
+        BoxLib)
 
 # Register tests with ctest
 # add_test(NAME BoxTests COMMAND BoxTests)
