@@ -147,3 +147,9 @@ jobs:
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
         path: ~/.ccache
+    - name: Run Unit tests
+      id: unit-test
+      continue-on-error: true
+      run: |
+        set -o pipefail
+        .build/UnitTests 2>&1 | tee unit_test_log.txt

@@ -28,11 +28,11 @@ TEST(ALSA, PrintMidiIn)
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
-    box::Interface interface {
-    };
+    // box::Interface interface {
+    // };
 
-    box::App app(engine, edit);
-    box::APP = &app;
+    // box::App app(engine, edit);
+    // box::APP = &app;
 
     // test ALSA::PrintMidiIn
     {
@@ -61,11 +61,11 @@ TEST(ALSA, VirtualMidi)
     te::Edit &edit = *my_edit;
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
-    box::Interface interface {
-    };
+    // box::Interface interface {
+    // };
 
-    box::App app(engine, edit);
-    box::APP = &app;
+    // box::App app(engine, edit);
+    // box::APP = &app;
 
     // test ALSA::VirtualMidi
     {
