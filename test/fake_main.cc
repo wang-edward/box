@@ -22,8 +22,8 @@ int main()
     box::Interface interface {
     };
 
-    box::App app(engine, edit);
-    box::APP = &app;
+    // box::App app(engine, edit);
+    // box::APP = &app;
 
     std::cout << "-----------" << std::endl;
     std::cout << "begin tests" << std::endl;
