@@ -21,6 +21,18 @@ int main()
     std::cout << "-----------" << std::endl;
     std::cout << "begin tests" << std::endl;
 
+    // test ALSA::VirtualMidi
+    {
+        std::cout << "ALSA::VirtualMidi begin" << std::endl;
+        engine.getDeviceManager().createVirtualMidiDevice("box_midi");
+        engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
+        auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
+        assert(ptr != nullptr);
+        std::cout << "ALSA::VirtualMidi end" << std::endl;
+    }
+
+    std::cout << std::endl;
+
     // test ALSA::PrintMidiIn
     {
         std::cout << "ALSA::PrintMidiIn begin:" << std::endl;
@@ -33,17 +45,6 @@ int main()
         std::cout << "ALSA::PrintMidiIn end" << std::endl;
     }
 
-    std::cout << std::endl;
-
-    // test ALSA::VirtualMidi
-    {
-        std::cout << "ALSA::VirtualMidi begin" << std::endl;
-        engine.getDeviceManager().createVirtualMidiDevice("box_midi");
-        engine.getDeviceManager().setDefaultMidiInDevice("box_midi");
-        auto ptr = engine.getDeviceManager().getDefaultMidiInDevice();
-        assert(ptr != nullptr);
-        std::cout << "ALSA::VirtualMidi end" << std::endl;
-    }
 
     std::cout << "end tests" << std::endl;
     std::cout << "-----------" << std::endl;
