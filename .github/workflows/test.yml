@@ -73,6 +73,12 @@ jobs:
       run: |
         set -o pipefail
         xvfb-run -a --server-args="-screen 0 1920x1080x24" ./build/Fuzz_artefacts/Debug/Fuzz 2>&1 | tee fuzz_test_log.txt
+    - name: Run FakeMain test
+      id: fakemain-test
+      continue-on-error: true  # Allows next steps to run even if this fails
+      run: |
+        set -o pipefail
+        xvfb-run -a --server-args="-screen 0 1920x1080x24" ./build/FakeMain_artefacts/Debug/FakeMain 2>&1 | tee fuzz_fakemain_log.txt
     - name: Upload test log
       if: always()
       uses: actions/upload-artifact@v4
@@ -87,7 +93,11 @@ jobs:
           exit 1
         fi
         if [ "${{ steps.fuzz-test.outcome }}" != "success" ]; then
-          echo "Fuzz Tests failed"
+          echo "Fuzz Test failed"
+          exit 1
+        fi
+        if [ "${{ steps.fakemain-test.outcome }}" != "success" ]; then
+          echo "Fake Main Test failed"
           exit 1
         fi
 
@@ -132,8 +142,14 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Save cache
-      if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+      if: ${{ steps.restore-cache.outputs.cache-hit }}
       uses: actions/cache/save@v4
       with:
         key: ${{ steps.restore-cache.outputs.cache-primary-key }}
         path: ~/.ccache
+    - name: Run Unit tests
+      id: unit-test
+      continue-on-error: true
+      run: |
+        set -o pipefail
+        .build/UnitTests 2>&1 | tee unit_test_log.txt
