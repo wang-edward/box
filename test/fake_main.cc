@@ -1,15 +1,12 @@
 #include <filesystem>
 #include <iostream>
 
-#include "core/app.hh"
-#include "core/interface.hh"
-#include "core/util.hh"
-#include "raylib.h"
+#include <tracktion_engine/tracktion_engine.h>
+namespace te = tracktion;
 
 int main()
 {
     const juce::ScopedJuceInitialiser_GUI initialiser; // need this
-    SetTargetFPS(60);
 
     te::Engine engine{"Tracktion Hello World"};
     std::filesystem::path curr_path = std::filesystem::current_path();
