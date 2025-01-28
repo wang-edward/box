@@ -1,5 +1,6 @@
 #include <filesystem>
 #include <iostream>
+#include <raylib.h>
 
 #include <tracktion_engine/tracktion_engine.h>
 namespace te = tracktion;
@@ -17,6 +18,9 @@ int main()
     edit.ensureNumberOfAudioTracks(8);
     edit.getTransport().ensureContextAllocated();
     engine.getDeviceManager().rescanMidiDeviceList();
+
+    // need this line for the test to pass on macOS for some reason
+    InitWindow(512, 512, "fake main test");
 
     std::cout << "-----------" << std::endl;
     std::cout << "begin tests" << std::endl;
