@@ -115,6 +115,9 @@ target_link_libraries(Fuzz
     PRIVATE
         BoxLib)
 
+# GuiApp
+add_subdirectory(examples/GuiApp)
+
 # Register tests with ctest
 # add_test(NAME BoxTests COMMAND BoxTests)
 # set_tests_properties(BoxTests PROPERTIES CONFIGURATIONS Debug Release)
