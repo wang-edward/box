@@ -1,11 +1,11 @@
 #include "MainComponent.h"
-#include <raylib.h>
+// #include <raylib.h>
 
 //==============================================================================
 MainComponent::MainComponent()
 {
     setSize (600, 400);
-    InitWindow(512, 512, "JuceApp");
+    // InitWindow(512, 512, "JuceApp");
 }
 
 //==============================================================================
