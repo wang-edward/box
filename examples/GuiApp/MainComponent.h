@@ -5,6 +5,7 @@
 // have called `juce_generate_juce_header(<thisTarget>)` in your CMakeLists.txt,
 // you could `#include <JuceHeader.h>` here instead, to make all your module headers visible.
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <tracktion_engine/tracktion_engine.h>
 
 //==============================================================================
 /*
@@ -24,6 +25,11 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
+
+    te::Engine engine{"Tracktion Hello World"};
+    std::filesystem::path curr_path = std::filesystem::current_path();
+    juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
