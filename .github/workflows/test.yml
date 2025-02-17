@@ -10,6 +10,14 @@ on:
     branches: [ "main" ]
 
 jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: clang-format
+      run: |
+        clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
+
   ubuntu:
     permissions:
       actions: write
@@ -24,10 +32,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt update
-        sudo apt-get install -y tree clang clang-format ccache freeglut3-dev libasound2-dev libcurl4-openssl-dev libfreetype6-dev libjack-jackd2-dev libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev mesa-common-dev ladspa-sdk webkit2gtk-4.0 libgtk-3-dev xvfb libwebkit2gtk-4.1-dev
-    - name: clang-format
-      run: |
-        clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
+        sudo apt-get install -y tree clang ccache freeglut3-dev libasound2-dev libcurl4-openssl-dev libfreetype6-dev libjack-jackd2-dev libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev mesa-common-dev ladspa-sdk webkit2gtk-4.0 libgtk-3-dev xvfb libwebkit2gtk-4.1-dev
     - name: mkdir ~/.ccache
       run: mkdir /home/runner/.ccache
     - name: Restore cache
@@ -100,10 +105,7 @@ jobs:
         submodules: recursive
     - name: Install dependencies
       run: |
-        brew install clang-format ccache cmake tree
-    - name: clang-format
-      run: |
-        clang-format --dry-run --Werror src/**/*.cc include/**/*.hh
+        brew install ccache cmake tree
     - name: mkdir ~/.ccache
       run: mkdir ~/.ccache
     - name: Restore cache
