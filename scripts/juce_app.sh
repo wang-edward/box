@@ -3,9 +3,8 @@
 OS="$(uname)"
 
 if [[ "$OS" == "Darwin" ]]; then
-    echo "not working on mac yet"
+    BIN_PATH="./build/examples/GuiApp/Gui_artefacts/Debug/Gui.app/Contents/MacOS/Gui"
     exit
-    # BIN_PATH="./build/Box_artefacts/Debug/Box"
 elif [[ "$OS" == "Linux" ]]; then
     BIN_PATH="./build/examples/GuiApp/Gui_artefacts/Debug/Gui"
 else
