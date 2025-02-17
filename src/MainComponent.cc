@@ -6,6 +6,24 @@ MainComponent::MainComponent()
 {
     setSize (600, 400);
     // InitWindow(512, 512, "JuceApp");
+
+
+    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
+    SetTargetFPS(60);
+
+    te::Engine engine{"Tracktion Hello World"};
+    std::filesystem::path curr_path = std::filesystem::current_path();
+    juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
+
+    std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
+    te::Edit &edit = *my_edit;
+    edit.ensureNumberOfAudioTracks(8);
+    edit.getTransport().ensureContextAllocated();
+    box::Interface interface {
+    };
+
+    box::App app(engine, edit);
+    box::APP = &app;
 }
 
 //==============================================================================

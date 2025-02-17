@@ -1,74 +1,101 @@
-#include <filesystem>
-#include <iostream>
+#include "MainComponent.h"
 
-#include "core/app.hh"
-#include "core/interface.hh"
-#include "core/util.hh"
-#include "raylib.h"
-
-int main()
+//==============================================================================
+class GuiAppApplication final : public juce::JUCEApplication
 {
-    const juce::ScopedJuceInitialiser_GUI initialiser; // need this
-    SetTargetFPS(60);
+public:
+    //==============================================================================
+    GuiAppApplication() {}
 
-    te::Engine engine{"Tracktion Hello World"};
-    std::filesystem::path curr_path = std::filesystem::current_path();
-    juce::File my_file{juce::String{curr_path.string() + "/tmp.box"}};
+    // We inject these as compile definitions from the CMakeLists.txt
+    // If you've enabled the juce header with `juce_generate_juce_header(<thisTarget>)`
+    // you could `#include <JuceHeader.h>` and use `ProjectInfo::projectName` etc. instead.
+    const juce::String getApplicationName() override       { return JUCE_APPLICATION_NAME_STRING; }
+    const juce::String getApplicationVersion() override    { return JUCE_APPLICATION_VERSION_STRING; }
+    bool moreThanOneInstanceAllowed() override             { return true; }
 
-    std::unique_ptr<te::Edit> my_edit = createEmptyEdit(engine, my_file);
-    te::Edit &edit = *my_edit;
-    edit.ensureNumberOfAudioTracks(8);
-    edit.getTransport().ensureContextAllocated();
-    box::Interface interface {
+    //==============================================================================
+    void initialise (const juce::String& commandLine) override
+    {
+        // This method is where you should put your application's initialisation code..
+        juce::ignoreUnused (commandLine);
+
+        mainWindow.reset (new MainWindow (getApplicationName()));
+    }
+
+    void shutdown() override
+    {
+        // Add your application's shutdown code here..
+
+        mainWindow = nullptr; // (deletes our window)
+    }
+
+    //==============================================================================
+    void systemRequestedQuit() override
+    {
+        // This is called when the app is being asked to quit: you can ignore this
+        // request and let the app carry on running, or call quit() to allow the app to close.
+        quit();
+    }
+
+    void anotherInstanceStarted (const juce::String& commandLine) override
+    {
+        // When another instance of the app is launched while this one is running,
+        // this method is invoked, and the commandLine parameter tells you what
+        // the other instance's command-line arguments were.
+        juce::ignoreUnused (commandLine);
+    }
+
+    //==============================================================================
+    /*
+        This class implements the desktop window that contains an instance of
+        our MainComponent class.
+    */
+    class MainWindow final : public juce::DocumentWindow
+    {
+    public:
+        explicit MainWindow (juce::String name)
+            : DocumentWindow (name,
+                              juce::Desktop::getInstance().getDefaultLookAndFeel()
+                                                          .findColour (backgroundColourId),
+                              allButtons)
+        {
+            setUsingNativeTitleBar (true);
+            setContentOwned (new MainComponent(), true);
+
+           #if JUCE_IOS || JUCE_ANDROID
+            setFullScreen (true);
+           #else
+            setResizable (true, true);
+            centreWithSize (getWidth(), getHeight());
+           #endif
+
+            setVisible (true);
+        }
+
+        void closeButtonPressed() override
+        {
+            // This is called when the user tries to close this window. Here, we'll just
+            // ask the app to quit when this happens, but you can change this to do
+            // whatever you need.
+            getInstance()->systemRequestedQuit();
+        }
+
+        /* Note: Be careful if you override any DocumentWindow methods - the base
+           class uses a lot of them, so by overriding you might break its functionality.
+           It's best to do all your work in your content component instead, but if
+           you really have to override any DocumentWindow methods, make sure your
+           subclass also calls the superclass's method.
+        */
+
+    private:
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
-    box::App app(engine, edit);
-    box::APP = &app;
+private:
+    std::unique_ptr<MainWindow> mainWindow;
+};
 
-    try
-    {
-        // arm
-        {
-            auto &dm = engine.getDeviceManager();
-
-            for (int i = 0; i < dm.getNumWaveInDevices(); i++)
-            {
-                if (auto wip = dm.getWaveInDevice(i))
-                {
-                    wip->setStereoPair(false);
-                    // wip->setEndToEnd(true); // TODO update ?
-                    wip->setEnabled(true);
-                }
-                else if (auto mip = dm.getMidiInDevice(i))
-                {
-                    // mip->setEndToEndEnabled(true); // TODO update ?
-                    mip->setEnabled(true);
-                }
-            }
-        }
-
-        while (!interface.ShouldClose())
-        {
-            // poll and handle events
-            box::Event event;
-            if (interface.PollEvent(event))
-            {
-                app.HandleEvent(event);
-            }
-
-            interface.PreRender();
-
-            // do rendering
-            {
-                app.Render(interface);
-            }
-
-            interface.PostRender();
-        }
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-    return 0;
-}
+//==============================================================================
+// This macro generates the main() routine that launches the app.
+START_JUCE_APPLICATION (GuiAppApplication)
