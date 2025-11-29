@@ -438,6 +438,14 @@ void Timeline::HandleEvent(const Event &event)
             break;
             case KEY_P:
                 print_timeline();
+                {
+                    auto ptr = APP->engine_.getDeviceManager().getDefaultMidiInDevice();
+                    if (ptr == nullptr) {
+                        std::cout << "getDefaultMidiIn() = nullptr" << std::endl;
+                    } else {
+                        std::cout << ptr->getAlias() << std::endl;
+                    }
+                }
                 LOG_VAR(frame_.center);
                 break;
             case KEY_C:

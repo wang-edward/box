@@ -4,7 +4,6 @@ OS="$(uname)"
 
 if [[ "$OS" == "Darwin" ]]; then
     BIN_PATH="./build/examples/GuiApp/Gui_artefacts/Debug/Gui.app/Contents/MacOS/Gui"
-    exit
 elif [[ "$OS" == "Linux" ]]; then
     BIN_PATH="./build/examples/GuiApp/Gui_artefacts/Debug/Gui"
 else
